@@ -1,6 +1,6 @@
-# Tauri + React + Typescript
+# metal-ui
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+A Tauri-based desktop application for viewing metal-stack installations.
 
 ## Recommended IDE Setup
 

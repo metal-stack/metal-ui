@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 export function NavInfrastructure({
   items,
@@ -20,13 +20,17 @@ export function NavInfrastructure({
     icon: Icon;
   }[];
 }) {
+  const location = useLocation();
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Infrastructure</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton
+              asChild
+              isActive={location.pathname === item.url}
+            >
               <Link to={item.url}>
                 <item.icon />
                 <span>{item.name}</span>

@@ -15,7 +15,6 @@ import {
   IconSearch,
   IconServer2,
   IconSettings,
-  IconSwitch2,
 } from "@tabler/icons-react";
 import { NavInfrastructure } from "@/components/ui/app-shell/nav-documents";
 import { NavMain } from "@/components/ui/app-shell/nav-main";
@@ -85,11 +84,6 @@ const data = {
       name: "Sizes",
       url: "/sizes",
       icon: IconMaximize,
-    },
-    {
-      name: "Switches",
-      url: "/switches",
-      icon: IconSwitch2,
     },
     {
       name: "Images",

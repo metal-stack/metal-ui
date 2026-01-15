@@ -32,7 +32,10 @@ export default function Login() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    invoke("start_oauth_login", { apiUrl: values.apiUrl });
+    invoke("start_oauth_login", {
+      apiUrl: values.apiUrl,
+      provider: "openid-connect",
+    });
   }
 
   return (

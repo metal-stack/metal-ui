@@ -1,6 +1,6 @@
 import { TransportProvider } from "@connectrpc/connect-query";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useAuthenticatedAuth } from "./AuthProvider";
+import { useAuth, useAuthenticatedAuth } from "./AuthProvider";
 import { AuthInterceptor } from "@/interceptors/AuthInterceptor";
 import { createConnectTransport } from "@connectrpc/connect-web";
 import { useEffect, useMemo, useCallback } from "react";
@@ -17,7 +17,8 @@ const queryClient = new QueryClient({
 });
 
 export function QueryProvider({ children }: { children: React.ReactNode }) {
-  const auth = useAuthenticatedAuth();
+  const auth = useAuth();
+  const authenticatedAuth = useAuthenticatedAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,7 +42,12 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
       interceptors: [interceptor],
       useBinaryFormat: false,
     });
-  }, [auth.isAuthenticated, auth.token, auth.apiUrl, onUnauthorized]);
+  }, [
+    auth.isAuthenticated,
+    authenticatedAuth.token,
+    authenticatedAuth.apiUrl,
+    onUnauthorized,
+  ]);
 
   if (!auth.isAuthenticated || !transport) return null;
 

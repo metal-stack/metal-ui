@@ -16,14 +16,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { invoke } from "@tauri-apps/api/core";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
 import logo from "@/assets/metal-stack.png";
+import { useAuth } from "@/providers/AuthProvider";
+import { Navigate } from "react-router";
 
 const formSchema = z.object({
   apiUrl: z.url("Please enter a valid URL"),
 });
 
 export default function Login() {
+  const auth = useAuth();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,8 +33,15 @@ export default function Login() {
     },
   });
 
+  if (auth.isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    invoke("start_oauth_login", { apiUrl: values.apiUrl });
+    invoke("start_oauth_login", {
+      apiUrl: values.apiUrl,
+      provider: "openid-connect",
+    });
   }
 
   return (

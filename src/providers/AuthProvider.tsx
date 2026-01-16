@@ -5,7 +5,12 @@ import {
   useState,
   useCallback,
 } from "react";
-import { CliConfig, loadCliConfig } from "@/lib/cli-config";
+import {
+  CliConfig,
+  CliContext,
+  loadCliConfig,
+  mapCliConfig,
+} from "@/lib/cli-config";
 import { toast } from "sonner";
 import { listen } from "@tauri-apps/api/event";
 import { useNavigate } from "react-router";
@@ -13,11 +18,11 @@ import LoadingScreen from "@/components/ui/loading-screen/loading-screen";
 
 type AuthenticatedState = {
   isAuthenticated: true;
-  token: string;
   apiUrl: string;
-  projectId: string;
-  contextName: string;
   isLoading: boolean;
+  contexts: CliContext[];
+  currentContext: CliContext;
+  setCurrentContext: (context: CliContext) => void;
   reload: () => Promise<void>;
   logout: () => void;
 };
@@ -38,11 +43,10 @@ type InternalAuthState =
     }
   | {
       isAuthenticated: true;
-      token: string;
       apiUrl: string;
-      projectId: string;
-      contextName: string;
       isLoading: boolean;
+      contexts: CliContext[];
+      currentContext: CliContext;
     };
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
@@ -55,7 +59,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
 
   const reload = useCallback(async () => {
-    const config: CliConfig = await loadCliConfig();
+    let config: CliConfig;
+    try {
+      config = await loadCliConfig();
+    } catch (error) {
+      toast.error("Auth", {
+        id: "auth-load-config-failed",
+        richColors: true,
+        description: `Failed to load config: ${error}`,
+      });
+      setAuthState({ isAuthenticated: false, isLoading: false });
+      navigate("/login");
+      return;
+    }
+
+    config = mapCliConfig(config);
 
     const ctx = config.contexts.find((c) => c.name === config.currentContext);
 
@@ -63,28 +81,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       toast.warning("Auth", {
         id: "no-context-selected",
         richColors: true,
-        description: "No context selected in CLI config.",
+        description: "No context selected in config.",
       });
-
       setAuthState({ isAuthenticated: false, isLoading: false });
+      navigate("/login");
+      return;
+    }
+
+    if (!ctx.apiToken) {
+      setAuthState({ isAuthenticated: false, isLoading: false });
+      navigate("/login");
       return;
     }
 
     setAuthState({
       isAuthenticated: true,
-      token: ctx.apiToken,
       apiUrl: ctx.apiUrl,
-      projectId: ctx.defaultProject,
-      contextName: ctx.name,
+      contexts: config.contexts,
+      currentContext: ctx,
       isLoading: false,
     });
-
-    toast.info("Auth", {
-      id: "context-switched",
-      richColors: true,
-      description: `Context found in CLI and switched to ${ctx.name}`,
-    });
-  }, []);
+  }, [navigate]);
 
   const logout = useCallback(() => {
     setAuthState({ isAuthenticated: false, isLoading: false });
@@ -102,45 +119,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [reload]);
 
   useEffect(() => {
-    const unlistenPromise = listen("oauth-token", async (event) => {
-      const config: CliConfig = await loadCliConfig();
-
-      const ctx = config.contexts.find((c) => c.name === config.currentContext);
-      if (!ctx) {
-        toast.warning("Auth", {
-          id: "no-context-selected",
-          richColors: true,
-          description: "No context selected in CLI config.",
-        });
-
-        setAuthState({ isAuthenticated: false, isLoading: false });
-        return;
-      }
-      setAuthState({
-        isAuthenticated: true,
-        token: event.payload as string,
-        apiUrl: ctx.apiUrl,
-        projectId: ctx.defaultProject,
-        contextName: ctx.name,
-        isLoading: false,
-      });
-
+    const unlistenPromise = listen("oauth-token", async () => {
       toast.success("Auth", {
         id: "oauth-token-received",
         richColors: true,
-        description: "OAuth token received, reloading context.",
+        description: "OAuth login finished. Reloading config…",
       });
+
+      await reload();
       navigate("/");
-      console.log("Redirecting to / after OAuth token received");
-      // TODO: dont reload, because we don't write the config file in tauri app
-      // maybe write it like the cli does
-      // await reload();
     });
 
     return () => {
       unlistenPromise.then((unlisten) => unlisten());
     };
-  }, [reload]);
+  }, [reload, navigate]);
 
   if (authState.isLoading) {
     return <LoadingScreen />;
@@ -149,11 +142,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value: AuthState = authState.isAuthenticated
     ? {
         isAuthenticated: true,
-        token: authState.token,
         apiUrl: authState.apiUrl,
-        projectId: authState.projectId,
-        contextName: authState.contextName,
         isLoading: authState.isLoading,
+        currentContext: authState.currentContext,
+        contexts: authState.contexts,
+        setCurrentContext: (context: CliContext) => {
+          setAuthState((prevState) => {
+            if (!prevState.isAuthenticated) return prevState;
+            return {
+              ...prevState,
+              currentContext: context,
+            };
+          });
+        },
         reload,
         logout,
       }
@@ -178,5 +179,5 @@ export function useAuthenticatedAuth() {
   if (!auth.isAuthenticated) {
     throw new Error("useAuthenticatedAuth must be used when authenticated");
   }
-  return auth; // hier ist token/apiUrl/projectId typed verfügbar
+  return auth;
 }

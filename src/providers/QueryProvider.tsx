@@ -40,14 +40,14 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
     ).interceptor;
 
     return createConnectTransport({
-      baseUrl: auth.apiUrl,
+      baseUrl: authenticatedAuth.currentContext.apiUrl,
       interceptors: [interceptor],
       useBinaryFormat: false,
     });
   }, [
     auth.isAuthenticated,
     authenticatedAuth.currentContext.apiToken,
-    authenticatedAuth.apiUrl,
+    authenticatedAuth.currentContext.apiUrl,
     onUnauthorized,
   ]);
 

@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import {
+  Icon,
   IconBuilding,
   IconCloudPin,
   IconDashboard,
@@ -15,8 +16,9 @@ import {
   IconSearch,
   IconServer2,
   IconSettings,
+  IconSwitch2,
 } from "@tabler/icons-react";
-import { NavInfrastructure } from "@/components/ui/app-shell/nav-documents";
+import { NavSection } from "@/components/ui/app-shell/nav-section";
 import { NavMain } from "@/components/ui/app-shell/nav-main";
 import { NavSecondary } from "@/components/ui/app-shell/nav-secondary";
 import { NavUser } from "@/components/ui/app-shell/nav-user";
@@ -34,8 +36,29 @@ import logo from "@/assets/metal-stack.png";
 import { NavCtx } from "./nav-ctx";
 import { Separator } from "../separator";
 
-const data = {
+export interface NavItem {
+  title: string;
+  url: string;
+  icon: Icon;
+  requires?: {
+    methods: string[];
+    any?: boolean;
+  };
+}
+
+const data: {
+  navMain: NavItem[];
+  navSecondary: NavItem[];
+  infrastructure: NavItem[];
+  api: NavItem[];
+  admin: NavItem[];
+} = {
   navMain: [
+    {
+      title: "Dashboard",
+      url: "/test",
+      icon: IconDashboard,
+    },
     {
       title: "Dashboard",
       url: "/",
@@ -45,11 +68,25 @@ const data = {
       title: "Tenants",
       url: "/tenants",
       icon: IconBuilding,
+      requires: {
+        methods: [
+          "/metalstack.api.v2.TenantService/List",
+          "/metalstack.api.v2.TenantService/Get",
+        ],
+        any: false,
+      },
     },
     {
       title: "Projects",
       url: "/projects",
       icon: IconRocket,
+      requires: {
+        methods: [
+          "/metalstack.api.v2.ProjectService/List",
+          "/metalstack.api.v2.ProjectService/Get",
+        ],
+        any: false,
+      },
     },
   ],
   navSecondary: [
@@ -69,46 +106,150 @@ const data = {
       icon: IconSearch,
     },
   ],
-  infrastructure: [
+  infrastructure: [],
+  api: [
     {
-      name: "Partitions",
+      title: "Partitions",
       url: "/partitions",
       icon: IconCloudPin,
+      requires: {
+        methods: [
+          "/metalstack.api.v2.PartitionService/List",
+          "/metalstack.api.v2.PartitionService/Get",
+        ],
+        any: false,
+      },
     },
     {
-      name: "Machines",
+      title: "Machines",
       url: "/machines",
       icon: IconServer2,
+      requires: {
+        methods: [
+          "/metalstack.api.v2.MachineService/Get",
+          "/metalstack.api.v2.MachineService/List",
+        ],
+        any: false,
+      },
     },
     {
-      name: "Sizes",
+      title: "Sizes",
       url: "/sizes",
       icon: IconMaximize,
+      requires: {
+        methods: [
+          "/metalstack.api.v2.SizeService/List",
+          "/metalstack.api.v2.SizeService/Get",
+        ],
+        any: false,
+      },
     },
     {
-      name: "Images",
+      title: "Images",
       url: "/images",
       icon: IconPackage,
+      requires: {
+        methods: [
+          "/metalstack.api.v2.ImageService/List",
+          "/metalstack.api.v2.ImageService/Get",
+        ],
+        any: false,
+      },
     },
     {
-      name: "IPs",
+      title: "IPs",
       url: "/ips",
       icon: IconGlobe,
+      requires: {
+        methods: [
+          "/metalstack.api.v2.IPService/List",
+          "/metalstack.api.v2.IPService/Get",
+        ],
+        any: false,
+      },
     },
     {
-      name: "Networks",
+      title: "Networks",
       url: "/networks",
       icon: IconNetwork,
+      requires: {
+        methods: [
+          "/metalstack.api.v2.NetworkService/List",
+          "/metalstack.api.v2.NetworkService/Get",
+        ],
+        any: false,
+      },
     },
     {
-      name: "Filesystems",
+      title: "Filesystems",
       url: "/filesystems",
       icon: IconDeviceSdCard,
+      requires: {
+        methods: [
+          "/metalstack.api.v2.FilesystemService/List",
+          "/metalstack.api.v2.FilesystemService/Get",
+        ],
+        any: false,
+      },
     },
     {
-      name: "Tokens",
+      title: "Tokens",
       url: "/tokens",
       icon: IconKey,
+      requires: {
+        methods: [
+          "/metalstack.api.v2.TokenService/List",
+          "/metalstack.api.v2.TokenService/Get",
+        ],
+        any: false,
+      },
+    },
+  ],
+  admin: [
+    {
+      title: "Machines",
+      url: "/admin/machines",
+      icon: IconServer2,
+      requires: {
+        methods: [
+          "/metalstack.admin.v2.MachineService/List",
+          "/metalstack.admin.v2.MachineService/Get",
+        ],
+        any: false,
+      },
+    },
+    {
+      title: "IPs",
+      url: "/admin/ips",
+      icon: IconGlobe,
+      requires: {
+        methods: ["/metalstack.admin.v2.IPService/List"],
+        any: false,
+      },
+    },
+    {
+      title: "Networks",
+      url: "/admin/networks",
+      icon: IconNetwork,
+      requires: {
+        methods: [
+          "/metalstack.admin.v2.NetworkService/List",
+          "/metalstack.admin.v2.NetworkService/Get",
+        ],
+        any: false,
+      },
+    },
+    {
+      title: "Switches",
+      url: "/admin/switches",
+      icon: IconSwitch2,
+      requires: {
+        methods: [
+          "/metalstack.admin.v2.SwitchService/List",
+          "/metalstack.admin.v2.SwitchService/Get",
+        ],
+        any: false,
+      },
     },
   ],
 };
@@ -135,7 +276,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavCtx />
         <Separator />
         <NavMain items={data.navMain} />
-        <NavInfrastructure items={data.infrastructure} />
+        <NavSection items={data.admin} title="Admin" />
+        <NavSection items={data.api} title="API" />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

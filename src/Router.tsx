@@ -19,6 +19,8 @@ import AdminIPsPage from "./pages/admin/IPs/ips-page";
 import AdminNetworksPage from "./pages/admin/Networks/networks-page";
 import AdminSwitchesPage from "./pages/admin/Switches/networks-page";
 import NotFoundPage from "./pages/error-page";
+import AdminTenantsPage from "./pages/admin/Tenants/tenants-page";
+import AdminProjectsPage from "./pages/admin/Projects/projects-page";
 
 export const router = createBrowserRouter([
   {
@@ -114,6 +116,16 @@ export const router = createBrowserRouter([
                     path: "switches",
                     element: <AdminSwitchesPage />,
                     handle: { title: "Admin · Switches" },
+                  },
+                  {
+                    path: "tenants",
+                    element: <AdminTenantsPage />,
+                    handle: { title: "Admin · Tenants" },
+                  },
+                  {
+                    path: "projects",
+                    element: <AdminProjectsPage />,
+                    handle: { title: "Admin · Projects" },
                   },
                 ],
               },

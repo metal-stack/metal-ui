@@ -49,21 +49,34 @@ export interface NavItem {
 const data: {
   navMain: NavItem[];
   navSecondary: NavItem[];
-  infrastructure: NavItem[];
   api: NavItem[];
   admin: NavItem[];
 } = {
   navMain: [
     {
       title: "Dashboard",
-      url: "/test",
-      icon: IconDashboard,
-    },
-    {
-      title: "Dashboard",
       url: "/",
       icon: IconDashboard,
     },
+  ],
+  navSecondary: [
+    {
+      title: "Settings",
+      url: "#",
+      icon: IconSettings,
+    },
+    {
+      title: "Get Help",
+      url: "#",
+      icon: IconHelp,
+    },
+    {
+      title: "Search",
+      url: "#",
+      icon: IconSearch,
+    },
+  ],
+  api: [
     {
       title: "Tenants",
       url: "/tenants",
@@ -88,26 +101,6 @@ const data: {
         any: false,
       },
     },
-  ],
-  navSecondary: [
-    {
-      title: "Settings",
-      url: "#",
-      icon: IconSettings,
-    },
-    {
-      title: "Get Help",
-      url: "#",
-      icon: IconHelp,
-    },
-    {
-      title: "Search",
-      url: "#",
-      icon: IconSearch,
-    },
-  ],
-  infrastructure: [],
-  api: [
     {
       title: "Partitions",
       url: "/partitions",
@@ -206,6 +199,24 @@ const data: {
     },
   ],
   admin: [
+    {
+      title: "Tenants",
+      url: "/admin/tenants",
+      icon: IconBuilding,
+      requires: {
+        methods: ["/metalstack.admin.v2.TenantService/List"],
+        any: false,
+      },
+    },
+    {
+      title: "Projects",
+      url: "/admin/projects",
+      icon: IconRocket,
+      requires: {
+        methods: ["/metalstack.admin.v2.ProjectService/List"],
+        any: false,
+      },
+    },
     {
       title: "Machines",
       url: "/admin/machines",

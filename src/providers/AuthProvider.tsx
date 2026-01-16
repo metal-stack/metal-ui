@@ -5,7 +5,12 @@ import {
   useState,
   useCallback,
 } from "react";
-import { CliConfig, loadCliConfig, mapCliConfig } from "@/lib/cli-config";
+import {
+  CliConfig,
+  CliContext,
+  loadCliConfig,
+  mapCliConfig,
+} from "@/lib/cli-config";
 import { toast } from "sonner";
 import { listen } from "@tauri-apps/api/event";
 import { useNavigate } from "react-router";
@@ -13,11 +18,11 @@ import LoadingScreen from "@/components/ui/loading-screen/loading-screen";
 
 type AuthenticatedState = {
   isAuthenticated: true;
-  token: string;
   apiUrl: string;
-  projectId: string;
-  contextName: string;
   isLoading: boolean;
+  contexts: CliContext[];
+  currentContext: CliContext;
+  setCurrentContext: (context: CliContext) => void;
   reload: () => Promise<void>;
   logout: () => void;
 };
@@ -38,11 +43,10 @@ type InternalAuthState =
     }
   | {
       isAuthenticated: true;
-      token: string;
       apiUrl: string;
-      projectId: string;
-      contextName: string;
       isLoading: boolean;
+      contexts: CliContext[];
+      currentContext: CliContext;
     };
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
@@ -92,10 +96,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setAuthState({
       isAuthenticated: true,
-      token: ctx.apiToken,
       apiUrl: ctx.apiUrl,
-      projectId: ctx.defaultProject,
-      contextName: ctx.name,
+      contexts: config.contexts,
+      currentContext: ctx,
       isLoading: false,
     });
   }, [navigate]);
@@ -139,11 +142,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value: AuthState = authState.isAuthenticated
     ? {
         isAuthenticated: true,
-        token: authState.token,
         apiUrl: authState.apiUrl,
-        projectId: authState.projectId,
-        contextName: authState.contextName,
         isLoading: authState.isLoading,
+        currentContext: authState.currentContext,
+        contexts: authState.contexts,
+        setCurrentContext: (context: CliContext) => {
+          setAuthState((prevState) => {
+            if (!prevState.isAuthenticated) return prevState;
+            return {
+              ...prevState,
+              currentContext: context,
+            };
+          });
+        },
         reload,
         logout,
       }

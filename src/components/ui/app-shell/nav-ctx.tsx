@@ -11,13 +11,35 @@ import {
 } from "@/components/ui/select";
 import { Label } from "../label";
 import { useTenant } from "@/providers/TenantProvider";
+import { useAuthenticatedAuth } from "@/providers/AuthProvider";
 
 export function NavCtx() {
+  const authenticatedAuth = useAuthenticatedAuth();
   const projectCtx = useProject();
   const tenantCtx = useTenant();
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
+        <Select
+          value={authenticatedAuth.currentContext.name}
+          onValueChange={(value) =>
+            authenticatedAuth.setCurrentContext(
+              authenticatedAuth.contexts.find((c) => c.name === value)!
+            )
+          }
+        >
+          <Label className="text-xs text-muted-foreground">Context</Label>
+          <SelectTrigger id="rows-per-page" size="sm" className="w-full">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent side="top">
+            {authenticatedAuth.contexts.map((context) => (
+              <SelectItem key={context.name} value={context.name}>
+                {context.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         <Select
           value={tenantCtx.currentTenant.login}
           onValueChange={(value) =>

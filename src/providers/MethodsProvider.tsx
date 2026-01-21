@@ -42,8 +42,6 @@ export function MethodsProvider({ children }: { children: React.ReactNode }) {
     );
   }
 
-  console.log(data.methods);
-
   return (
     <MethodsContext.Provider
       value={{

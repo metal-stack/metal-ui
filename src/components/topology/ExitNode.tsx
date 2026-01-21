@@ -5,16 +5,16 @@ import { Button } from "../ui/button";
 import { IconInfoCircle } from "@tabler/icons-react";
 import CodeBlock from "../code-block/code-block";
 
-function LeafNode({ id, data }: NodeProps<Node>) {
+function ExitNode({ id, data }: NodeProps<Node>) {
   return (
-    <div className="w-40 h-14 rounded-xl border border-blue-300 bg-gradient-to-b from-blue-100 to-blue-200 shadow-sm flex items-center justify-between px-3">
-      <span className="text-sm font-semibold text-blue-900">{id}</span>
+    <div className="w-40 h-14 rounded-xl border border-red-300 bg-gradient-to-b from-red-100 to-red-200 shadow-sm flex items-center justify-between px-3">
+      <span className="text-sm font-semibold text-red-900">{id}</span>
       <Popover>
         <PopoverTrigger asChild>
           <Button
             size="icon"
             variant="ghost"
-            className="text-blue-700 opacity-40 hover:bg-blue-300/40"
+            className="text-red-700 opacity-40 hover:bg-red-300/40"
           >
             <IconInfoCircle size={16} />
           </Button>
@@ -24,9 +24,13 @@ function LeafNode({ id, data }: NodeProps<Node>) {
         </PopoverContent>
       </Popover>
 
-      <Handle type="target" position={Position.Top} className="!bg-blue-400" />
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        className="!bg-red-400"
+      />
     </div>
   );
 }
 
-export default memo(LeafNode);
+export default memo(ExitNode);

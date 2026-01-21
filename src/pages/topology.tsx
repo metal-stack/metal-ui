@@ -13,42 +13,44 @@ import dagre from "@dagrejs/dagre";
 import "@xyflow/react/dist/style.css";
 import LeafNode from "@/components/topology/LeafNode";
 import { CustomeNode } from "@/components/topology/CustomeNode";
+import SpineNode from "@/components/topology/SpineNode";
+import ExitNode from "@/components/topology/ExitNode";
 
 const initialNodes: CustomeNode[] = [
   // Exit
   {
     id: "exit-0",
-    position: { x: 300, y: 0 },
+    position: { x: 0, y: 0 },
     data: { label: "Exit Switch" },
-    type: "default",
+    type: "exit",
   },
 
   // Spines
   {
     id: "spine-0",
-    position: { x: 150, y: 120 },
+    position: { x: 0, y: 0 },
     data: { label: "Spine 0" },
-    type: "default",
+    type: "spine",
   },
   {
     id: "spine-1",
-    position: { x: 450, y: 120 },
+    position: { x: 0, y: 0 },
     data: { label: "Spine 1" },
-    type: "default",
+    type: "spine",
   },
 
   // Leafs
   {
     id: "leaf-0",
-    position: { x: 100, y: 260 },
+    position: { x: 0, y: 0 },
     data: { label: "Leaf 0" },
     type: "leaf",
   },
   {
     id: "leaf-1",
-    position: { x: 500, y: 260 },
+    position: { x: 0, y: 0 },
     data: { label: "Leaf 1" },
-    type: "default",
+    type: "leaf",
   },
 ];
 const initialEdges: Edge[] = [
@@ -99,7 +101,7 @@ const nodeHeight = 36;
 
 const getLayoutedElements = (
   nodes: Node[],
-  edges: Edge[]
+  edges: Edge[],
 ): { nodes: Node[]; edges: Edge[] } => {
   dagreGraph.setGraph({ rankdir: "TB" });
 
@@ -131,11 +133,13 @@ const getLayoutedElements = (
 
 const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
   initialNodes,
-  initialEdges
+  initialEdges,
 );
 
 const nodeTypes = {
   leaf: LeafNode,
+  spine: SpineNode,
+  exit: ExitNode,
 };
 
 export default function TopologyPage() {

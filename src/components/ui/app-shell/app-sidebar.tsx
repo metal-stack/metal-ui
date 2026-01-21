@@ -17,6 +17,7 @@ import {
   IconServer2,
   IconSettings,
   IconSwitch2,
+  IconTopologyStarRing2,
 } from "@tabler/icons-react";
 import { NavSection } from "@/components/ui/app-shell/nav-section";
 import { NavMain } from "@/components/ui/app-shell/nav-main";
@@ -57,6 +58,11 @@ const data: {
       title: "Dashboard",
       url: "/",
       icon: IconDashboard,
+    },
+    {
+      title: "Topology",
+      url: "/topology",
+      icon: IconTopologyStarRing2,
     },
   ],
   navSecondary: [

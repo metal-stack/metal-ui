@@ -5,14 +5,30 @@ import { MethodService } from "@metal-stack/api/js/metalstack/api/v2/method_pb";
 import LoadingScreen from "@/components/ui/loading-screen/loading-screen";
 import { useAuthenticatedAuth } from "./AuthProvider";
 import { buildPermissionChecker } from "@/lib/permissions-checker";
+import { MethodPermission } from "@metal-stack/api/js/metalstack/api/v2/token_pb";
+import {
+  AdminRole,
+  InfraRole,
+  ProjectRole,
+  TenantRole,
+} from "@metal-stack/api/js/metalstack/api/v2/common_pb";
+
+interface TokenScope {
+  permissions: MethodPermission[];
+  projectRoles: { [key: string]: ProjectRole };
+  tenantRoles: { [key: string]: TenantRole };
+  adminRole?: AdminRole;
+  infraRole?: InfraRole;
+}
 
 type MethodsContextValue = {
   methodsPermissions: string[];
+  tokenScope: TokenScope;
   isAllowed: (required: string | string[], opts?: { any?: boolean }) => boolean;
 };
 
 const MethodsContext = createContext<MethodsContextValue | undefined>(
-  undefined
+  undefined,
 );
 
 export function MethodsProvider({ children }: { children: React.ReactNode }) {
@@ -21,15 +37,23 @@ export function MethodsProvider({ children }: { children: React.ReactNode }) {
   const { data, isLoading, error } = useQuery(
     MethodService.method.list,
     undefined,
-    { enabled: authenticatedAuth.isAuthenticated }
+    { enabled: authenticatedAuth.isAuthenticated },
   );
+
+  const {
+    data: tokenData,
+    isLoading: tokenLoading,
+    error: tokenError,
+  } = useQuery(MethodService.method.tokenScopedList, undefined, {
+    enabled: authenticatedAuth.isAuthenticated,
+  });
 
   const isAllowed = useMemo(
     () => buildPermissionChecker(data?.methods ?? []),
-    [data?.methods]
+    [data?.methods],
   );
 
-  if (isLoading) {
+  if (isLoading || tokenLoading) {
     return <LoadingScreen />;
   }
 
@@ -42,12 +66,26 @@ export function MethodsProvider({ children }: { children: React.ReactNode }) {
     );
   }
 
-  console.log(data.methods);
+  if (tokenError || !tokenData) {
+    return (
+      <AlertHint
+        title="No token scopes available"
+        description="You do not have token scopes to access any methods."
+      />
+    );
+  }
 
   return (
     <MethodsContext.Provider
       value={{
         methodsPermissions: data.methods,
+        tokenScope: {
+          permissions: tokenData.permissions,
+          projectRoles: tokenData.projectRoles,
+          tenantRoles: tokenData.tenantRoles,
+          adminRole: tokenData.adminRole,
+          infraRole: tokenData.infraRole,
+        },
         isAllowed,
       }}
     >
@@ -68,7 +106,7 @@ export function useMethods(): MethodsContextValue {
 
 export function useIsAllowed(
   required: string | string[],
-  opts?: { any?: boolean }
+  opts?: { any?: boolean },
 ) {
   const { isAllowed } = useMethods();
   return isAllowed(required, opts);

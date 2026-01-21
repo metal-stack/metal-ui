@@ -61,7 +61,7 @@ export function NavCtx() {
           </SelectContent>
         </Select>
         <Select
-          value={projectCtx.currentProject.uuid}
+          value={projectCtx.currentProject?.uuid}
           onValueChange={(value) =>
             projectCtx.setCurrentProject(
               projectCtx.projects.find((p) => p.uuid === value)!

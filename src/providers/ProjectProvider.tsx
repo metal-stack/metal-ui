@@ -8,9 +8,9 @@ import {
 import { createContext, useContext, useEffect, useState } from "react";
 
 type ProjectContextValue = {
-  currentProject: Project;
+  currentProject: Project | undefined;
   projects: Project[];
-  setCurrentProject: (project: Project) => void;
+  setCurrentProject: (project: Project | undefined) => void;
 };
 
 const ProjectContext = createContext<ProjectContextValue | undefined>(
@@ -32,22 +32,12 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
   }, [currentProject, projects]);
 
   if (isLoading && !data) {
-    console.log("Loading projects...");
     return <LoadingScreen />;
   }
 
   if (error) {
     return (
       <AlertHint title="Error loading projects" description={error.message} />
-    );
-  }
-
-  if (!currentProject) {
-    return (
-      <AlertHint
-        title="No projects available"
-        description="Please create a project to continue."
-      />
     );
   }
 

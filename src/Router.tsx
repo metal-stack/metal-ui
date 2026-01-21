@@ -21,6 +21,7 @@ import AdminSwitchesPage from "./pages/admin/Switches/networks-page";
 import NotFoundPage from "./pages/error-page";
 import AdminTenantsPage from "./pages/admin/Tenants/tenants-page";
 import AdminProjectsPage from "./pages/admin/Projects/projects-page";
+import TopologyPage from "./pages/topology";
 
 export const router = createBrowserRouter([
   {
@@ -92,7 +93,11 @@ export const router = createBrowserRouter([
                 element: <TokensPage />,
                 handle: { title: "Tokens" },
               },
-
+              {
+                path: "/topology",
+                element: <TopologyPage />,
+                handle: { title: "Topology" },
+              },
               {
                 path: "/admin",
                 handle: { title: "Admin" },

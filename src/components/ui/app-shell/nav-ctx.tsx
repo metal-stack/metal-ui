@@ -12,8 +12,10 @@ import {
 import { Label } from "../label";
 import { useTenant } from "@/providers/TenantProvider";
 import { useAuthenticatedAuth } from "@/providers/AuthProvider";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function NavCtx() {
+  const { clear } = useQueryClient();
   const authenticatedAuth = useAuthenticatedAuth();
   const projectCtx = useProject();
   const tenantCtx = useTenant();
@@ -22,11 +24,12 @@ export function NavCtx() {
       <SidebarGroupContent className="flex flex-col gap-2">
         <Select
           value={authenticatedAuth.currentContext.name}
-          onValueChange={(value) =>
+          onValueChange={(value) => {
             authenticatedAuth.setCurrentContext(
-              authenticatedAuth.contexts.find((c) => c.name === value)!
-            )
-          }
+              authenticatedAuth.contexts.find((c) => c.name === value)!,
+            );
+            clear();
+          }}
         >
           <Label className="text-xs text-muted-foreground">Context</Label>
           <SelectTrigger id="rows-per-page" size="sm" className="w-full">
@@ -44,7 +47,7 @@ export function NavCtx() {
           value={tenantCtx.currentTenant.login}
           onValueChange={(value) =>
             tenantCtx.setCurrentTenant(
-              tenantCtx.tenants.find((t) => t.login === value)!
+              tenantCtx.tenants.find((t) => t.login === value)!,
             )
           }
         >
@@ -64,7 +67,7 @@ export function NavCtx() {
           value={projectCtx.currentProject?.uuid}
           onValueChange={(value) =>
             projectCtx.setCurrentProject(
-              projectCtx.projects.find((p) => p.uuid === value)!
+              projectCtx.projects.find((p) => p.uuid === value)!,
             )
           }
         >

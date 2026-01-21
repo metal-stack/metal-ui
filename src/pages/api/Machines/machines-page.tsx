@@ -5,13 +5,21 @@ import LoadingScreen from "@/components/ui/loading-screen/loading-screen";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { MachinesTable } from "@/components/machines/machines-table";
 import { useProject } from "@/providers/ProjectProvider";
+import { NoProjectSelected } from "@/components/errors/no-project-selected";
 
 export default function MachinesPage() {
-  const projectCtx = useProject();
-  const { data, isLoading, error } = useQuery(MachineService.method.list, {
-    project: projectCtx.currentProject.uuid,
-  });
+  const { currentProject } = useProject();
+  const { data, isLoading, error } = useQuery(
+    MachineService.method.list,
+    {
+      project: currentProject?.uuid,
+    },
+    {
+      enabled: !!currentProject?.uuid,
+    },
+  );
 
+  if (!currentProject?.uuid) return <NoProjectSelected />;
   if (isLoading) return <LoadingScreen />;
   if (error)
     return (

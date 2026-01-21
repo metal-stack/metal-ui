@@ -21,10 +21,11 @@ type AuthState =
   | {
       status: "unauthenticated";
       reason?: "no-config" | "no-context" | "no-token";
+      contexts: CliContext[];
+      currentContext?: CliContext;
     }
   | {
       status: "authenticated";
-      apiUrl: string;
       contexts: CliContext[];
       currentContext: CliContext;
     };
@@ -45,21 +46,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const computeStateFromConfig = (config: CliConfig): AuthState => {
     const mapped = mapCliConfig(config);
-    const current = mapped.contexts.find(
-      (c) => c.name === mapped.currentContext,
-    );
 
-    if (!current) return { status: "unauthenticated", reason: "no-context" };
-    if (!current.apiToken)
-      return { status: "unauthenticated", reason: "no-token" };
+    const selected =
+      mapped.contexts.find((c) => c.name === mapped.currentContext) ??
+      mapped.contexts[0];
 
-    console.log("Authenticated with context:", current.name);
+    if (!selected) {
+      return { status: "unauthenticated", reason: "no-context", contexts: [] };
+    }
+
+    if (!selected.apiToken) {
+      return {
+        status: "unauthenticated",
+        reason: "no-token",
+        contexts: mapped.contexts,
+        currentContext: selected,
+      };
+    }
 
     return {
       status: "authenticated",
-      apiUrl: current.apiUrl,
       contexts: mapped.contexts,
-      currentContext: current,
+      currentContext: selected,
     };
   };
 
@@ -71,7 +79,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (seq === reloadSeq.current) setState(next);
     } catch (error) {
       if (seq === reloadSeq.current)
-        setState({ status: "unauthenticated", reason: "no-config" });
+        setState({
+          status: "unauthenticated",
+          reason: "no-config",
+          contexts: [],
+        });
 
       toast.error("Auth", {
         id: "auth-load-config-failed",
@@ -82,9 +94,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
-    console.log("Logging out");
-    setState({ status: "unauthenticated" });
-    toast.info("Auth", {
+    setState((prev) => {
+      if (prev.status === "authenticated") {
+        return {
+          status: "unauthenticated",
+          reason: "no-token",
+          contexts: prev.contexts,
+          currentContext: prev.currentContext,
+        };
+      }
+      return prev.status === "unauthenticated"
+        ? prev
+        : { status: "unauthenticated", contexts: [], reason: "no-token" };
+    });
+
+    toast.success("Auth", {
       id: "logged-out",
       richColors: true,
       description: "Logged out successfully.",
@@ -114,12 +138,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [reload]);
 
   const setCurrentContext = useCallback(async (ctx: CliContext) => {
-    // TODO: set context in cli config file, and then reload and not just set state
-    // await setCliCurrentContext(ctx.name); await reload();
+    // ideal: persistieren, damit reload() das auch wieder sieht
+    // await invoke("set_current_context", { name: ctx.name });
+    // await reload();
 
     setState((prev) => {
-      if (prev.status !== "authenticated") return prev;
-      return { ...prev, currentContext: ctx, apiUrl: ctx.apiUrl };
+      if (prev.status === "authenticated") {
+        return { ...prev, currentContext: ctx };
+      }
+      if (prev.status === "unauthenticated") {
+        // assume autenticated when switching context -> will redirect to login if not and logout
+        return { ...prev, status: "authenticated", currentContext: ctx };
+      }
+      return prev;
     });
   }, []);
 

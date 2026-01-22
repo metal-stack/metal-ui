@@ -8,7 +8,6 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-  DrawerDescription,
   DrawerFooter,
   DrawerClose,
 } from "@/components/ui/drawer";
@@ -41,11 +40,9 @@ export default function TenantDrawer({ id }: TenantDrawerProps) {
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="gap-1">
-          <DrawerTitle>Tenant detail</DrawerTitle>
-          <DrawerDescription>
-            Showing details for tenant{" "}
-            <span className="text-primary">{id}</span>
-          </DrawerDescription>
+          <DrawerTitle className="text-lg font-semibold text-primary">
+            Tenant detail
+          </DrawerTitle>
         </DrawerHeader>
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
           {isLoading && <Skeleton className="h-12" />}

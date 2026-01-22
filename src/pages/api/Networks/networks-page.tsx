@@ -3,7 +3,7 @@ import { useQuery } from "@connectrpc/connect-query";
 import { NetworkService } from "@metal-stack/api/js/metalstack/api/v2/network_pb";
 import LoadingScreen from "@/components/ui/loading-screen/loading-screen";
 import AlertHint from "@/components/ui/alert/AlertHint";
-import { NetworksTable } from "@/components/networks/partitions-table";
+import { NetworksTable } from "@/components/networks/networks-table";
 import { useProject } from "@/providers/ProjectProvider";
 import { NoProjectSelected } from "@/components/errors/no-project-selected";
 
@@ -28,5 +28,5 @@ export default function NetworksPage() {
 
   if (!data?.networks.length) return <NoElementFound />;
 
-  return <NetworksTable data={data.networks} />;
+  return <NetworksTable data={data.networks} isAdmin={false} />;
 }

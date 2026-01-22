@@ -1,117 +1,118 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
+  useRef,
   useState,
-  useCallback,
 } from "react";
 import {
-  CliConfig,
-  CliContext,
   loadCliConfig,
   mapCliConfig,
+  CliConfig,
+  CliContext,
 } from "@/lib/cli-config";
 import { toast } from "sonner";
 import { listen } from "@tauri-apps/api/event";
-import { useNavigate } from "react-router";
-import LoadingScreen from "@/components/ui/loading-screen/loading-screen";
 
-type AuthenticatedState = {
-  isAuthenticated: true;
-  apiUrl: string;
-  isLoading: boolean;
-  contexts: CliContext[];
-  currentContext: CliContext;
-  setCurrentContext: (context: CliContext) => void;
-  reload: () => Promise<void>;
-  logout: () => void;
-};
-
-type UnauthenticatedState = {
-  isAuthenticated: false;
-  isLoading: boolean;
-  reload: () => Promise<void>;
-  logout: () => void;
-};
-
-export type AuthState = AuthenticatedState | UnauthenticatedState;
-
-type InternalAuthState =
+type AuthState =
+  | { status: "loading" }
   | {
-      isAuthenticated: false;
-      isLoading: boolean;
+      status: "unauthenticated";
+      reason?: "no-config" | "no-context" | "no-token";
+      contexts: CliContext[];
+      currentContext?: CliContext;
     }
   | {
-      isAuthenticated: true;
-      apiUrl: string;
-      isLoading: boolean;
+      status: "authenticated";
       contexts: CliContext[];
       currentContext: CliContext;
     };
 
-const AuthContext = createContext<AuthState | undefined>(undefined);
+type AuthContextValue = AuthState & {
+  reload: () => Promise<void>;
+  logout: () => void;
+  setCurrentContext: (ctx: CliContext) => Promise<void> | void;
+};
+
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const navigate = useNavigate();
-  const [authState, setAuthState] = useState<InternalAuthState>({
-    isAuthenticated: false,
-    isLoading: true,
-  });
+  const [state, setState] = useState<AuthState>({ status: "loading" });
+
+  // To avoid race conditions
+  const reloadSeq = useRef(0);
+
+  const computeStateFromConfig = (config: CliConfig): AuthState => {
+    const mapped = mapCliConfig(config);
+
+    const selected =
+      mapped.contexts.find((c) => c.name === mapped.currentContext) ??
+      mapped.contexts[0];
+
+    if (!selected) {
+      return { status: "unauthenticated", reason: "no-context", contexts: [] };
+    }
+
+    if (!selected.apiToken) {
+      return {
+        status: "unauthenticated",
+        reason: "no-token",
+        contexts: mapped.contexts,
+        currentContext: selected,
+      };
+    }
+
+    return {
+      status: "authenticated",
+      contexts: mapped.contexts,
+      currentContext: selected,
+    };
+  };
 
   const reload = useCallback(async () => {
-    let config: CliConfig;
+    const seq = ++reloadSeq.current;
     try {
-      config = await loadCliConfig();
+      const config = await loadCliConfig();
+      const next = computeStateFromConfig(config);
+      if (seq === reloadSeq.current) setState(next);
     } catch (error) {
+      if (seq === reloadSeq.current)
+        setState({
+          status: "unauthenticated",
+          reason: "no-config",
+          contexts: [],
+        });
+
       toast.error("Auth", {
         id: "auth-load-config-failed",
         richColors: true,
-        description: `Failed to load config: ${error}`,
+        description: `Failed to load config: ${String(error)}`,
       });
-      setAuthState({ isAuthenticated: false, isLoading: false });
-      navigate("/login");
-      return;
     }
-
-    config = mapCliConfig(config);
-
-    const ctx = config.contexts.find((c) => c.name === config.currentContext);
-
-    if (!ctx) {
-      toast.warning("Auth", {
-        id: "no-context-selected",
-        richColors: true,
-        description: "No context selected in config.",
-      });
-      setAuthState({ isAuthenticated: false, isLoading: false });
-      navigate("/login");
-      return;
-    }
-
-    if (!ctx.apiToken) {
-      setAuthState({ isAuthenticated: false, isLoading: false });
-      navigate("/login");
-      return;
-    }
-
-    setAuthState({
-      isAuthenticated: true,
-      apiUrl: ctx.apiUrl,
-      contexts: config.contexts,
-      currentContext: ctx,
-      isLoading: false,
-    });
-  }, [navigate]);
+  }, []);
 
   const logout = useCallback(() => {
-    setAuthState({ isAuthenticated: false, isLoading: false });
+    setState((prev) => {
+      if (prev.status === "authenticated") {
+        return {
+          status: "unauthenticated",
+          reason: "no-token",
+          contexts: prev.contexts,
+          currentContext: prev.currentContext,
+        };
+      }
+      return prev.status === "unauthenticated"
+        ? prev
+        : { status: "unauthenticated", contexts: [], reason: "no-token" };
+    });
 
-    toast.info("Auth", {
+    toast.success("Auth", {
       id: "logged-out",
       richColors: true,
       description: "Logged out successfully.",
     });
-    navigate("/login");
   }, []);
 
   useEffect(() => {
@@ -119,51 +120,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [reload]);
 
   useEffect(() => {
-    const unlistenPromise = listen("oauth-token", async () => {
+    let mounted = true;
+
+    const p = listen("oauth-token", async () => {
       toast.success("Auth", {
         id: "oauth-token-received",
         richColors: true,
         description: "OAuth login finished. Reloading config…",
       });
-
       await reload();
-      navigate("/");
     });
 
     return () => {
-      unlistenPromise.then((unlisten) => unlisten());
+      mounted = false;
+      p.then((unlisten) => mounted && unlisten()).catch(() => {});
     };
-  }, [reload, navigate]);
+  }, [reload]);
 
-  if (authState.isLoading) {
-    return <LoadingScreen />;
-  }
+  const setCurrentContext = useCallback(async (ctx: CliContext) => {
+    // ideal: persistieren, damit reload() das auch wieder sieht
+    // await invoke("set_current_context", { name: ctx.name });
+    // await reload();
 
-  const value: AuthState = authState.isAuthenticated
-    ? {
-        isAuthenticated: true,
-        apiUrl: authState.apiUrl,
-        isLoading: authState.isLoading,
-        currentContext: authState.currentContext,
-        contexts: authState.contexts,
-        setCurrentContext: (context: CliContext) => {
-          setAuthState((prevState) => {
-            if (!prevState.isAuthenticated) return prevState;
-            return {
-              ...prevState,
-              currentContext: context,
-            };
-          });
-        },
-        reload,
-        logout,
+    setState((prev) => {
+      if (prev.status === "authenticated") {
+        return { ...prev, currentContext: ctx };
       }
-    : {
-        isAuthenticated: false,
-        isLoading: authState.isLoading,
-        reload,
-        logout,
-      };
+      if (prev.status === "unauthenticated") {
+        // assume autenticated when switching context -> will redirect to login if not and logout
+        return { ...prev, status: "authenticated", currentContext: ctx };
+      }
+      return prev;
+    });
+  }, []);
+
+  const value = useMemo<AuthContextValue>(() => {
+    return { ...state, reload, logout, setCurrentContext };
+  }, [state, reload, logout, setCurrentContext]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
@@ -176,8 +169,7 @@ export function useAuth() {
 
 export function useAuthenticatedAuth() {
   const auth = useAuth();
-  if (!auth.isAuthenticated) {
+  if (auth.status !== "authenticated")
     throw new Error("useAuthenticatedAuth must be used when authenticated");
-  }
   return auth;
 }

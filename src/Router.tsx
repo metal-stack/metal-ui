@@ -22,6 +22,8 @@ import NotFoundPage from "./pages/error-page";
 import AdminTenantsPage from "./pages/admin/Tenants/tenants-page";
 import AdminProjectsPage from "./pages/admin/Projects/projects-page";
 import TopologyPage from "./pages/topology";
+import { PublicOnlyRoute } from "./layouts/routes/public-route";
+import { ProtectedRoute } from "./layouts/routes/private-route";
 
 export const router = createBrowserRouter([
   {
@@ -29,108 +31,118 @@ export const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       {
-        path: "/login",
-        element: <Login />,
-      },
-      {
-        element: <QueryLayout />,
+        element: <PublicOnlyRoute />,
         children: [
           {
-            element: <PageLayout />,
+            path: "/login",
+            element: <Login />,
+          },
+        ],
+      },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          {
+            element: <QueryLayout />,
             children: [
               {
-                path: "/",
-                element: <Dashboard />,
-                handle: { title: "Dashboard" },
-              },
-              {
-                path: "/tenants",
-                element: <TenantsPage />,
-                handle: { title: "Tenant List" },
-              },
-              {
-                path: "/projects",
-                element: <ProjectsPage />,
-                handle: { title: "Projects" },
-              },
-              {
-                path: "/machines",
-                element: <MachinesPage />,
-                handle: { title: "Machines" },
-              },
-              {
-                path: "/images",
-                element: <ImagesPage />,
-                handle: { title: "Images" },
-              },
-              {
-                path: "/ips",
-                element: <IPsPage />,
-                handle: { title: "IPs" },
-              },
-              {
-                path: "/partitions",
-                element: <PartitionsPage />,
-                handle: { title: "Partitions" },
-              },
-              {
-                path: "/sizes",
-                element: <SizesPage />,
-                handle: { title: "Sizes" },
-              },
-              {
-                path: "/networks",
-                element: <NetworksPage />,
-                handle: { title: "Networks" },
-              },
-              {
-                path: "/filesystems",
-                element: <FilesystemsPage />,
-                handle: { title: "Filesystems" },
-              },
-              {
-                path: "/tokens",
-                element: <TokensPage />,
-                handle: { title: "Tokens" },
-              },
-              {
-                path: "/topology",
-                element: <TopologyPage />,
-                handle: { title: "Topology" },
-              },
-              {
-                path: "/admin",
-                handle: { title: "Admin" },
+                element: <PageLayout />,
                 children: [
                   {
-                    path: "machines",
-                    element: <AdminMachinesPage />,
-                    handle: { title: "Admin · Machines" },
+                    path: "/",
+                    element: <Dashboard />,
+                    handle: { title: "Dashboard" },
                   },
                   {
-                    path: "ips",
-                    element: <AdminIPsPage />,
-                    handle: { title: "Admin · IPs" },
+                    path: "/tenants",
+                    element: <TenantsPage />,
+                    handle: { title: "Tenant List" },
                   },
                   {
-                    path: "networks",
-                    element: <AdminNetworksPage />,
-                    handle: { title: "Admin · Networks" },
+                    path: "/projects",
+                    element: <ProjectsPage />,
+                    handle: { title: "Projects" },
                   },
                   {
-                    path: "switches",
-                    element: <AdminSwitchesPage />,
-                    handle: { title: "Admin · Switches" },
+                    path: "/machines",
+                    element: <MachinesPage />,
+                    handle: { title: "Machines" },
                   },
                   {
-                    path: "tenants",
-                    element: <AdminTenantsPage />,
-                    handle: { title: "Admin · Tenants" },
+                    path: "/images",
+                    element: <ImagesPage />,
+                    handle: { title: "Images" },
                   },
                   {
-                    path: "projects",
-                    element: <AdminProjectsPage />,
-                    handle: { title: "Admin · Projects" },
+                    path: "/ips",
+                    element: <IPsPage />,
+                    handle: { title: "IPs" },
+                  },
+                  {
+                    path: "/partitions",
+                    element: <PartitionsPage />,
+                    handle: { title: "Partitions" },
+                  },
+                  {
+                    path: "/sizes",
+                    element: <SizesPage />,
+                    handle: { title: "Sizes" },
+                  },
+                  {
+                    path: "/networks",
+                    element: <NetworksPage />,
+                    handle: { title: "Networks" },
+                  },
+                  {
+                    path: "/filesystems",
+                    element: <FilesystemsPage />,
+                    handle: { title: "Filesystems" },
+                  },
+                  {
+                    path: "/tokens",
+                    element: <TokensPage />,
+                    handle: { title: "Tokens" },
+                  },
+                  {
+                    path: "/topology",
+                    element: <TopologyPage />,
+                    handle: { title: "Topology" },
+                  },
+                  {
+                    path: "/admin",
+                    handle: { title: "Admin" },
+                    children: [
+                      {
+                        path: "machines",
+                        element: <AdminMachinesPage />,
+                        handle: { title: "Admin · Machines" },
+                      },
+                      {
+                        path: "ips",
+                        element: <AdminIPsPage />,
+                        handle: { title: "Admin · IPs" },
+                      },
+                      {
+                        path: "networks",
+                        element: <AdminNetworksPage />,
+                        handle: { title: "Admin · Networks" },
+                      },
+                      {
+                        path: "switches",
+                        element: <AdminSwitchesPage />,
+                        handle: { title: "Admin · Switches" },
+                      },
+                      {
+                        path: "tenants",
+                        element: <AdminTenantsPage />,
+                        handle: { title: "Admin · Tenants" },
+                      },
+                      {
+                        path: "projects",
+                        element: <AdminProjectsPage />,
+                        handle: { title: "Admin · Projects" },
+                      },
+                    ],
                   },
                 ],
               },

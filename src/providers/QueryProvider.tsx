@@ -1,10 +1,10 @@
+import { AuthInterceptor } from "@/interceptors/AuthInterceptor";
 import { TransportProvider } from "@connectrpc/connect-query";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useAuth, useAuthenticatedAuth } from "./AuthProvider";
-import { AuthInterceptor } from "@/interceptors/AuthInterceptor";
+import { useCallback, useMemo } from "react";
+import { useAuth } from "./AuthProvider";
 import { createConnectTransport } from "@connectrpc/connect-web";
-import { useEffect, useMemo, useCallback } from "react";
-import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,40 +18,39 @@ const queryClient = new QueryClient({
 
 export function QueryProvider({ children }: { children: React.ReactNode }) {
   const auth = useAuth();
-  const authenticatedAuth = useAuthenticatedAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!auth.isAuthenticated) navigate("/login");
-  }, [auth.isAuthenticated, navigate]);
 
   const onUnauthorized = useCallback(() => {
+    toast.error("Auth", {
+      id: "auth-load-config-failed",
+      richColors: true,
+      description: "Session expired. Please log in again.",
+    });
+
+    queryClient.clear(); // 🔑 extrem wichtig
     auth.logout();
-    queryClient.clear();
-    navigate("/login");
-  }, [auth.logout, navigate]);
+  }, [auth]);
 
   const transport = useMemo(() => {
-    if (!auth.isAuthenticated) return null;
+    if (auth.status !== "authenticated") return null;
 
     const interceptor = new AuthInterceptor(
       auth.currentContext.apiToken,
-      onUnauthorized
+      onUnauthorized,
     ).interceptor;
 
     return createConnectTransport({
-      baseUrl: authenticatedAuth.currentContext.apiUrl,
+      baseUrl: auth.currentContext.apiUrl,
       interceptors: [interceptor],
       useBinaryFormat: false,
     });
   }, [
-    auth.isAuthenticated,
-    authenticatedAuth.currentContext.apiToken,
-    authenticatedAuth.currentContext.apiUrl,
+    auth.status,
+    auth.status === "authenticated" ? auth.currentContext.apiToken : null,
+    auth.status === "authenticated" ? auth.currentContext.apiUrl : null,
     onUnauthorized,
   ]);
 
-  if (!auth.isAuthenticated || !transport) return null;
+  if (auth.status !== "authenticated" || !transport) return null;
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -23,12 +23,13 @@ interface TenantDrawerProps {
 
 export default function TenantDrawer({ id }: TenantDrawerProps) {
   const [open, setOpen] = useState(false);
+  // tenant-admin service has no get -> use api
   const { data, isLoading, error } = useQuery(
     TenantService.method.get,
     {
       login: id,
     },
-    { enabled: open }
+    { enabled: open },
   );
 
   return (
@@ -60,7 +61,13 @@ export default function TenantDrawer({ id }: TenantDrawerProps) {
                 <strong>Login:</strong> {data.tenant.login}
               </div>
               <div>
+                <strong>Name:</strong> {data.tenant.name}
+              </div>
+              <div>
                 <strong>Description:</strong> {data.tenant.description}
+              </div>
+              <div>
+                <strong>Email:</strong> {data.tenant.email}
               </div>
             </div>
           )}

@@ -15,6 +15,8 @@ import LeafNode from "@/components/topology/LeafNode";
 import { CustomeNode } from "@/components/topology/CustomeNode";
 import SpineNode from "@/components/topology/SpineNode";
 import ExitNode from "@/components/topology/ExitNode";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { TriangleAlertIcon } from "lucide-react";
 
 const initialNodes: CustomeNode[] = [
   // Exit
@@ -146,9 +148,18 @@ export default function TopologyPage() {
   const [nodes] = useNodesState(layoutedNodes);
   const [edges] = useEdgesState(layoutedEdges);
   return (
-    <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView>
-      <Background />
-      <Controls />
-    </ReactFlow>
+    <>
+      <Alert className="text-primary-foreground bg-primary">
+        <TriangleAlertIcon />
+        <AlertTitle>Warning</AlertTitle>
+        <AlertDescription className="text-primary-foreground">
+          This topology view is a static example and does not reflect real data.
+        </AlertDescription>
+      </Alert>
+      <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView>
+        <Background />
+        <Controls />
+      </ReactFlow>
+    </>
   );
 }

@@ -7,15 +7,12 @@ import {
   IconDashboard,
   IconDeviceSdCard,
   IconGlobe,
-  IconHelp,
   IconKey,
   IconMaximize,
   IconNetwork,
   IconPackage,
   IconRocket,
-  IconSearch,
   IconServer2,
-  IconSettings,
   IconSwitch2,
   IconTopologyStarRing2,
 } from "@tabler/icons-react";
@@ -65,23 +62,8 @@ const data: {
       icon: IconTopologyStarRing2,
     },
   ],
-  navSecondary: [
-    {
-      title: "Settings",
-      url: "#",
-      icon: IconSettings,
-    },
-    {
-      title: "Get Help",
-      url: "#",
-      icon: IconHelp,
-    },
-    {
-      title: "Search",
-      url: "#",
-      icon: IconSearch,
-    },
-  ],
+  //TODO add some items here later
+  navSecondary: [],
   api: [
     {
       title: "Tenants",

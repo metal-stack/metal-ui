@@ -37,7 +37,7 @@ export function MethodsProvider({ children }: { children: React.ReactNode }) {
   const { data, isLoading, error } = useQuery(
     MethodService.method.list,
     undefined,
-    { enabled: authenticatedAuth.isAuthenticated },
+    { enabled: authenticatedAuth.status === "authenticated" },
   );
 
   const {
@@ -45,7 +45,7 @@ export function MethodsProvider({ children }: { children: React.ReactNode }) {
     isLoading: tokenLoading,
     error: tokenError,
   } = useQuery(MethodService.method.tokenScopedList, undefined, {
-    enabled: authenticatedAuth.isAuthenticated,
+    enabled: authenticatedAuth.status === "authenticated",
   });
 
   const isAllowed = useMemo(

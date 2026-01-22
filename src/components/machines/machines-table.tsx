@@ -21,8 +21,8 @@ export function MachinesTable({ data, isAdmin }: MachinesTableProps) {
       ),
     },
     {
-      accessorKey: "status",
-      header: "Status",
+      accessorKey: "partition",
+      header: "Partition",
     },
   ];
   return (

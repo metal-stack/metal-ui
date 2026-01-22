@@ -7,7 +7,7 @@ import AlertHint from "@/components/ui/alert/AlertHint";
 import { MachineService as MachineServiceAPI } from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
 import { MachineService as MachineServiceAdmin } from "@metal-stack/api/js/metalstack/admin/v2/machine_pb";
 import SizeInfo from "../sizes/size-info";
-import MachineAllocationInfo from "./machine-allocation";
+import MachineAllocationInfo from "./machine-allocation-info";
 import InfoCollapsible from "../info-collapsible/info-collapsible";
 import InfoDrawer from "../info-drawer/info-drawer";
 

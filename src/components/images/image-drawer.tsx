@@ -4,30 +4,30 @@ import { useQuery } from "@connectrpc/connect-query";
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import AlertHint from "@/components/ui/alert/AlertHint";
-import { SizeService } from "@metal-stack/api/js/metalstack/api/v2/size_pb";
-import SizeInfo from "./size-info";
+import { ImageService } from "@metal-stack/api/js/metalstack/api/v2/image_pb";
+import ImageInfo from "./image-info";
 import InfoDrawer from "../info-drawer/info-drawer";
 
-interface SizeDrawerProps {
+interface ImageDrawerProps {
   id: string;
 }
 
-export default function SizeDrawer({ id }: SizeDrawerProps) {
+export default function ImageDrawer({ id }: ImageDrawerProps) {
   const [open, setOpen] = useState(false);
 
   const { data, isLoading, error } = useQuery(
-    SizeService.method.get,
+    ImageService.method.get,
     { id },
     { enabled: open },
   );
 
   return (
-    <InfoDrawer id={id} title="Size detail" open={open} onOpenChange={setOpen}>
+    <InfoDrawer id={id} open={open} onOpenChange={setOpen} title="Image detail">
       {isLoading && <Skeleton className="h-12" />}
       {error && (
-        <AlertHint title="Error loading size" description={error.message} />
+        <AlertHint title="Error loading image" description={error.message} />
       )}
-      {!error && data && data.size && <SizeInfo data={data.size} />}
+      {!error && data && data.image && <ImageInfo data={data.image} />}
     </InfoDrawer>
   );
 }

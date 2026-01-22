@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Image } from "@metal-stack/api/js/metalstack/api/v2/image_pb";
 import { DataTable } from "../ui/data-table/data-table";
-import ImageDrawer from "./size-drawer";
+import ImageDrawer from "./image-drawer";
 
 const columns: ColumnDef<Image>[] = [
   {

@@ -1,16 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerClose,
-} from "@/components/ui/drawer";
 import { useQuery } from "@connectrpc/connect-query";
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -19,6 +8,8 @@ import { MachineService as MachineServiceAPI } from "@metal-stack/api/js/metalst
 import { MachineService as MachineServiceAdmin } from "@metal-stack/api/js/metalstack/admin/v2/machine_pb";
 import SizeInfo from "../sizes/size-info";
 import MachineAllocationInfo from "./machine-allocation";
+import InfoCollapsible from "../info-collapsible/info-collapsible";
+import InfoDrawer from "../info-drawer/info-drawer";
 
 interface MachinesDrawerProps {
   id: string;
@@ -52,49 +43,34 @@ export default function MachineDrawer({
   const { data, isLoading, error } = isAdmin ? adminQuery : apiQuery;
 
   return (
-    <Drawer direction="right" open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="link" className="text-foreground w-fit px-0 text-left">
-          {id}
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="gap-1">
-          <DrawerTitle>Machine detail</DrawerTitle>
-          <DrawerDescription>
-            <span className="text-primary">{id}</span>
-          </DrawerDescription>
-        </DrawerHeader>
-        <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
-          {isLoading && <Skeleton className="h-12" />}
-          {error && (
-            <AlertHint
-              title="Error loading machine"
-              description={error.message}
-            />
-          )}
-          {!error && data && data.machine && (
-            <div className="flex flex-col gap-2">
-              <div>
-                <strong>Partition:</strong> {data.machine.partition?.id || "-"}
-              </div>
-              <div>
-                <strong>Rack:</strong> {data.machine.rack}
-              </div>
-              <SizeInfo data={data.machine.size} asCollapse />
-              <MachineAllocationInfo
-                data={data.machine.allocation}
-                asCollapse
-              />
-            </div>
-          )}
+    <InfoDrawer
+      id={id}
+      title="Machine detail"
+      open={open}
+      onOpenChange={setOpen}
+    >
+      {isLoading && <Skeleton className="h-12" />}
+      {error && (
+        <AlertHint title="Error loading machine" description={error.message} />
+      )}
+      {!error && data && data.machine && (
+        <div className="flex flex-col gap-2">
+          <div>
+            <strong>Partition:</strong> {data.machine.partition?.id || "-"}
+          </div>
+          <div>
+            <strong>Rack:</strong> {data.machine.rack}
+          </div>
+          <InfoCollapsible title="Size">
+            {data.machine.size && <SizeInfo data={data.machine.size} />}
+          </InfoCollapsible>
+          <InfoCollapsible title="Allocation">
+            {data.machine.allocation && (
+              <MachineAllocationInfo data={data.machine.allocation} />
+            )}
+          </InfoCollapsible>
         </div>
-        <DrawerFooter>
-          <DrawerClose asChild>
-            <Button variant="outline">Close</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+      )}
+    </InfoDrawer>
   );
 }

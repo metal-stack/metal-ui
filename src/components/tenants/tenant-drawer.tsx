@@ -1,20 +1,12 @@
 "use client";
 
 import { TenantService } from "@metal-stack/api/js/metalstack/api/v2/tenant_pb";
-import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerFooter,
-  DrawerClose,
-} from "@/components/ui/drawer";
 import { useQuery } from "@connectrpc/connect-query";
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import AlertHint from "@/components/ui/alert/AlertHint";
+import InfoDrawer from "../info-drawer/info-drawer";
+import TenantInfo from "./tenant-info";
 
 interface TenantDrawerProps {
   id: string;
@@ -32,49 +24,17 @@ export default function TenantDrawer({ id }: TenantDrawerProps) {
   );
 
   return (
-    <Drawer direction="right" open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="link" className="text-foreground w-fit px-0 text-left">
-          {id}
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="gap-1">
-          <DrawerTitle className="text-lg font-semibold text-primary">
-            Tenant detail
-          </DrawerTitle>
-        </DrawerHeader>
-        <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
-          {isLoading && <Skeleton className="h-12" />}
-          {error && (
-            <AlertHint
-              title="Error loading tenant"
-              description={error.message}
-            />
-          )}
-          {!error && data && data.tenant && (
-            <div className="flex flex-col gap-2">
-              <div>
-                <strong>Login:</strong> {data.tenant.login}
-              </div>
-              <div>
-                <strong>Name:</strong> {data.tenant.name}
-              </div>
-              <div>
-                <strong>Description:</strong> {data.tenant.description}
-              </div>
-              <div>
-                <strong>Email:</strong> {data.tenant.email}
-              </div>
-            </div>
-          )}
-        </div>
-        <DrawerFooter>
-          <DrawerClose asChild>
-            <Button variant="outline">Close</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+    <InfoDrawer
+      id={id}
+      title="Tenant detail"
+      open={open}
+      onOpenChange={setOpen}
+    >
+      {isLoading && <Skeleton className="h-12" />}
+      {error && (
+        <AlertHint title="Error loading tenant" description={error.message} />
+      )}
+      {!error && data && data.tenant && <TenantInfo data={data.tenant} />}
+    </InfoDrawer>
   );
 }

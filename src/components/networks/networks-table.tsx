@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Network } from "@metal-stack/api/js/metalstack/api/v2/network_pb";
 import { DataTable } from "../ui/data-table/data-table";
-import NetworkDrawer from "./networks-drawer";
+import NetworkDrawer from "./network-drawer";
 
 interface NetworksTableProps {
   data: Network[];

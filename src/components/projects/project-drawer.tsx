@@ -1,21 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerClose,
-} from "@/components/ui/drawer";
 import { useQuery } from "@connectrpc/connect-query";
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { ProjectService } from "@metal-stack/api/js/metalstack/api/v2/project_pb";
+import InfoDrawer from "../info-drawer/info-drawer";
+import ProjectInfo from "./project-info";
 
 interface ProjectDrawerProps {
   id: string;
@@ -33,47 +24,17 @@ export default function ProjectDrawer({ id }: ProjectDrawerProps) {
   );
 
   return (
-    <Drawer direction="right" open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="link" className="text-foreground w-fit px-0 text-left">
-          {id}
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="gap-1">
-          <DrawerTitle>Project detail</DrawerTitle>
-          <DrawerDescription>
-            <span className="text-primary">{id}</span>
-          </DrawerDescription>
-        </DrawerHeader>
-        <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
-          {isLoading && <Skeleton className="h-12" />}
-          {error && (
-            <AlertHint
-              title="Error loading project"
-              description={error.message}
-            />
-          )}
-          {!error && data && data.project && (
-            <div className="flex flex-col gap-2">
-              <div>
-                <strong>Name:</strong> {data.project.name}
-              </div>
-              <div>
-                <strong>Tenant:</strong> {data.project.tenant}
-              </div>
-              <div>
-                <strong>Description:</strong> {data.project.description}
-              </div>
-            </div>
-          )}
-        </div>
-        <DrawerFooter>
-          <DrawerClose asChild>
-            <Button variant="outline">Close</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+    <InfoDrawer
+      id={id}
+      title="Project detail"
+      open={open}
+      onOpenChange={setOpen}
+    >
+      {isLoading && <Skeleton className="h-12" />}
+      {error && (
+        <AlertHint title="Error loading project" description={error.message} />
+      )}
+      {!error && data && data.project && <ProjectInfo data={data.project} />}
+    </InfoDrawer>
   );
 }

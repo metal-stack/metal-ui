@@ -31,7 +31,7 @@ export default function InfoDrawer({
           {id}
         </Button>
       </SheetTrigger>
-      <SheetContent className="max-w-1/2 min-w-fit">
+      <SheetContent className="max-w-3/4 min-w-fit">
         <SheetHeader className="gap-1">
           <SheetTitle className="text-lg font-semibold text-primary">
             {title}

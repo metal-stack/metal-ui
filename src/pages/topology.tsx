@@ -149,11 +149,12 @@ export default function TopologyPage() {
   const [edges] = useEdgesState(layoutedEdges);
   return (
     <>
-      <Alert className="text-primary-foreground bg-primary">
-        <TriangleAlertIcon />
-        <AlertTitle>Warning</AlertTitle>
-        <AlertDescription className="text-primary-foreground">
-          This topology view is a static example and does not reflect real data.
+      <Alert className="border border-border bg-muted text-foreground">
+        <TriangleAlertIcon className="h-4 w-4 !text-primary" />
+
+        <AlertTitle className="text-primary">Warning</AlertTitle>
+        <AlertDescription className="inline">
+          This topology view is mocked and doesn't reflect real data.
         </AlertDescription>
       </Alert>
       <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView>

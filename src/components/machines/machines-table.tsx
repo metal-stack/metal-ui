@@ -1,7 +1,10 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Machine } from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
+import {
+  Machine,
+  MachineLiveliness,
+} from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
 import { DataTable } from "../ui/data-table/data-table";
 import MachineDrawer from "./machine-drawer";
 
@@ -23,6 +26,19 @@ export function MachinesTable({ data, isAdmin }: MachinesTableProps) {
     {
       accessorKey: "partition",
       header: "Partition",
+      cell: ({ row }) => row.original.partition?.id || "-",
+    },
+    {
+      accessorKey: "rack",
+      header: "Rack",
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) =>
+        row.original.status?.liveliness
+          ? MachineLiveliness[row.original.status?.liveliness]
+          : "-",
     },
   ];
   return (

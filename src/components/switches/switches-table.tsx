@@ -3,16 +3,34 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "../ui/data-table/data-table";
 import { Switch } from "@metal-stack/api/js/metalstack/api/v2/switch_pb";
+import SwitchOSBadge from "./switch-os-badge";
+import SwitchLastSync from "./switch-last-sync";
+import SwitchDrawer from "./switch-drawer";
 
 const columns: ColumnDef<Switch>[] = [
   {
     accessorKey: "id",
     header: "ID",
     enableHiding: false,
+    cell: ({ row }) => <SwitchDrawer id={row.original.id} />,
   },
   {
-    accessorKey: "description",
-    header: "Description",
+    accessorKey: "partition",
+    header: "Partition",
+    cell: ({ row }) => row.original.partition,
+  },
+  {
+    accessorKey: "rack",
+    header: "Rack",
+  },
+  {
+    accessorKey: "os",
+    header: "OS",
+    cell: ({ row }) => <SwitchOSBadge os={row.original.os} />,
+  },
+  {
+    header: "Last Sync",
+    cell: ({ row }) => <SwitchLastSync lastSync={row.original.lastSync} />,
   },
 ];
 

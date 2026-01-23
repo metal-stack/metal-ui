@@ -5,7 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { IPService } from "@metal-stack/api/js/metalstack/api/v2/ip_pb";
 import InfoDrawer from "../info-drawer/info-drawer";
-import IPInfo from "./image-info";
+import IPInfo from "./ip-info";
 
 interface IPDrawerProps {
   id: string;

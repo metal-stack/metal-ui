@@ -24,7 +24,7 @@ export default function ImageInfo({ data }: ImageInfoProps) {
         <strong>URL:</strong> {data.url}
       </div>
       <div>
-        <strong>Image classification:</strong>
+        <strong>Image classification:</strong>{" "}
         {ImageClassification[data.classification]}
       </div>
       <div className="flex flex-col">

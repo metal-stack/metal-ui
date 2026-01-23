@@ -1,48 +1,46 @@
 import { Filesystem } from "@metal-stack/api/js/metalstack/api/v2/filesystem_pb";
+import { ColumnDef } from "@tanstack/react-table";
+import { DataTable } from "../ui/data-table/data-table";
 
-interface FilesystemInfoProps {
-  data: Filesystem;
+interface FilesystemsInfoProps {
+  data: Filesystem[];
 }
 
-export default function FilesystemInfo({ data }: FilesystemInfoProps) {
+const columns: ColumnDef<Filesystem>[] = [
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
+  },
+  {
+    accessorKey: "path",
+    header: "Path",
+  },
+  {
+    accessorKey: "label",
+    header: "Label",
+  },
+  {
+    accessorKey: "mountOptions",
+    header: "Mount Options",
+    cell: ({ row }) => row.original.mountOptions?.join(", "),
+  },
+  {
+    accessorKey: "createOptions",
+    header: "Create Options",
+    cell: ({ row }) => row.original.createOptions?.join(", "),
+  },
+];
+
+export default function FilesystemsInfo({ data }: FilesystemsInfoProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <div>
-        <strong>Name:</strong> {data.name}
-      </div>
-      <div>
-        <strong>Description:</strong> {data.description}
-      </div>
-      <div>
-        <strong>Path:</strong> {data.path}
-      </div>
-      <div>
-        <strong>Label:</strong> {data.label}
-      </div>
-      <div className="flex flex-col">
-        <strong>Mount options:</strong>
-        {data.mountOptions && data.mountOptions.length > 0 ? (
-          <ul className="list-disc list-inside">
-            {data.mountOptions.map((option, index) => (
-              <div key={index} className="ml-4 mb-2">
-                {option}
-              </div>
-            ))}
-          </ul>
-        ) : undefined}
-      </div>
-      <div className="flex flex-col">
-        <strong>Create options:</strong>
-        {data.createOptions && data.createOptions.length > 0 ? (
-          <ul className="list-disc list-inside">
-            {data.createOptions.map((option, index) => (
-              <div key={index} className="ml-4 mb-2">
-                {option}
-              </div>
-            ))}
-          </ul>
-        ) : undefined}
-      </div>
-    </div>
+    <DataTable
+      initialData={data}
+      columns={columns}
+      getRowId={(row, index) => index.toString()}
+    />
   );
 }

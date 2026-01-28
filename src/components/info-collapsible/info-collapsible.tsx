@@ -15,22 +15,18 @@ export default function InfoCollapsible({
 }: InfoCollapsibleProps) {
   const [open, onOpenChange] = React.useState(false);
   return (
-    <Collapsible
-      className="border border-border rounded-md p-4 border-primary"
-      open={open}
-      onOpenChange={onOpenChange}
-    >
+    <Collapsible open={open} onOpenChange={onOpenChange}>
       <div className="flex items-center justify-between gap-4">
         <h4 className="text-sm font-semibold">{title}: </h4>
 
         {children ? (
           <CollapsibleTrigger asChild>
-            <Button variant="ghost" size="icon" className="size-8">
+            <Button variant="ghost" size="icon" className="size-4">
               <ChevronsUpDown />
             </Button>
           </CollapsibleTrigger>
         ) : (
-          <span className="text-muted-foreground">-</span>
+          <span className="text-sm text-muted-foreground">No data</span>
         )}
       </div>
 

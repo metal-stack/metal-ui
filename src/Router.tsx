@@ -24,8 +24,6 @@ import AdminProjectsPage from "./pages/admin/Projects/projects-page";
 import TopologyPage from "./pages/topology";
 import { PublicOnlyRoute } from "./layouts/routes/public-route";
 import { ProtectedRoute } from "./layouts/routes/private-route";
-import { PermissionLayout } from "./layouts/PermissionLayout";
-import { permissions } from "./lib/permissions-util";
 
 export const router = createBrowserRouter([
   {
@@ -51,151 +49,98 @@ export const router = createBrowserRouter([
                 element: <PageLayout />,
                 children: [
                   {
-                    element: <PermissionLayout />,
+                    path: "/",
+                    element: <Dashboard />,
+                    handle: { title: "Dashboard" },
+                  },
+                  {
+                    path: "/tenants",
+                    element: <TenantsPage />,
+                    handle: { title: "Tenant List" },
+                  },
+                  {
+                    path: "/projects",
+                    element: <ProjectsPage />,
+                    handle: { title: "Projects" },
+                  },
+                  {
+                    path: "/machines",
+                    element: <MachinesPage />,
+                    handle: { title: "Machines" },
+                  },
+                  {
+                    path: "/images",
+                    element: <ImagesPage />,
+                    handle: { title: "Images" },
+                  },
+                  {
+                    path: "/ips",
+                    element: <IPsPage />,
+                    handle: { title: "IPs" },
+                  },
+                  {
+                    path: "/partitions",
+                    element: <PartitionsPage />,
+                    handle: { title: "Partitions" },
+                  },
+                  {
+                    path: "/sizes",
+                    element: <SizesPage />,
+                    handle: { title: "Sizes" },
+                  },
+                  {
+                    path: "/networks",
+                    element: <NetworksPage />,
+                    handle: { title: "Networks" },
+                  },
+                  {
+                    path: "/filesystems",
+                    element: <FilesystemsPage />,
+                    handle: { title: "Filesystems" },
+                  },
+                  {
+                    path: "/tokens",
+                    element: <TokensPage />,
+                    handle: { title: "Tokens" },
+                  },
+                  {
+                    path: "/topology",
+                    element: <TopologyPage />,
+                    handle: { title: "Topology" },
+                  },
+                  {
+                    path: "/admin",
+                    handle: { title: "Admin" },
                     children: [
                       {
-                        path: "/",
-                        element: <Dashboard />,
-                        handle: { title: "Dashboard" },
+                        path: "machines",
+                        element: <AdminMachinesPage />,
+                        handle: { title: "Admin · Machines" },
                       },
                       {
-                        path: "/tenants",
-                        element: <TenantsPage />,
-                        handle: {
-                          title: "Tenant List",
-                          permission: permissions.API.tenants,
-                        },
+                        path: "ips",
+                        element: <AdminIPsPage />,
+                        handle: { title: "Admin · IPs" },
                       },
                       {
-                        path: "/projects",
-                        element: <ProjectsPage />,
-                        handle: {
-                          title: "Projects",
-                          permission: permissions.API.projects,
-                        },
+                        path: "networks",
+                        element: <AdminNetworksPage />,
+                        handle: { title: "Admin · Networks" },
                       },
                       {
-                        path: "/machines",
-                        element: <MachinesPage />,
-                        handle: {
-                          title: "Machines",
-                          permission: permissions.API.machines,
-                        },
+                        path: "switches",
+                        element: <AdminSwitchesPage />,
+                        handle: { title: "Admin · Switches" },
                       },
                       {
-                        path: "/images",
-                        element: <ImagesPage />,
-                        handle: {
-                          title: "Images",
-                          permission: permissions.API.images,
-                        },
+                        path: "tenants",
+                        element: <AdminTenantsPage />,
+                        handle: { title: "Admin · Tenants" },
                       },
                       {
-                        path: "/ips",
-                        element: <IPsPage />,
-                        handle: {
-                          title: "IPs",
-                          permission: permissions.API.ips,
-                        },
-                      },
-                      {
-                        path: "/partitions",
-                        element: <PartitionsPage />,
-                        handle: {
-                          title: "Partitions",
-                          permission: permissions.API.partitions,
-                        },
-                      },
-                      {
-                        path: "/sizes",
-                        element: <SizesPage />,
-                        handle: {
-                          title: "Sizes",
-                          permission: permissions.API.sizes,
-                        },
-                      },
-                      {
-                        path: "/networks",
-                        element: <NetworksPage />,
-                        handle: {
-                          title: "Networks",
-                          permission: permissions.API.networks,
-                        },
-                      },
-                      {
-                        path: "/filesystems",
-                        element: <FilesystemsPage />,
-                        handle: {
-                          title: "Filesystems",
-                          permission: permissions.API.filesystems,
-                        },
-                      },
-                      {
-                        path: "/tokens",
-                        element: <TokensPage />,
-                        handle: {
-                          title: "Tokens",
-                          permission: permissions.API.tokens,
-                        },
-                      },
-                      {
-                        path: "/topology",
-                        element: <TopologyPage />,
-                        handle: { title: "Topology" },
-                      },
-                      {
-                        path: "/admin",
-                        handle: { title: "Admin" },
-                        children: [
-                          {
-                            path: "machines",
-                            element: <AdminMachinesPage />,
-                            handle: {
-                              title: "Admin · Machines",
-                              permission: permissions.ADMIN.machines,
-                            },
-                          },
-                          {
-                            path: "ips",
-                            element: <AdminIPsPage />,
-                            handle: {
-                              title: "Admin · IPs",
-                              permission: permissions.ADMIN.ips,
-                            },
-                          },
-                          {
-                            path: "networks",
-                            element: <AdminNetworksPage />,
-                            handle: {
-                              title: "Admin · Networks",
-                              permission: permissions.ADMIN.networks,
-                            },
-                          },
-                          {
-                            path: "switches",
-                            element: <AdminSwitchesPage />,
-                            handle: {
-                              title: "Admin · Switches",
-                              permission: permissions.ADMIN.switches,
-                            },
-                          },
-                          {
-                            path: "tenants",
-                            element: <AdminTenantsPage />,
-                            handle: {
-                              title: "Admin · Tenants",
-                              permission: permissions.ADMIN.tenants,
-                            },
-                          },
-                          {
-                            path: "projects",
-                            element: <AdminProjectsPage />,
-                            handle: {
-                              title: "Admin · Projects",
-                              permission: permissions.ADMIN.projects,
-                            },
-                          },
-                        ],
+                        path: "projects",
+                        element: <AdminProjectsPage />,
+                        handle: { title: "Admin · Projects" },
                       },
                     ],
                   },

@@ -36,7 +36,6 @@ import {
 import logo from "@/assets/metal-stack.png";
 import { NavCtx } from "./nav-ctx";
 import { Separator } from "../separator";
-import { permissions } from "@/lib/permissions-util";
 
 export interface NavItem {
   title: string;
@@ -89,7 +88,10 @@ const data: {
       url: "/tenants",
       icon: IconBuilding,
       requires: {
-        methods: permissions.API.tenants,
+        methods: [
+          "/metalstack.api.v2.TenantService/List",
+          "/metalstack.api.v2.TenantService/Get",
+        ],
         any: false,
       },
     },
@@ -98,7 +100,10 @@ const data: {
       url: "/projects",
       icon: IconRocket,
       requires: {
-        methods: permissions.API.projects,
+        methods: [
+          "/metalstack.api.v2.ProjectService/List",
+          "/metalstack.api.v2.ProjectService/Get",
+        ],
         any: false,
       },
     },
@@ -107,7 +112,10 @@ const data: {
       url: "/partitions",
       icon: IconCloudPin,
       requires: {
-        methods: permissions.API.partitions,
+        methods: [
+          "/metalstack.api.v2.PartitionService/List",
+          "/metalstack.api.v2.PartitionService/Get",
+        ],
         any: false,
       },
     },
@@ -116,7 +124,10 @@ const data: {
       url: "/machines",
       icon: IconServer2,
       requires: {
-        methods: permissions.API.machines,
+        methods: [
+          "/metalstack.api.v2.MachineService/Get",
+          "/metalstack.api.v2.MachineService/List",
+        ],
         any: false,
       },
     },
@@ -125,7 +136,10 @@ const data: {
       url: "/sizes",
       icon: IconMaximize,
       requires: {
-        methods: permissions.API.sizes,
+        methods: [
+          "/metalstack.api.v2.SizeService/List",
+          "/metalstack.api.v2.SizeService/Get",
+        ],
         any: false,
       },
     },
@@ -134,7 +148,10 @@ const data: {
       url: "/images",
       icon: IconPackage,
       requires: {
-        methods: permissions.API.images,
+        methods: [
+          "/metalstack.api.v2.ImageService/List",
+          "/metalstack.api.v2.ImageService/Get",
+        ],
         any: false,
       },
     },
@@ -143,7 +160,10 @@ const data: {
       url: "/ips",
       icon: IconGlobe,
       requires: {
-        methods: permissions.API.ips,
+        methods: [
+          "/metalstack.api.v2.IPService/List",
+          "/metalstack.api.v2.IPService/Get",
+        ],
         any: false,
       },
     },
@@ -152,7 +172,10 @@ const data: {
       url: "/networks",
       icon: IconNetwork,
       requires: {
-        methods: permissions.API.networks,
+        methods: [
+          "/metalstack.api.v2.NetworkService/List",
+          "/metalstack.api.v2.NetworkService/Get",
+        ],
         any: false,
       },
     },
@@ -161,7 +184,10 @@ const data: {
       url: "/filesystems",
       icon: IconDeviceSdCard,
       requires: {
-        methods: permissions.API.filesystems,
+        methods: [
+          "/metalstack.api.v2.FilesystemService/List",
+          "/metalstack.api.v2.FilesystemService/Get",
+        ],
         any: false,
       },
     },
@@ -170,7 +196,10 @@ const data: {
       url: "/tokens",
       icon: IconKey,
       requires: {
-        methods: permissions.API.tokens,
+        methods: [
+          "/metalstack.api.v2.TokenService/List",
+          "/metalstack.api.v2.TokenService/Get",
+        ],
         any: false,
       },
     },
@@ -181,7 +210,7 @@ const data: {
       url: "/admin/tenants",
       icon: IconBuilding,
       requires: {
-        methods: permissions.ADMIN.tenants,
+        methods: ["/metalstack.admin.v2.TenantService/List"],
         any: false,
       },
     },
@@ -190,7 +219,7 @@ const data: {
       url: "/admin/projects",
       icon: IconRocket,
       requires: {
-        methods: permissions.ADMIN.projects,
+        methods: ["/metalstack.admin.v2.ProjectService/List"],
         any: false,
       },
     },
@@ -199,7 +228,10 @@ const data: {
       url: "/admin/machines",
       icon: IconServer2,
       requires: {
-        methods: permissions.ADMIN.machines,
+        methods: [
+          "/metalstack.admin.v2.MachineService/List",
+          "/metalstack.admin.v2.MachineService/Get",
+        ],
         any: false,
       },
     },
@@ -208,7 +240,7 @@ const data: {
       url: "/admin/ips",
       icon: IconGlobe,
       requires: {
-        methods: permissions.ADMIN.ips,
+        methods: ["/metalstack.admin.v2.IPService/List"],
         any: false,
       },
     },
@@ -217,7 +249,10 @@ const data: {
       url: "/admin/networks",
       icon: IconNetwork,
       requires: {
-        methods: permissions.ADMIN.networks,
+        methods: [
+          "/metalstack.admin.v2.NetworkService/List",
+          "/metalstack.admin.v2.NetworkService/Get",
+        ],
         any: false,
       },
     },
@@ -226,7 +261,10 @@ const data: {
       url: "/admin/switches",
       icon: IconSwitch2,
       requires: {
-        methods: permissions.ADMIN.switches,
+        methods: [
+          "/metalstack.admin.v2.SwitchService/List",
+          "/metalstack.admin.v2.SwitchService/Get",
+        ],
         any: false,
       },
     },

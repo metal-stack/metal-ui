@@ -12,6 +12,8 @@ import {
   ProjectRole,
   TenantRole,
 } from "@metal-stack/api/js/metalstack/api/v2/common_pb";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 interface TokenScope {
   permissions: MethodPermission[];
@@ -115,13 +117,17 @@ export function useIsAllowed(
 export function MethodsGate({
   requires,
   any = true,
-  fallback = null,
   children,
 }: React.PropsWithChildren<{
   requires: string | string[];
   any?: boolean;
-  fallback?: React.ReactNode;
 }>) {
   const allowed = useIsAllowed(requires, { any });
-  return allowed ? <>{children}</> : <>{fallback}</>;
+  const navigate = useNavigate();
+  if (!allowed) {
+    navigate("/");
+    toast.error("You do not have permission to access that page.");
+    return null;
+  }
+  return children;
 }

@@ -2,7 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useTheme } from "@/providers/ThemeProvider";
-import { IconHeartRateMonitor, IconMoon, IconSun } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconHeartRateMonitor,
+  IconMoon,
+  IconSun,
+} from "@tabler/icons-react";
 import {
   Popover,
   PopoverTrigger,
@@ -11,6 +16,7 @@ import {
 import { useQuery } from "@connectrpc/connect-query";
 import { HealthService } from "@metal-stack/api/js/metalstack/api/v2/health_pb";
 import ServiceHealthItem from "@/components/health/service-health-item";
+import { useLocation, useNavigate } from "react-router";
 
 interface SiteHeaderProps {
   title: string;
@@ -18,6 +24,14 @@ interface SiteHeaderProps {
 
 export function SiteHeader({ title }: SiteHeaderProps) {
   const { data } = useQuery(HealthService.method.get);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  let backPath = "/";
+
+  if (location.pathname !== "/") {
+    backPath = location.pathname.split("/").slice(0, -1).join("/");
+  }
 
   const { theme, setTheme } = useTheme();
   return (
@@ -28,6 +42,9 @@ export function SiteHeader({ title }: SiteHeaderProps) {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
+        {location.pathname !== "/" && (
+          <IconArrowLeft onClick={() => navigate(backPath)} />
+        )}
         <h1 className="text-base font-medium">{title}</h1>
         <div className="ml-auto flex items-center gap-2">
           <Button

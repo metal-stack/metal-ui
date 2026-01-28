@@ -33,8 +33,8 @@ export const permissions = {
       "/metalstack.api.v2.NetworkService/Get",
     ],
     filesystems: [
-      "/metalstack.api.v2.FileSystemService/List",
-      "/metalstack.api.v2.FileSystemService/Get",
+      "/metalstack.api.v2.FilesystemService/List",
+      "/metalstack.api.v2.FilesystemService/Get",
     ],
     tokens: [
       "/metalstack.api.v2.TokenService/List",

@@ -8,18 +8,15 @@ import { NetworkService as NetworkServiceAPI } from "@metal-stack/api/js/metalst
 import { NetworkService as NetworkServiceAdmin } from "@metal-stack/api/js/metalstack/admin/v2/network_pb";
 import InfoDrawer from "../info-drawer/info-drawer";
 import NetworkInfo from "./network-info";
+import { useProject } from "@/providers/ProjectProvider";
 
 interface NetworkDrawerProps {
   id: string;
-  project?: string;
   isAdmin: boolean;
 }
 
-export default function NetworkDrawer({
-  id,
-  project,
-  isAdmin,
-}: NetworkDrawerProps) {
+export default function NetworkDrawer({ id, isAdmin }: NetworkDrawerProps) {
+  const { currentProject } = useProject();
   const [open, setOpen] = useState(false);
 
   const adminQuery = useQuery(
@@ -29,7 +26,7 @@ export default function NetworkDrawer({
   );
   const apiQuery = useQuery(
     NetworkServiceAPI.method.get,
-    { id, project },
+    { id, project: currentProject?.uuid },
     { enabled: open && !isAdmin },
   );
 

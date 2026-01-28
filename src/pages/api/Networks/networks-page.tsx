@@ -13,11 +13,13 @@ export default function NetworksPage() {
     NetworkService.method.list,
     {
       project: currentProject?.uuid,
+      query: {},
     },
     {
-      enabled: !currentProject?.uuid,
+      enabled: !!currentProject?.uuid,
     },
   );
+  console.log(currentProject);
 
   if (!currentProject?.uuid) return <NoProjectSelected />;
   if (isLoading) return <LoadingScreen />;

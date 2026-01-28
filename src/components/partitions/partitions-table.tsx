@@ -1,16 +1,16 @@
-"use client";
-
 import { ColumnDef } from "@tanstack/react-table";
 import { Partition } from "@metal-stack/api/js/metalstack/api/v2/partition_pb";
 import { DataTable } from "../ui/data-table/data-table";
-import PartitionDrawer from "./partition-drawer";
+import { Link } from "react-router";
 
 const columns: ColumnDef<Partition>[] = [
   {
     accessorKey: "id",
     header: "ID",
     enableHiding: false,
-    cell: ({ row }) => <PartitionDrawer id={row.original.id} />,
+    cell: ({ row }) => (
+      <Link to={"/partitions/" + row.original.id}>{row.original.id}</Link>
+    ),
   },
   {
     accessorKey: "description",

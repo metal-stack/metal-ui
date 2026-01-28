@@ -6,10 +6,7 @@ import AlertHint from "@/components/ui/alert/AlertHint";
 import { FilesystemsTable } from "@/components/filesystem/filesystems-table";
 
 export default function FilesystemsPage() {
-  const { data, isLoading, error } = useQuery(
-    FilesystemService.method.list,
-    {}
-  );
+  const { data, isLoading, error } = useQuery(FilesystemService.method.list);
 
   if (isLoading) return <LoadingScreen />;
   if (error)

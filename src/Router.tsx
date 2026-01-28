@@ -26,6 +26,13 @@ import { PublicOnlyRoute } from "./layouts/routes/public-route";
 import { ProtectedRoute } from "./layouts/routes/private-route";
 import { PermissionLayout } from "./layouts/PermissionLayout";
 import { permissions } from "./lib/permissions-util";
+import MachineDetailPage from "./pages/api/Machines/machine-detail-page";
+import FilesystemDetailPage from "./pages/api/Filesystems/filesystem-detail-page";
+import ImageDetailPage from "./pages/api/Images/image-drawer";
+import PartitionDetailPage from "./pages/api/Partitions/partition-detail-page";
+import ProjectDetailPage from "./pages/api/Projects/project-detail-page";
+import SizeDetailPage from "./pages/api/Sizes/size-detail-page";
+import TenantDetailPage from "./pages/api/Tenants/tenant-detail-page";
 
 export const router = createBrowserRouter([
   {
@@ -60,35 +67,87 @@ export const router = createBrowserRouter([
                       },
                       {
                         path: "/tenants",
-                        element: <TenantsPage />,
-                        handle: {
-                          title: "Tenant List",
-                          permission: permissions.API.tenants,
-                        },
+                        children: [
+                          {
+                            index: true,
+                            element: <TenantsPage />,
+                            handle: {
+                              title: "Tenants",
+                              permission: permissions.API.tenants,
+                            },
+                          },
+                          {
+                            path: ":id",
+                            element: <TenantDetailPage />,
+                            handle: {
+                              title: "Tenant detail",
+                              permission: permissions.API.tenants,
+                            },
+                          },
+                        ],
                       },
                       {
                         path: "/projects",
-                        element: <ProjectsPage />,
-                        handle: {
-                          title: "Projects",
-                          permission: permissions.API.projects,
-                        },
+                        children: [
+                          {
+                            index: true,
+                            element: <ProjectsPage />,
+                            handle: {
+                              title: "Projects",
+                              permission: permissions.API.projects,
+                            },
+                          },
+                          {
+                            path: ":id",
+                            element: <ProjectDetailPage />,
+                            handle: {
+                              title: "Project detail",
+                              permission: permissions.API.projects,
+                            },
+                          },
+                        ],
                       },
                       {
                         path: "/machines",
-                        element: <MachinesPage />,
-                        handle: {
-                          title: "Machines",
-                          permission: permissions.API.machines,
-                        },
+                        children: [
+                          {
+                            index: true,
+                            element: <MachinesPage />,
+                            handle: {
+                              title: "Machines",
+                              permission: permissions.API.machines,
+                            },
+                          },
+                          {
+                            path: ":id",
+                            element: <MachineDetailPage />,
+                            handle: {
+                              title: "Machine detail",
+                              permission: permissions.API.machines,
+                            },
+                          },
+                        ],
                       },
                       {
                         path: "/images",
-                        element: <ImagesPage />,
-                        handle: {
-                          title: "Images",
-                          permission: permissions.API.images,
-                        },
+                        children: [
+                          {
+                            index: true,
+                            element: <ImagesPage />,
+                            handle: {
+                              title: "Images",
+                              permission: permissions.API.images,
+                            },
+                          },
+                          {
+                            path: ":id",
+                            element: <ImageDetailPage />,
+                            handle: {
+                              title: "Image detail",
+                              permission: permissions.API.images,
+                            },
+                          },
+                        ],
                       },
                       {
                         path: "/ips",
@@ -100,19 +159,45 @@ export const router = createBrowserRouter([
                       },
                       {
                         path: "/partitions",
-                        element: <PartitionsPage />,
-                        handle: {
-                          title: "Partitions",
-                          permission: permissions.API.partitions,
-                        },
+                        children: [
+                          {
+                            index: true,
+                            element: <PartitionsPage />,
+                            handle: {
+                              title: "Partitions",
+                              permission: permissions.API.partitions,
+                            },
+                          },
+                          {
+                            path: ":id",
+                            element: <PartitionDetailPage />,
+                            handle: {
+                              title: "Partition detail",
+                              permission: permissions.API.partitions,
+                            },
+                          },
+                        ],
                       },
                       {
                         path: "/sizes",
-                        element: <SizesPage />,
-                        handle: {
-                          title: "Sizes",
-                          permission: permissions.API.sizes,
-                        },
+                        children: [
+                          {
+                            index: true,
+                            element: <SizesPage />,
+                            handle: {
+                              title: "Sizes",
+                              permission: permissions.API.sizes,
+                            },
+                          },
+                          {
+                            path: ":id",
+                            element: <SizeDetailPage />,
+                            handle: {
+                              title: "Size detail",
+                              permission: permissions.API.sizes,
+                            },
+                          },
+                        ],
                       },
                       {
                         path: "/networks",
@@ -124,11 +209,24 @@ export const router = createBrowserRouter([
                       },
                       {
                         path: "/filesystems",
-                        element: <FilesystemsPage />,
-                        handle: {
-                          title: "Filesystems",
-                          permission: permissions.API.filesystems,
-                        },
+                        children: [
+                          {
+                            index: true,
+                            element: <FilesystemsPage />,
+                            handle: {
+                              title: "Filesystems",
+                              permission: permissions.API.filesystems,
+                            },
+                          },
+                          {
+                            path: ":id",
+                            element: <FilesystemDetailPage />,
+                            handle: {
+                              title: "Filesystem detail",
+                              permission: permissions.API.filesystems,
+                            },
+                          },
+                        ],
                       },
                       {
                         path: "/tokens",

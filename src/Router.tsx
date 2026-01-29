@@ -17,7 +17,7 @@ import TokensPage from "./pages/api/Tokens/tokens-page";
 import AdminMachinesPage from "./pages/admin/Machines/machines-page";
 import AdminIPsPage from "./pages/admin/IPs/ips-page";
 import AdminNetworksPage from "./pages/admin/Networks/networks-page";
-import AdminSwitchesPage from "./pages/admin/Switches/networks-page";
+import AdminSwitchesPage from "./pages/admin/Switches/switches-page";
 import NotFoundPage from "./pages/error-page";
 import AdminTenantsPage from "./pages/admin/Tenants/tenants-page";
 import AdminProjectsPage from "./pages/admin/Projects/projects-page";
@@ -36,6 +36,11 @@ import TenantDetailPage from "./pages/api/Tenants/tenant-detail-page";
 import IPDetailPage from "./pages/api/IPs/ip-detail-page";
 import NetworkDetailPage from "./pages/api/Networks/network-detail-page";
 import TokenDetailPage from "./pages/api/Tokens/token-detail-page";
+import AdminIPDetailPage from "./pages/admin/IPs/ip-detail-page";
+import AdminMachineDetailPage from "./pages/admin/Machines/machine-detail-page";
+import AdminSwitchDetailPage from "./pages/admin/Switches/switch-detail-page";
+import AdminTenantDetailPage from "./pages/admin/Tenants/tenant-detail-page";
+import AdminProjectDetailPage from "./pages/admin/Projects/project-detail-page";
 
 export const router = createBrowserRouter([
   {
@@ -289,51 +294,129 @@ export const router = createBrowserRouter([
                         children: [
                           {
                             path: "machines",
-                            element: <AdminMachinesPage />,
-                            handle: {
-                              title: "Admin · Machines",
-                              permission: permissions.ADMIN.machines,
-                            },
+                            children: [
+                              {
+                                index: true,
+                                element: <AdminMachinesPage />,
+                                handle: {
+                                  title: "Admin · Machines",
+                                  permission: permissions.ADMIN.machines,
+                                },
+                              },
+                              {
+                                path: ":id",
+                                element: <AdminMachineDetailPage />,
+                                handle: {
+                                  title: "Admin · Machine detail",
+                                  permission: permissions.ADMIN.machines,
+                                },
+                              },
+                            ],
                           },
                           {
                             path: "ips",
-                            element: <AdminIPsPage />,
-                            handle: {
-                              title: "Admin · IPs",
-                              permission: permissions.ADMIN.ips,
-                            },
+                            children: [
+                              {
+                                index: true,
+                                element: <AdminIPsPage />,
+                                handle: {
+                                  title: "Admin · IPs",
+                                  permission: permissions.ADMIN.ips,
+                                },
+                              },
+                              {
+                                path: ":id",
+                                element: <AdminIPDetailPage />,
+                                handle: {
+                                  title: "Admin · IP detail",
+                                  permission: permissions.ADMIN.ips,
+                                },
+                              },
+                            ],
                           },
                           {
                             path: "networks",
-                            element: <AdminNetworksPage />,
-                            handle: {
-                              title: "Admin · Networks",
-                              permission: permissions.ADMIN.networks,
-                            },
+                            children: [
+                              {
+                                index: true,
+                                element: <AdminNetworksPage />,
+                                handle: {
+                                  title: "Admin · Networks",
+                                  permission: permissions.ADMIN.networks,
+                                },
+                              },
+                              {
+                                path: ":id",
+                                element: <NetworkDetailPage />,
+                                handle: {
+                                  title: "Admin · Network detail",
+                                  permission: permissions.ADMIN.networks,
+                                },
+                              },
+                            ],
                           },
                           {
                             path: "switches",
-                            element: <AdminSwitchesPage />,
-                            handle: {
-                              title: "Admin · Switches",
-                              permission: permissions.ADMIN.switches,
-                            },
+                            children: [
+                              {
+                                index: true,
+                                element: <AdminSwitchesPage />,
+                                handle: {
+                                  title: "Admin · Switches",
+                                  permission: permissions.ADMIN.switches,
+                                },
+                              },
+                              {
+                                path: ":id",
+                                element: <AdminSwitchDetailPage />,
+                                handle: {
+                                  title: "Admin · Switch detail",
+                                  permission: permissions.ADMIN.switches,
+                                },
+                              },
+                            ],
                           },
                           {
                             path: "tenants",
-                            element: <AdminTenantsPage />,
-                            handle: {
-                              title: "Admin · Tenants",
-                              permission: permissions.ADMIN.tenants,
-                            },
+                            children: [
+                              {
+                                index: true,
+                                element: <AdminTenantsPage />,
+                                handle: {
+                                  title: "Admin · Tenants",
+                                  permission: permissions.ADMIN.tenants,
+                                },
+                              },
+                              {
+                                path: ":id",
+                                element: <AdminTenantDetailPage />,
+                                handle: {
+                                  title: "Admin · Tenant detail",
+                                  permission: permissions.ADMIN.tenants,
+                                },
+                              },
+                            ],
                           },
                           {
                             path: "projects",
-                            element: <AdminProjectsPage />,
-                            handle: {
-                              title: "Admin · Projects",
-                              permission: permissions.ADMIN.projects,
-                            },
+                            children: [
+                              {
+                                index: true,
+                                element: <AdminProjectsPage />,
+                                handle: {
+                                  title: "Admin · Projects",
+                                  permission: permissions.ADMIN.projects,
+                                },
+                              },
+                              {
+                                path: ":id",
+                                element: <AdminProjectDetailPage />,
+                                handle: {
+                                  title: "Admin · Project detail",
+                                  permission: permissions.ADMIN.projects,
+                                },
+                              },
+                            ],
                           },
                         ],
                       },

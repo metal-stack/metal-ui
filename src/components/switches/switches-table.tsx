@@ -1,18 +1,18 @@
-"use client";
-
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "../ui/data-table/data-table";
 import { Switch } from "@metal-stack/api/js/metalstack/api/v2/switch_pb";
 import SwitchOSBadge from "./switch-os-badge";
 import SwitchLastSync from "./switch-last-sync";
-import SwitchDrawer from "./switch-drawer";
+import { Link } from "react-router";
 
 const columns: ColumnDef<Switch>[] = [
   {
     accessorKey: "id",
     header: "ID",
     enableHiding: false,
-    cell: ({ row }) => <SwitchDrawer id={row.original.id} />,
+    cell: ({ row }) => (
+      <Link to={"/admin/switches/" + row.original.id}>{row.original.id}</Link>
+    ),
   },
   {
     accessorKey: "partition",

@@ -6,6 +6,7 @@ import CodeBlock from "../code-block/code-block";
 import { Badge } from "../ui/badge";
 import { timestampDate } from "@bufbuild/protobuf/wkt";
 import { IconCalendar } from "@tabler/icons-react";
+import { InfoGrid } from "../info-grid/info-grid";
 
 interface TokenInfoProps {
   data: Token;
@@ -13,40 +14,51 @@ interface TokenInfoProps {
 
 export default function TokenInfo({ data }: TokenInfoProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <div>
-        <strong>ID:</strong> {data.uuid}
-      </div>
-      <div>
-        <strong>Description:</strong> {data.description}
-      </div>
-      <div>
-        <strong>Expires:</strong>{" "}
-        <Badge variant="outline">
-          <IconCalendar />
-          {data.expires ? timestampDate(data.expires).toISOString() : "-"}
-        </Badge>
-      </div>
-      <div>
-        <strong>Issued at:</strong>{" "}
-        <Badge variant="outline">
-          <IconCalendar />
-          {data.issuedAt ? timestampDate(data.issuedAt).toISOString() : "-"}
-        </Badge>
-      </div>
-      <div>
-        <strong>Token type:</strong> {TokenType[data.tokenType]}
-      </div>
-      <CodeBlock
-        title="Token scope"
-        data={{
-          ...data.permissions,
-          ...data.projectRoles,
-          ...data.tenantRoles,
-          adminRole: data.adminRole,
-          infraRole: data.infraRole,
-        }}
-      />
-    </div>
+    <InfoGrid
+      rows={[
+        { label: "ID:", value: data.uuid },
+        { label: "Description:", value: data.description },
+        {
+          label: "Expires:",
+          value: (
+            <Badge variant="outline">
+              <IconCalendar />
+              {data.expires ? timestampDate(data.expires).toISOString() : null}
+            </Badge>
+          ),
+        },
+        {
+          label: "Issued at:",
+          value: (
+            <Badge variant="outline">
+              <IconCalendar />
+              {data.issuedAt
+                ? timestampDate(data.issuedAt).toISOString()
+                : null}
+            </Badge>
+          ),
+        },
+        {
+          label: "Token type:",
+          value: TokenType[data.tokenType],
+        },
+        {
+          label: "Token scope",
+          value: (
+            <CodeBlock
+              title="Token scope"
+              data={{
+                ...data.permissions,
+                ...data.projectRoles,
+                ...data.tenantRoles,
+                adminRole: data.adminRole,
+                infraRole: data.infraRole,
+              }}
+            />
+          ),
+          fullWidth: true,
+        },
+      ]}
+    />
   );
 }

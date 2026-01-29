@@ -1,3 +1,4 @@
+import { InfoGrid } from "@/components/info-grid/info-grid";
 import {
   FirewallIngressRule,
   IPProtocol,
@@ -9,21 +10,25 @@ interface IngressRulesInfoProps {
 
 export default function IngressRulesInfo({ data }: IngressRulesInfoProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <div>
-        <strong>IP protocol:</strong> {IPProtocol[data.protocol]}
-      </div>
-      <div>
-        <strong>Ports: </strong>
-        {data.ports.join(", ")}
-      </div>
-      <div>
-        <strong>To: </strong>
-        {data.to.join(", ")}
-      </div>
-      <div>
-        <strong>Comment:</strong> {data.comment}
-      </div>
-    </div>
+    <InfoGrid
+      rows={[
+        {
+          label: "IP protocol:",
+          value: IPProtocol[data.protocol],
+        },
+        {
+          label: "Ports:",
+          value: data.ports.join(", "),
+        },
+        {
+          label: "To:",
+          value: data.to.join(", "),
+        },
+        {
+          label: "Comment:",
+          value: data.comment,
+        },
+      ]}
+    />
   );
 }

@@ -1,3 +1,4 @@
+import { InfoGrid } from "@/components/info-grid/info-grid";
 import { MachineNetwork } from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
 import {
   NATType,
@@ -10,32 +11,32 @@ interface MachineNetworkInfoProps {
 
 export default function MachineNetworkInfo({ data }: MachineNetworkInfoProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <div>
-        <strong>Network:</strong> {data.network}
-      </div>
-      <div>
-        <strong>Network type:</strong> {NetworkType[data.networkType]}
-      </div>
-      <div>
-        <strong>Prefixes:</strong> {data.prefixes.join(", ")}
-      </div>
-      <div>
-        <strong>Destination prefixes:</strong>{" "}
-        {data.destinationPrefixes.join(", ")}
-      </div>
-      <div>
-        <strong>IPs:</strong> {data.ips.join(", ")}
-      </div>
-      <div>
-        <strong>NAT type:</strong> {NATType[data.natType]}
-      </div>
-      <div>
-        <strong>VRF:</strong> {data.vrf}
-      </div>
-      <div>
-        <strong>ASN:</strong> {data.asn}
-      </div>
-    </div>
+    <InfoGrid
+      rows={[
+        { label: "Network:", value: data.network },
+        {
+          label: "Network type:",
+          value: NetworkType[data.networkType],
+        },
+        {
+          label: "Prefixes:",
+          value: data.prefixes.join(", "),
+        },
+        {
+          label: "Destination prefixes:",
+          value: data.destinationPrefixes.join(", "),
+        },
+        {
+          label: "IPs:",
+          value: data.ips.join(", "),
+        },
+        {
+          label: "NAT type:",
+          value: NATType[data.natType],
+        },
+        { label: "VRF:", value: data.vrf },
+        { label: "ASN:", value: data.asn },
+      ]}
+    />
   );
 }

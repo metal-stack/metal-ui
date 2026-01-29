@@ -7,6 +7,7 @@ import {
 } from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Badge } from "../ui/badge";
+import { InfoGrid } from "../info-grid/info-grid";
 
 interface MachineStatusInfoProps {
   data: MachineStatus;
@@ -130,26 +131,25 @@ function MachineLivelinessBadge({
 
 export default function MachineStatusInfo({ data }: MachineStatusInfoProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <div>
-        <strong>metal-hammer Version:</strong> {data.metalHammerVersion}
-      </div>
-      <div>
-        <strong>Liveliness:</strong>
-        {data.liveliness}
-      </div>
-      <div>
-        <strong>Condition:</strong>
-        <MachineConditionBadge condition={data.condition} />
-      </div>
-      <div>
-        <strong>LED:</strong>
-        <MachineLEDBadge led={data.ledState} />
-      </div>
-      <div>
-        <strong>Liveliness:</strong>
-        <MachineLivelinessBadge liveliness={data.liveliness} />
-      </div>
-    </div>
+    <InfoGrid
+      rows={[
+        {
+          label: "metal-hammer Version:",
+          value: data.metalHammerVersion,
+        },
+        {
+          label: "Liveliness:",
+          value: <MachineLivelinessBadge liveliness={data.liveliness} />,
+        },
+        {
+          label: "Condition:",
+          value: <MachineConditionBadge condition={data.condition} />,
+        },
+        {
+          label: "LED:",
+          value: <MachineLEDBadge led={data.ledState} />,
+        },
+      ]}
+    />
   );
 }

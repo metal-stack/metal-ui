@@ -1,5 +1,6 @@
 import { FilesystemLayout } from "@metal-stack/api/js/metalstack/api/v2/filesystem_pb";
 import FilesystemInfo from "./filesystem-info";
+import { InfoGrid } from "../info-grid/info-grid";
 
 interface FilesystemLayoutInfoProps {
   data: FilesystemLayout;
@@ -9,21 +10,17 @@ export default function FilesystemLayoutInfo({
   data,
 }: FilesystemLayoutInfoProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <div>
-        <strong>ID:</strong> {data.id || "-"}
-      </div>
-      <div>
-        <strong>Name:</strong> {data.name || "-"}
-      </div>
-      <div>
-        <strong>Description:</strong> {data.description || "-"}
-      </div>
-      <div className="flex flex-col">
-        <strong>Filesystems:</strong>
-        <FilesystemInfo data={data.filesystems} />
-      </div>
-      {/* TODO: add all fields here */}
-    </div>
+    <InfoGrid
+      rows={[
+        { label: "ID:", value: data.id },
+        { label: "Name:", value: data.name },
+        { label: "Description:", value: data.description },
+        {
+          label: "Filesystems",
+          value: <FilesystemInfo data={data.filesystems} />,
+          fullWidth: true,
+        },
+      ]}
+    />
   );
 }

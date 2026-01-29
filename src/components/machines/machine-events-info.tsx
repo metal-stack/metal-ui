@@ -7,6 +7,7 @@ import {
 import { timestampDate } from "@bufbuild/protobuf/wkt";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "../ui/data-table/data-table";
+import { InfoGrid } from "../info-grid/info-grid";
 
 interface MachineEventsInfoProps {
   data: MachineRecentProvisioningEvents;
@@ -34,39 +35,43 @@ const eventsColumn: ColumnDef<MachineProvisioningEvent>[] = [
 
 export default function MachineEventsInfo({ data }: MachineEventsInfoProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <div>
-        <strong>Last Event:</strong>{" "}
-        {data.lastEventTime
-          ? timestampDate(data.lastEventTime).toLocaleString()
-          : "-"}
-      </div>
-      <div>
-        <strong>Provisioning events:</strong>
-        <DataTable initialData={data.events} columns={eventsColumn} />
-      </div>
-      <div>
-        <strong>Provisioning state:</strong>
-        {data.state ? MachineProvisioningEventState[data.state] : "-"}
-      </div>
-      <div>
-        <strong>Last error event:</strong>
-        {data.lastErrorEvent ? (
-          <div className="mt-2 p-2 border border-red-500 rounded bg-red-50">
-            <div>
-              <strong>Time:</strong>{" "}
-              {data.lastErrorEvent.time
-                ? timestampDate(data.lastErrorEvent.time).toLocaleString()
-                : "-"}
+    <InfoGrid
+      rows={[
+        {
+          label: "Last Event:",
+          value: data.lastEventTime
+            ? timestampDate(data.lastEventTime).toLocaleString()
+            : undefined,
+        },
+        {
+          label: "Provisioning state:",
+          value: data.state
+            ? MachineProvisioningEventState[data.state]
+            : undefined,
+        },
+        {
+          label: "Last error event:",
+          value: data.lastErrorEvent ? (
+            <div className="mt-2 p-2 border border-red-500 rounded bg-red-50">
+              <div>
+                <strong>Time:</strong>{" "}
+                {data.lastErrorEvent.time
+                  ? timestampDate(data.lastErrorEvent.time).toLocaleString()
+                  : "—"}
+              </div>
+              <div>
+                <strong>Message:</strong> {data.lastErrorEvent.message || "—"}
+              </div>
             </div>
-            <div>
-              <strong>Message:</strong> {data.lastErrorEvent.message}
-            </div>
-          </div>
-        ) : (
-          "-"
-        )}
-      </div>
-    </div>
+          ) : undefined,
+          fullWidth: data.lastErrorEvent !== undefined,
+        },
+        {
+          label: "Provisioning events:",
+          value: <DataTable initialData={data.events} columns={eventsColumn} />,
+          fullWidth: true,
+        },
+      ]}
+    />
   );
 }

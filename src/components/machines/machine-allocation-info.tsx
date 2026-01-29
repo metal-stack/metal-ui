@@ -8,6 +8,7 @@ import FilesystemLayoutInfo from "../filesystem/filesystem-layout-info";
 import FirewallRulesInfo from "./allocation/firewall/firewall-rules-info";
 import MachineNetworkInfo from "./allocation/machine-network-info";
 import { InfoGrid } from "../info-grid/info-grid";
+import MachineVPNInfo from "./allocation/machine-vpn-info";
 
 interface MachineAllocationInfoProps {
   data: MachineAllocation;
@@ -83,6 +84,15 @@ export default function MachineAllocationInfo({
         {
           label: "NTP server:",
           value: data.ntpServer.map((ntp) => ntp.address).join(", "),
+        },
+        {
+          label: "VPN",
+          value: (
+            <InfoCollapsible title="VPN">
+              {data.vpn && <MachineVPNInfo data={data.vpn} />}
+            </InfoCollapsible>
+          ),
+          fullWidth: true,
         },
       ]}
     />

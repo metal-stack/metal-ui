@@ -40,7 +40,7 @@ export default function FilesystemsInfo({ data }: FilesystemsInfoProps) {
     <DataTable
       initialData={data}
       columns={columns}
-      getRowId={(row, index) => index.toString()}
+      getRowId={(_, index) => index.toString()}
     />
   );
 }

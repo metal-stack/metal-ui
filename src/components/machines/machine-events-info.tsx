@@ -44,11 +44,6 @@ export default function MachineEventsInfo({ data }: MachineEventsInfoProps) {
             : undefined,
         },
         {
-          label: "Provisioning events:",
-          value: <DataTable initialData={data.events} columns={eventsColumn} />,
-          fullWidth: true,
-        },
-        {
           label: "Provisioning state:",
           value: data.state
             ? MachineProvisioningEventState[data.state]
@@ -70,6 +65,11 @@ export default function MachineEventsInfo({ data }: MachineEventsInfoProps) {
             </div>
           ) : undefined,
           fullWidth: data.lastErrorEvent !== undefined,
+        },
+        {
+          label: "Provisioning events:",
+          value: <DataTable initialData={data.events} columns={eventsColumn} />,
+          fullWidth: true,
         },
       ]}
     />

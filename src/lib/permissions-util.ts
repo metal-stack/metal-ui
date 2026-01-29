@@ -6,7 +6,7 @@ export const permissions = {
     ],
     projects: [
       "/metalstack.api.v2.ProjectService/List",
-      "/metalstack.api.v2.ProjectService/Get",
+      // "/metalstack.api.v2.ProjectService/Get",
     ],
     partitions: [
       "/metalstack.api.v2.PartitionService/List",

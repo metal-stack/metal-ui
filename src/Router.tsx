@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
 import { QueryLayout } from "./layouts/QueryLayout";
@@ -290,8 +290,11 @@ export const router = createBrowserRouter([
                       },
                       {
                         path: "/admin",
-                        handle: { title: "Admin" },
                         children: [
+                          {
+                            index: true,
+                            element: <Navigate to="/" replace />,
+                          },
                           {
                             path: "machines",
                             children: [

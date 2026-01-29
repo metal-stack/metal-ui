@@ -31,6 +31,9 @@ export function SiteHeader({ title }: SiteHeaderProps) {
 
   if (location.pathname !== "/") {
     backPath = location.pathname.split("/").slice(0, -1).join("/");
+    if (backPath === "/admin") {
+      backPath = "/";
+    }
   }
 
   const { theme, setTheme } = useTheme();

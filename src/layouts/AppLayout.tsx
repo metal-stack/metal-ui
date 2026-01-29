@@ -4,6 +4,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider
+      className="max-h-screen flex overflow-hidden"
       style={
         {
           "--sidebar-width": "calc(var(--spacing) * 72)",

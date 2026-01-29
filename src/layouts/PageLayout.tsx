@@ -11,7 +11,7 @@ export function PageLayout() {
   return (
     <AppLayout>
       <SiteHeader title={title} />
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col overflow-y-auto">
         <div className="@container/main flex flex-1 flex-col gap-2 p-4 md:p-6 lg:p-8">
           <Outlet />
         </div>

@@ -31,7 +31,7 @@ interface DataTableProps<TData, TValue> {
     | ((
         originalRow: TData,
         index: number,
-        parent?: Row<TData> | undefined
+        parent?: Row<TData> | undefined,
       ) => string)
     | undefined;
 }
@@ -90,7 +90,7 @@ export function DataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -107,7 +107,7 @@ export function DataTable<TData, TValue>({
                       <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )}
                       </TableCell>
                     ))}
@@ -127,7 +127,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      {table.getPageCount() > 1 && <DataTablePagination table={table} />}
     </div>
   );
 }

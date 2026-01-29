@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { IP } from "@metal-stack/api/js/metalstack/api/v2/ip_pb";
 import { DataTable } from "../ui/data-table/data-table";
 import { Link, useLocation } from "react-router";
+import { IPTypeBadge } from "./ip-info";
 
 export function IpsTable({ data }: { data: IP[] }) {
   const location = useLocation();
@@ -28,6 +29,11 @@ export function IpsTable({ data }: { data: IP[] }) {
     {
       accessorKey: "ip",
       header: "IP",
+      cell: ({ row }) => (
+        <>
+          <IPTypeBadge type={row.original.type} /> {row.original.ip}
+        </>
+      ),
     },
     {
       accessorKey: "name",

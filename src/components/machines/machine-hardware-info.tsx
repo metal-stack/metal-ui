@@ -7,6 +7,8 @@ import {
 } from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "../ui/data-table/data-table";
+import { formatBytesBigInt } from "@/lib/size-utilities";
+import { InfoGrid } from "../info-grid/info-grid";
 
 interface MachineHardwareInfoProps {
   data: MachineHardware;
@@ -39,6 +41,7 @@ const blockDeviceColumns: ColumnDef<MachineBlockDevice>[] = [
   {
     accessorKey: "size",
     header: "Size",
+    cell: ({ row }) => formatBytesBigInt(row.original.size),
   },
 ];
 
@@ -72,26 +75,33 @@ export default function MachineHardwareInfo({
   data,
 }: MachineHardwareInfoProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <div>
-        <strong>Memory:</strong> {data.memory}
-      </div>
-      <div>
-        <strong>CPUs:</strong>
-        <DataTable initialData={data.cpus} columns={cpuColumns} />
-      </div>
-      <div>
-        <strong>Block Devices:</strong>
-        <DataTable initialData={data.disks} columns={blockDeviceColumns} />
-      </div>
-      <div>
-        <strong>GPUs:</strong>
-        <DataTable initialData={data.gpus} columns={gpuColumns} />
-      </div>
-      <div>
-        <strong>NICs:</strong>
-        <DataTable initialData={data.nics} columns={nicColumns} />
-      </div>
-    </div>
+    <InfoGrid
+      rows={[
+        { label: "Memory:", value: formatBytesBigInt(data.memory) },
+
+        {
+          label: "CPUs:",
+          value: <DataTable initialData={data.cpus} columns={cpuColumns} />,
+          fullWidth: true,
+        },
+        {
+          label: "Block Devices:",
+          value: (
+            <DataTable initialData={data.disks} columns={blockDeviceColumns} />
+          ),
+          fullWidth: true,
+        },
+        {
+          label: "GPUs:",
+          value: <DataTable initialData={data.gpus} columns={gpuColumns} />,
+          fullWidth: true,
+        },
+        {
+          label: "NICs:",
+          value: <DataTable initialData={data.nics} columns={nicColumns} />,
+          fullWidth: true,
+        },
+      ]}
+    />
   );
 }

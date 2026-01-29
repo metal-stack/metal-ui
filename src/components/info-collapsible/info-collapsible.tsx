@@ -32,7 +32,8 @@ export default function InfoCollapsible({
       </div>
 
       {open && <Separator className="my-2" />}
-      <CollapsibleContent className="ml-4">{children}</CollapsibleContent>
+      <CollapsibleContent>{children}</CollapsibleContent>
+      {open && <Separator className="my-2" />}
     </Collapsible>
   );
 }

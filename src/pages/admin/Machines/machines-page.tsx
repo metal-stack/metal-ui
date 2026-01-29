@@ -18,5 +18,5 @@ export default function AdminMachinesPage() {
 
   if (!data?.machines.length) return <NoElementFound />;
 
-  return <MachinesTable data={data.machines} />;
+  return <MachinesTable data={data.machines} isAdmin />;
 }

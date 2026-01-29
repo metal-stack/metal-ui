@@ -1,5 +1,5 @@
 import { useQuery } from "@connectrpc/connect-query";
-import { ProjectService } from "@metal-stack/api/js/metalstack/api/v2/project_pb";
+import { ProjectService } from "@metal-stack/api/js/metalstack/admin/v2/project_pb";
 import LoadingScreen from "@/components/ui/loading-screen/loading-screen";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import NoElementFound from "@/components/ui/no-element-found/no-element-found";

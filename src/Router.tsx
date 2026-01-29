@@ -41,6 +41,7 @@ import AdminMachineDetailPage from "./pages/admin/Machines/machine-detail-page";
 import AdminSwitchDetailPage from "./pages/admin/Switches/switch-detail-page";
 import AdminTenantDetailPage from "./pages/admin/Tenants/tenant-detail-page";
 import AdminProjectDetailPage from "./pages/admin/Projects/project-detail-page";
+import ChatPage from "./pages/ai-assistant";
 
 export const router = createBrowserRouter([
   {
@@ -77,6 +78,11 @@ export const router = createBrowserRouter([
                         path: "/topology",
                         element: <TopologyPage />,
                         handle: { title: "Topology" },
+                      },
+                      {
+                        path: "/chat",
+                        element: <ChatPage />,
+                        handle: { title: "AI assistant" },
                       },
                       {
                         path: "/tenants",

@@ -13,6 +13,7 @@ import {
   IconPackage,
   IconRocket,
   IconServer2,
+  IconSparkles2,
   IconSwitch2,
   IconTopologyStarRing2,
 } from "@tabler/icons-react";
@@ -61,6 +62,11 @@ const data: {
       title: "Topology",
       url: "/topology",
       icon: IconTopologyStarRing2,
+    },
+    {
+      title: "AI assistant",
+      url: "/chat",
+      icon: IconSparkles2,
     },
   ],
   //TODO add some items here later

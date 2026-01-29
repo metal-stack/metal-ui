@@ -28,11 +28,14 @@ import { PermissionLayout } from "./layouts/PermissionLayout";
 import { permissions } from "./lib/permissions-util";
 import MachineDetailPage from "./pages/api/Machines/machine-detail-page";
 import FilesystemDetailPage from "./pages/api/Filesystems/filesystem-detail-page";
-import ImageDetailPage from "./pages/api/Images/image-drawer";
+import ImageDetailPage from "./pages/api/Images/image-detail-page";
 import PartitionDetailPage from "./pages/api/Partitions/partition-detail-page";
 import ProjectDetailPage from "./pages/api/Projects/project-detail-page";
 import SizeDetailPage from "./pages/api/Sizes/size-detail-page";
 import TenantDetailPage from "./pages/api/Tenants/tenant-detail-page";
+import IPDetailPage from "./pages/api/IPs/ip-detail-page";
+import NetworkDetailPage from "./pages/api/Networks/network-detail-page";
+import TokenDetailPage from "./pages/api/Tokens/token-detail-page";
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +67,11 @@ export const router = createBrowserRouter([
                         path: "/",
                         element: <Dashboard />,
                         handle: { title: "Dashboard" },
+                      },
+                      {
+                        path: "/topology",
+                        element: <TopologyPage />,
+                        handle: { title: "Topology" },
                       },
                       {
                         path: "/tenants",
@@ -151,11 +159,24 @@ export const router = createBrowserRouter([
                       },
                       {
                         path: "/ips",
-                        element: <IPsPage />,
-                        handle: {
-                          title: "IPs",
-                          permission: permissions.API.ips,
-                        },
+                        children: [
+                          {
+                            index: true,
+                            element: <IPsPage />,
+                            handle: {
+                              title: "IPs",
+                              permission: permissions.API.ips,
+                            },
+                          },
+                          {
+                            path: ":id",
+                            element: <IPDetailPage />,
+                            handle: {
+                              title: "IP detail",
+                              permission: permissions.API.ips,
+                            },
+                          },
+                        ],
                       },
                       {
                         path: "/partitions",
@@ -201,11 +222,24 @@ export const router = createBrowserRouter([
                       },
                       {
                         path: "/networks",
-                        element: <NetworksPage />,
-                        handle: {
-                          title: "Networks",
-                          permission: permissions.API.networks,
-                        },
+                        children: [
+                          {
+                            index: true,
+                            element: <NetworksPage />,
+                            handle: {
+                              title: "Networks",
+                              permission: permissions.API.networks,
+                            },
+                          },
+                          {
+                            path: ":id",
+                            element: <NetworkDetailPage />,
+                            handle: {
+                              title: "Network detail",
+                              permission: permissions.API.networks,
+                            },
+                          },
+                        ],
                       },
                       {
                         path: "/filesystems",
@@ -230,16 +264,24 @@ export const router = createBrowserRouter([
                       },
                       {
                         path: "/tokens",
-                        element: <TokensPage />,
-                        handle: {
-                          title: "Tokens",
-                          permission: permissions.API.tokens,
-                        },
-                      },
-                      {
-                        path: "/topology",
-                        element: <TopologyPage />,
-                        handle: { title: "Topology" },
+                        children: [
+                          {
+                            index: true,
+                            element: <TokensPage />,
+                            handle: {
+                              title: "Tokens",
+                              permission: permissions.API.tokens,
+                            },
+                          },
+                          {
+                            path: ":id",
+                            element: <TokenDetailPage />,
+                            handle: {
+                              title: "Token detail",
+                              permission: permissions.API.tokens,
+                            },
+                          },
+                        ],
                       },
                       {
                         path: "/admin",

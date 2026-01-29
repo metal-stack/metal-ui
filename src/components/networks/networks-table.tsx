@@ -1,23 +1,25 @@
-"use client";
-
 import { ColumnDef } from "@tanstack/react-table";
 import { Network } from "@metal-stack/api/js/metalstack/api/v2/network_pb";
 import { DataTable } from "../ui/data-table/data-table";
-import NetworkDrawer from "./network-drawer";
+import { Link, useLocation } from "react-router";
 
 interface NetworksTableProps {
   data: Network[];
-  isAdmin: boolean;
 }
 
-export function NetworksTable({ data, isAdmin }: NetworksTableProps) {
+export function NetworksTable({ data }: NetworksTableProps) {
+  const location = useLocation();
+  const prefix = location.pathname.startsWith("/admin") ? "/admin" : "";
+
   const columns: ColumnDef<Network>[] = [
     {
       accessorKey: "id",
       header: "ID",
       enableHiding: false,
       cell: ({ row }) => (
-        <NetworkDrawer id={row.original.id} isAdmin={isAdmin} />
+        <Link to={prefix + "/networks/" + row.original.id}>
+          {row.original.id}
+        </Link>
       ),
     },
     {

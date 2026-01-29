@@ -120,7 +120,7 @@ export function ChatInterface() {
                 {message.role === "user" && (
                   <Avatar className="size-8 shrink-0">
                     <AvatarFallback className="bg-secondary text-secondary-foreground text-xs">
-                      U
+                      MA
                     </AvatarFallback>
                   </Avatar>
                 )}

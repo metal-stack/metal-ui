@@ -42,6 +42,7 @@ import AdminSwitchDetailPage from "./pages/admin/Switches/switch-detail-page";
 import AdminTenantDetailPage from "./pages/admin/Tenants/tenant-detail-page";
 import AdminProjectDetailPage from "./pages/admin/Projects/project-detail-page";
 import ChatPage from "./pages/ai-assistant";
+import AdminNetworkDetailPage from "./pages/admin/Networks/network-detail-page";
 
 export const router = createBrowserRouter([
   {
@@ -356,7 +357,7 @@ export const router = createBrowserRouter([
                               },
                               {
                                 path: ":id",
-                                element: <NetworkDetailPage />,
+                                element: <AdminNetworkDetailPage />,
                                 handle: {
                                   title: "Admin · Network detail",
                                   permission: permissions.ADMIN.networks,

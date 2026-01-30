@@ -5,7 +5,7 @@ import AlertHint from "@/components/ui/alert/AlertHint";
 import { NetworkService } from "@metal-stack/api/js/metalstack/admin/v2/network_pb";
 import NetworkInfo from "@/components/networks/network-info";
 
-export default function NetworkDetailPage() {
+export default function AdminNetworkDetailPage() {
   const { id } = useParams();
 
   const { data, isLoading, error } = useQuery(NetworkService.method.get, {

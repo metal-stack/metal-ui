@@ -6,4 +6,6 @@ export type SpineNode = Node<{}, "spine">;
 
 export type ExitNode = Node<{}, "exit">;
 
-export type CustomeNode = LeafNode | SpineNode | ExitNode | Node;
+export type MachineNode = Node<{}, "machine">;
+
+export type CustomeNode = LeafNode | SpineNode | ExitNode | MachineNode | Node;

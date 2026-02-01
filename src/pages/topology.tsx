@@ -17,6 +17,7 @@ import SpineNode from "@/components/topology/SpineNode";
 import ExitNode from "@/components/topology/ExitNode";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { TriangleAlertIcon } from "lucide-react";
+import MachineNode from "@/components/topology/MachineNode";
 
 const initialNodes: CustomeNode[] = [
   // Exit
@@ -53,6 +54,20 @@ const initialNodes: CustomeNode[] = [
     position: { x: 0, y: 0 },
     data: { label: "Leaf 1" },
     type: "leaf",
+  },
+
+  // Machines
+  {
+    id: "machine-0",
+    position: { x: 0, y: 0 },
+    data: { label: "Machine 0" },
+    type: "machine",
+  },
+  {
+    id: "machine-1",
+    position: { x: 0, y: 0 },
+    data: { label: "Machine 1" },
+    type: "machine",
   },
 ];
 const initialEdges: Edge[] = [
@@ -95,7 +110,33 @@ const initialEdges: Edge[] = [
     target: "leaf-1",
     type: ConnectionLineType.Straight,
   },
+  // Leaf -> Machines
+  {
+    id: "e-leaf-0-machine-0",
+    source: "leaf-0",
+    target: "machine-0",
+    type: ConnectionLineType.Straight,
+  },
+  {
+    id: "e-leaf-0-machine-1",
+    source: "leaf-0",
+    target: "machine-1",
+    type: ConnectionLineType.Straight,
+  },
+  {
+    id: "e-leaf-1-machine-0",
+    source: "leaf-1",
+    target: "machine-0",
+    type: ConnectionLineType.Straight,
+  },
+  {
+    id: "e-leaf-1-machine-1",
+    source: "leaf-1",
+    target: "machine-1",
+    type: ConnectionLineType.Straight,
+  },
 ];
+
 const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
 const nodeWidth = 172;
@@ -142,6 +183,7 @@ const nodeTypes = {
   leaf: LeafNode,
   spine: SpineNode,
   exit: ExitNode,
+  machine: MachineNode,
 };
 
 export default function TopologyPage() {

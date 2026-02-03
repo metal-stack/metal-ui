@@ -1,6 +1,9 @@
 # metal-ui
 
-Read-only GUI for metal-stack.
+GUI for metal-stack.
+
+> [!IMPORTANT]
+> The interface is currently read-only, which can be changed if someone has the will to do it. It uses the metal-stack V2 API, which is currently WIP.
 
 ## Features
 

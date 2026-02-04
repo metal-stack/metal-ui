@@ -30,5 +30,5 @@ export default function NetworksPage() {
 
   if (!data?.networks.length) return <NoElementFound />;
 
-  return <NetworksTable data={data.networks} isAdmin={false} />;
+  return <NetworksTable data={data.networks} />;
 }

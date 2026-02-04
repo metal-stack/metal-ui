@@ -46,7 +46,10 @@ function MachineConditionBadge({
   return (
     <Tooltip>
       <TooltipTrigger>
-        <Badge variant="outline">
+        <Badge
+          className={`text-${color}-600 border-${color}-600`}
+          variant="outline"
+        >
           {icon}
           {MachineState[condition.state]}
         </Badge>

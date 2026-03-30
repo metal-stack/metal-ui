@@ -13,7 +13,7 @@
         "@dnd-kit/sortable": "^10.0.0",
         "@dnd-kit/utilities": "^3.2.2",
         "@hookform/resolvers": "^5.2.2",
-        "@metal-stack/api": "^0.0.44",
+        "@metal-stack/api": "^0.0.59",
         "@radix-ui/react-avatar": "^1.1.11",
         "@radix-ui/react-collapsible": "^1.1.12",
         "@radix-ui/react-dialog": "^1.1.15",
@@ -228,7 +228,7 @@
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
 
-    "@metal-stack/api": ["@metal-stack/api@0.0.44", "", { "dependencies": { "@bufbuild/protobuf": "^2.11.0", "@connectrpc/connect-web": "^2.1.1" } }, "sha512-tAYf1o1SyWMabxbfJY1lICE3ugRRFLuVIc1m+RfJ9Gad77aXa2U2r+5kWdaz8uvW2qKxBC52bZ7jUj4RtJPtHQ=="],
+    "@metal-stack/api": ["@metal-stack/api@0.0.59", "", { "dependencies": { "@bufbuild/protobuf": "^2.11.0", "@connectrpc/connect-web": "^2.1.1" } }, "sha512-slaMxYPQWfSR5E2xzqndEV7waCtNPoEZy8wToXmc3k/GpBd/LbhOeAH6rCRNhd4NfPJMcLaJG+iUwoDPeIRaMQ=="],
 
     "@opentelemetry/api": ["@opentelemetry/api@1.9.0", "", {}, "sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg=="],
 

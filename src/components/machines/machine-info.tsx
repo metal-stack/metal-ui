@@ -5,6 +5,7 @@ import SizeInfo from "../sizes/size-info";
 import MachineHardwareInfo from "./machine-hardware-info";
 import MachineStatusInfo from "./machine-status-info";
 import MachineEventsInfo from "./machine-events-info";
+import MachineInfoPreview from "./machine-info-preview";
 
 interface MachineInfoProps {
   data: Machine;
@@ -12,13 +13,9 @@ interface MachineInfoProps {
 
 export default function MachineInfo({ data }: MachineInfoProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <div>
-        <strong>Partition:</strong> {data.partition?.id || "-"}
-      </div>
-      <div>
-        <strong>Rack:</strong> {data.rack}
-      </div>
+    <div className="flex flex-col gap-4">
+      <MachineInfoPreview data={data} />
+      
       <InfoCollapsible title="Size">
         {data.size && <SizeInfo data={data.size} />}
       </InfoCollapsible>
@@ -28,9 +25,6 @@ export default function MachineInfo({ data }: MachineInfoProps) {
       <InfoCollapsible title="Hardware">
         {data.hardware && <MachineHardwareInfo data={data.hardware} />}
       </InfoCollapsible>
-      {/*<InfoCollapsible title="Bios">
-        {data.bios && <MachineBiosInfo data={data.bios} />}
-      </InfoCollapsible>*/}
       <InfoCollapsible title="Status">
         {data.status && <MachineStatusInfo data={data.status} />}
       </InfoCollapsible>

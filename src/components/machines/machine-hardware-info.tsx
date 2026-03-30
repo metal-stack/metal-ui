@@ -66,8 +66,18 @@ const nicColumns: ColumnDef<MachineNic>[] = [
     header: "MAC Address",
   },
   { accessorKey: "identifier", header: "Identifier" },
+  { accessorKey: "vendor", header: "Vendor" },
   { accessorKey: "model", header: "Model" },
-  { accessorKey: "speed", header: "Speed" },
+  {
+    accessorKey: "speed",
+    header: "Speed",
+    cell: ({ row }) => {
+      const speed = row.original.speed;
+      if (speed === undefined || speed === 0n) return "-";
+      const gbps = Number(speed) / 1_000_000_000;
+      return `${gbps.toFixed(1)} Gbps`;
+    },
+  },
   { accessorKey: "hostname", header: "Hostname" },
 ];
 

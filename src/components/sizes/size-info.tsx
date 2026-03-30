@@ -7,6 +7,7 @@ import { DataTable } from "../ui/data-table/data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import { formatBytesBigInt } from "@/lib/size-utilities";
 import { InfoGrid } from "../info-grid/info-grid";
+import { timestampDate } from "@bufbuild/protobuf/wkt";
 
 interface SizeInfoProps {
   data: Size;
@@ -51,24 +52,50 @@ const columns: ColumnDef<SizeConstraint>[] = [
 ];
 
 export default function SizeInfo({ data }: SizeInfoProps) {
+  const metaFields = [];
+  if (data.meta?.labels?.labels) {
+    const labels = Object.entries(data.meta.labels.labels).map(
+      ([key, value]) => `${key}=${value}`
+    );
+    metaFields.push({ label: "Labels:", value: labels.join(", ") });
+  }
+  if (data.meta?.createdAt) {
+    metaFields.push({
+      label: "Created at:",
+      value: timestampDate(data.meta.createdAt).toLocaleString(),
+    });
+  }
+  if (data.meta?.updatedAt) {
+    metaFields.push({
+      label: "Updated at:",
+      value: timestampDate(data.meta.updatedAt).toLocaleString(),
+    });
+  }
+  if (data.meta?.generation !== undefined) {
+    metaFields.push({ label: "Generation:", value: data.meta.generation });
+  }
+
   return (
-    <InfoGrid
-      rows={[
-        { label: "ID:", value: data.id },
-        { label: "Name:", value: data.name },
-        { label: "Description:", value: data.description },
-        {
-          label: "Constraints",
-          value: (
-            <DataTable
-              initialData={data.constraints}
-              columns={columns}
-              getRowId={(row) => row.type.toString()}
-            />
-          ),
-          fullWidth: true,
-        },
-      ]}
-    />
+    <div className="flex flex-col gap-2">
+      <InfoGrid rows={metaFields} />
+      <InfoGrid
+        rows={[
+          { label: "ID:", value: data.id },
+          { label: "Name:", value: data.name || "—" },
+          { label: "Description:", value: data.description || "—" },
+          {
+            label: "Constraints",
+            value: (
+              <DataTable
+                initialData={data.constraints}
+                columns={columns}
+                getRowId={(row) => row.type.toString()}
+              />
+            ),
+            fullWidth: true,
+          },
+        ]}
+      />
+    </div>
   );
 }

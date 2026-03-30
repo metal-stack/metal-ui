@@ -77,6 +77,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const config = await loadCliConfig();
       const next = computeStateFromConfig(config);
       if (seq === reloadSeq.current) setState(next);
+      console.log("config-state");
+      //TODO error here when can set currentCtx
+      console.log(next);
     } catch (error) {
       if (seq === reloadSeq.current)
         setState({
@@ -157,6 +160,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo<AuthContextValue>(() => {
     return { ...state, reload, logout, setCurrentContext };
   }, [state, reload, logout, setCurrentContext]);
+
+  console.log("auth");
+  console.log(state);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

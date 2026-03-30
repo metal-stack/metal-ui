@@ -79,11 +79,11 @@ export default function MachineAllocationInfo({
 
         {
           label: "DNS server:",
-          value: data.dnsServer.map((dns) => dns.ip).join(", "),
+          value: data.dnsServers.map((dns) => dns.ip).join(", "),
         },
         {
           label: "NTP server:",
-          value: data.ntpServer.map((ntp) => ntp.address).join(", "),
+          value: data.ntpServers.map((ntp) => ntp.address).join(", "),
         },
         {
           label: "VPN",

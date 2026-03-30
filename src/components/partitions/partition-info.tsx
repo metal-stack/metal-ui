@@ -16,7 +16,7 @@ export default function PartitionInfo({ data }: PartitionInfoProps) {
           label: "DNS-Server",
           value: (
             <div className="ml-4 flex flex-col gap-2">
-              {data.dnsServer.map((dnsServer, index) => (
+              {data.dnsServers.map((dnsServer, index) => (
                 <div key={index}>IP: {dnsServer.ip}</div>
               ))}
             </div>
@@ -28,7 +28,7 @@ export default function PartitionInfo({ data }: PartitionInfoProps) {
           label: "NTP-Server",
           value: (
             <div className="ml-4 flex flex-col gap-2">
-              {data.ntpServer.map((ntpServer, index) => (
+              {data.ntpServers.map((ntpServer, index) => (
                 <div key={index}>Address: {ntpServer.address}</div>
               ))}
             </div>

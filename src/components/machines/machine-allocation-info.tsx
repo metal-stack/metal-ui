@@ -1,7 +1,7 @@
 import {
   MachineAllocation,
   MachineAllocationType,
-} from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
+} from"@metal-stack/api/js/metalstack/api/v2/machine_pb";
 import ImageInfo from "../images/image-info";
 import InfoCollapsible from "../info-collapsible/info-collapsible";
 import FilesystemLayoutInfo from "../filesystem/filesystem-layout-info";
@@ -9,7 +9,8 @@ import FirewallRulesInfo from "./allocation/firewall/firewall-rules-info";
 import MachineNetworkInfo from "./allocation/machine-network-info";
 import { InfoGrid } from "../info-grid/info-grid";
 import MachineVPNInfo from "./allocation/machine-vpn-info";
-import { timestampDate } from "@bufbuild/protobuf/wkt";
+import { CopyableText } from "../ui/copyable-text";
+import { TimestampPill } from "../ui/timestamp-pill";
 
 interface MachineAllocationInfoProps {
   data: MachineAllocation;
@@ -28,13 +29,13 @@ export default function MachineAllocationInfo({
   if (data.meta?.createdAt) {
     metaFields.push({
       label: "Created at:",
-      value: timestampDate(data.meta.createdAt).toLocaleString(),
+      value: <TimestampPill timestamp={data.meta.createdAt} />,
     });
   }
   if (data.meta?.updatedAt) {
     metaFields.push({
       label: "Updated at:",
-      value: timestampDate(data.meta.updatedAt).toLocaleString(),
+      value: <TimestampPill timestamp={data.meta.updatedAt} />,
     });
   }
   if (data.meta?.generation !== undefined) {
@@ -44,11 +45,11 @@ export default function MachineAllocationInfo({
   return (
     <InfoGrid
       rows={[
-        { label: "UUID:", value: data.uuid },
+        { label: "UUID:", value: <CopyableText text={data.uuid} variant="inline" /> },
         { label: "Name:", value: data.name },
         { label: "Description:", value: data.description },
-        { label: "Project:", value: data.project },
-        { label: "Created by:", value: data.createdBy },
+        { label: "Project:", value: <CopyableText text={data.project} variant="inline" /> },
+        { label: "Created by:", value: <CopyableText text={data.createdBy} variant="inline" /> },
         { label: "Hostname:", value: data.hostname },
         {
           label: "Allocation type:",
@@ -123,8 +124,8 @@ export default function MachineAllocationInfo({
           label: "SSH public keys:",
           value: data.sshPublicKeys.length
             ? data.sshPublicKeys.map((key, index) => (
-                <div key={index} className="ml-4 font-mono text-sm">
-                  {key}
+                <div key={index} className="ml-4">
+                  <CopyableText text={key} variant="block" />
                 </div>
               ))
             : "-",
@@ -133,8 +134,8 @@ export default function MachineAllocationInfo({
         {
           label: "Userdata:",
           value: data.userdata ? (
-            <div className="ml-4 font-mono text-xs whitespace-pre-wrap break-all">
-              {data.userdata}
+            <div className="ml-4">
+              <CopyableText text={data.userdata} variant="block" />
             </div>
           ) : "-",
           fullWidth: true,

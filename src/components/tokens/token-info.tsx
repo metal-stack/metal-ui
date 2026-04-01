@@ -3,10 +3,9 @@ import {
   TokenType,
 } from "@metal-stack/api/js/metalstack/api/v2/token_pb";
 import CodeBlock from "../code-block/code-block";
-import { Badge } from "../ui/badge";
 import { InfoGrid } from "../info-grid/info-grid";
-import { timestampDate } from "@bufbuild/protobuf/wkt";
-import { IconCalendar } from "@tabler/icons-react";
+import { CopyableText } from "../ui/copyable-text";
+import { TimestampPill } from "../ui/timestamp-pill";
 
 interface TokenInfoProps {
   data: Token;
@@ -23,13 +22,13 @@ export default function TokenInfo({ data }: TokenInfoProps) {
   if (data.meta?.createdAt) {
     metaFields.push({
       label: "Created at:",
-      value: timestampDate(data.meta.createdAt).toLocaleString(),
+      value: <TimestampPill timestamp={data.meta.createdAt} />,
     });
   }
   if (data.meta?.updatedAt) {
     metaFields.push({
       label: "Updated at:",
-      value: timestampDate(data.meta.updatedAt).toLocaleString(),
+      value: <TimestampPill timestamp={data.meta.updatedAt} />,
     });
   }
   if (data.meta?.generation !== undefined) {
@@ -61,30 +60,16 @@ export default function TokenInfo({ data }: TokenInfoProps) {
       <InfoGrid rows={metaFields} />
       <InfoGrid
         rows={[
-          { label: "ID:", value: data.uuid },
-          { label: "User:", value: data.user },
+          { label: "ID:", value: <CopyableText text={data.uuid} variant="inline" /> },
+          { label: "User:", value: data.user ? <CopyableText text={data.user} variant="inline" /> : "-" },
           { label: "Description:", value: data.description },
           {
             label: "Expires:",
-            value: (
-              <Badge variant="outline">
-                <IconCalendar />
-                {data.expires
-                  ? timestampDate(data.expires).toLocaleString()
-                  : "—"}
-              </Badge>
-            ),
+            value: data.expires ? <TimestampPill timestamp={data.expires} /> : "—",
           },
           {
             label: "Issued at:",
-            value: (
-              <Badge variant="outline">
-                <IconCalendar />
-                {data.issuedAt
-                  ? timestampDate(data.issuedAt).toLocaleString()
-                  : "—"}
-              </Badge>
-            ),
+            value: data.issuedAt ? <TimestampPill timestamp={data.issuedAt} /> : "—",
           },
           {
             label: "Token type:",
@@ -92,7 +77,7 @@ export default function TokenInfo({ data }: TokenInfoProps) {
           },
           {
             label: "Permissions",
-            value: permissionList,
+            value: <CopyableText text={permissionList} variant="block" />,
             fullWidth: true,
           },
           {

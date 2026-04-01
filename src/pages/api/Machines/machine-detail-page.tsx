@@ -2,7 +2,7 @@ import { useQuery } from "@connectrpc/connect-query";
 import { useParams } from "react-router";
 import { MachineService } from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
 import { useProject } from "@/providers/ProjectProvider";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LoadingTable } from "@/components/ui/loading-table";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import MachineInfo from "@/components/machines/machine-info";
 
@@ -16,7 +16,7 @@ export default function MachineDetailPage() {
   });
 
   if (isLoading) {
-    return <Skeleton className="h-12" />;
+    return <LoadingTable />;
   }
 
   if (error) {

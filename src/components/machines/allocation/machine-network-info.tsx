@@ -10,8 +10,8 @@ interface MachineNetworkInfoProps {
 }
 
 export default function MachineNetworkInfo({ data }: MachineNetworkInfoProps) {
-  const rows: Array<{ label: string; value: string | number | undefined }> = [
-    { label: "Network:", value: data.network },
+  const rows: Array<{ label: string; value: React.ReactNode }> = [
+    { label: "Network:", value: <span className="font-mono">{data.network}</span> },
     {
       label: "Network type:",
       value: NetworkType[data.networkType],
@@ -32,12 +32,12 @@ export default function MachineNetworkInfo({ data }: MachineNetworkInfoProps) {
       label: "NAT type:",
       value: NATType[data.natType],
     },
-    { label: "VRF:", value: data.vrf !== undefined ? data.vrf.toString() : undefined },
-    { label: "ASN:", value: data.asn !== undefined ? data.asn.toString() : undefined },
+    { label: "VRF:", value: data.vrf !== undefined ? <span className="font-mono">{data.vrf.toString()}</span> : "—" },
+    { label: "ASN:", value: data.asn !== undefined ? <span className="font-mono">{data.asn.toString()}</span> : "—" },
   ];
 
   if (data.project) {
-    rows.push({ label: "Project:", value: data.project });
+    rows.push({ label: "Project:", value: <span className="font-mono">{data.project}</span> });
   }
 
   return <InfoGrid rows={rows} />;

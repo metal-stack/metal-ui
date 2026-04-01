@@ -1,7 +1,7 @@
-import NoElementFound from "@/components/ui/no-element-found/no-element-found";
+import { EmptyState } from "@/components/ui/empty-state";
 import { useQuery } from "@connectrpc/connect-query";
 import { MachineService } from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
-import LoadingScreen from "@/components/ui/loading-screen/loading-screen";
+import { LoadingTable } from "@/components/ui/loading-table";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { MachinesTable } from "@/components/machines/machines-table";
 import { useProject } from "@/providers/ProjectProvider";
@@ -20,13 +20,20 @@ export default function MachinesPage() {
   );
 
   if (!currentProject?.uuid) return <NoProjectSelected />;
-  if (isLoading) return <LoadingScreen />;
+  if (isLoading) return <LoadingTable />;
   if (error)
     return (
       <AlertHint title="Error loading machines" description={error.message} />
     );
 
-  if (!data?.machines.length) return <NoElementFound />;
+  if (!data?.machines.length) {
+    return (
+      <EmptyState
+        title="No machines found"
+        description="Machines will appear here when they register"
+      />
+    );
+  }
 
   return <MachinesTable data={data.machines} />;
 }

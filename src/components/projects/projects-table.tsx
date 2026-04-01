@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Project } from "@metal-stack/api/js/metalstack/api/v2/project_pb";
 import { DataTable } from "../ui/data-table/data-table";
 import { Link, useLocation } from "react-router";
+import { CopyButton } from "@/components/ui/copy-button";
 
 export function ProjectTable({ data }: { data: Project[] }) {
   const location = useLocation();
@@ -12,9 +13,12 @@ export function ProjectTable({ data }: { data: Project[] }) {
       header: "UUID",
       enableHiding: false,
       cell: ({ row }) => (
-        <Link to={prefix + "/projects/" + row.original.uuid}>
-          {row.original.uuid}
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link to={prefix + "/projects/" + row.original.uuid}>
+            {row.original.uuid}
+          </Link>
+          <CopyButton text={row.original.uuid} variant="ghost" size="sm" className="h-6 w-6" />
+        </div>
       ),
     },
     {

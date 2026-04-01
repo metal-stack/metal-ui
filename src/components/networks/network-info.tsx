@@ -4,7 +4,8 @@ import {
   NetworkType,
 } from "@metal-stack/api/js/metalstack/api/v2/network_pb";
 import { InfoGrid } from "../info-grid/info-grid";
-import { timestampDate } from "@bufbuild/protobuf/wkt";
+import { CopyableText } from "../ui/copyable-text";
+import { TimestampPill } from "../ui/timestamp-pill";
 
 interface NetworkInfoProps {
   data: Network;
@@ -82,13 +83,13 @@ export default function NetworkInfo({ data }: NetworkInfoProps) {
   if (data.meta?.createdAt) {
     metaFields.push({
       label: "Created at:",
-      value: timestampDate(data.meta.createdAt).toLocaleString(),
+      value: <TimestampPill timestamp={data.meta.createdAt} />,
     });
   }
   if (data.meta?.updatedAt) {
     metaFields.push({
       label: "Updated at:",
-      value: timestampDate(data.meta.updatedAt).toLocaleString(),
+      value: <TimestampPill timestamp={data.meta.updatedAt} />,
     });
   }
   if (data.meta?.generation !== undefined) {
@@ -96,12 +97,12 @@ export default function NetworkInfo({ data }: NetworkInfoProps) {
   }
 
   const rows = [];
-  rows.push({ label: "ID:", value: data.id });
+  rows.push({ label: "ID:", value: <CopyableText text={data.id} variant="inline" /> });
   rows.push({ label: "Name:", value: data.name || "—" });
   rows.push({ label: "Description:", value: data.description || "—" });
-  rows.push({ label: "Project:", value: data.project || "—" });
-  rows.push({ label: "Partition:", value: data.partition || "—" });
-  rows.push({ label: "Namespace:", value: data.namespace || "—" });
+  rows.push({ label: "Project:", value: <CopyableText text={data.project || ""} variant="inline" /> });
+  rows.push({ label: "Partition:", value: <CopyableText text={data.partition || ""} variant="inline" /> });
+  rows.push({ label: "Namespace:", value: data.namespace ? <CopyableText text={data.namespace} variant="inline" /> : "—" });
   rows.push({
     label: "Prefixes:",
     value: data.prefixes?.join(", ") || "-",
@@ -144,8 +145,8 @@ export default function NetworkInfo({ data }: NetworkInfoProps) {
     label: "NAT Type:",
     value: data.natType ? NATType[data.natType] : "-",
   });
-  rows.push({ label: "VRF:", value: data.vrf !== undefined ? data.vrf : "-" });
-  rows.push({ label: "Parent Network:", value: data.parentNetwork || "—" });
+  rows.push({ label: "VRF:", value: data.vrf !== undefined ? <CopyableText text={data.vrf.toString()} variant="inline" /> : "-" });
+  rows.push({ label: "Parent Network:", value: data.parentNetwork ? <CopyableText text={data.parentNetwork} variant="inline" /> : "—" });
   rows.push({
     label: "Additional Announcable CIDRs:",
     value: data.additionalAnnouncableCidrs?.join(", ") || "-",

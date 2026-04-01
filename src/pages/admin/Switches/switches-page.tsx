@@ -1,7 +1,7 @@
-import NoElementFound from "@/components/ui/no-element-found/no-element-found";
+import { EmptyState } from "@/components/ui/empty-state";
 import { useQuery } from "@connectrpc/connect-query";
 import { SwitchService } from "@metal-stack/api/js/metalstack/admin/v2/switch_pb";
-import LoadingScreen from "@/components/ui/loading-screen/loading-screen";
+import { LoadingTable } from "@/components/ui/loading-table";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { SwitchesTable } from "@/components/switches/switches-table";
 
@@ -10,13 +10,20 @@ export default function AdminSwitchesPage() {
     query: {},
   });
 
-  if (isLoading) return <LoadingScreen />;
+  if (isLoading) return <LoadingTable />;
   if (error)
     return (
       <AlertHint title="Error loading switches" description={error.message} />
     );
 
-  if (!data?.switches.length) return <NoElementFound />;
+  if (!data?.switches.length) {
+    return (
+      <EmptyState
+        title="No switches found"
+        description="Switches will appear here when discovered"
+      />
+    );
+  }
 
   return <SwitchesTable data={data.switches} />;
 }

@@ -1,11 +1,11 @@
-import {
-  Switch,
-} from "@metal-stack/api/js/metalstack/api/v2/switch_pb";
+import { Switch } from "@metal-stack/api/js/metalstack/api/v2/switch_pb";
 import SwitchReplaceModeBadge from "./switch-replace-mode";
 import SwitchOSBadge from "./switch-os-badge";
 import SwitchConnectedMachinesInfo from "./switch-connected-machines";
 import { InfoGrid } from "../info-grid/info-grid";
-import { timestampDate } from "@bufbuild/protobuf/wkt";
+import { TimestampPill } from "../ui/timestamp-pill";
+import { CopyButton } from "@/components/ui/copy-button";
+import { StatusPill } from "../ui/status-pill";
 
 interface SwitchInfoProps {
   data: Switch;
@@ -15,7 +15,10 @@ function SwitchNicDisplay({ nic }: { nic: any }) {
   const rows = [];
   rows.push({ label: "Name:", value: nic.name });
   rows.push({ label: "Identifier:", value: nic.identifier });
-  rows.push({ label: "MAC:", value: nic.mac });
+  rows.push({
+    label: "MAC:",
+    value: <span className="font-mono">{nic.mac}</span>,
+  });
   if (nic.vrf) {
     rows.push({ label: "VRF:", value: nic.vrf });
   }
@@ -60,14 +63,19 @@ function SwitchNicDisplay({ nic }: { nic: any }) {
     });
     rows.push({
       label: "BGP State:",
-      value: nic.bgpPortState.bgpState,
+      value: (
+        <StatusPill
+          status={nic.bgpPortState.bgpState === "up" ? "online" : "offline"}
+          label={nic.bgpPortState.bgpState}
+        />
+      ),
     });
     if (nic.bgpPortState.bgpTimerUpEstablished) {
       rows.push({
         label: "BGP Timer Up:",
-        value: timestampDate(
-          nic.bgpPortState.bgpTimerUpEstablished
-        ).toLocaleString(),
+        value: (
+          <TimestampPill timestamp={nic.bgpPortState.bgpTimerUpEstablished} />
+        ),
       });
     }
     rows.push({
@@ -95,9 +103,7 @@ function SwitchSyncDisplay({ sync, label }: { sync: any; label: string }) {
         rows={[
           {
             label: "Time:",
-            value: sync.time
-              ? timestampDate(sync.time).toLocaleString()
-              : "-",
+            value: sync.time ? <TimestampPill timestamp={sync.time} /> : "-",
           },
           {
             label: "Duration:",
@@ -117,20 +123,20 @@ export default function SwitchInfo({ data }: SwitchInfoProps) {
   const metaFields = [];
   if (data.meta?.labels?.labels) {
     const labels = Object.entries(data.meta.labels.labels).map(
-      ([key, value]) => `${key}=${value}`
+      ([key, value]) => `${key}=${value}`,
     );
     metaFields.push({ label: "Labels:", value: labels.join(", ") });
   }
   if (data.meta?.createdAt) {
     metaFields.push({
       label: "Created at:",
-      value: timestampDate(data.meta.createdAt).toLocaleString(),
+      value: <TimestampPill timestamp={data.meta.createdAt} />,
     });
   }
   if (data.meta?.updatedAt) {
     metaFields.push({
       label: "Updated at:",
-      value: timestampDate(data.meta.updatedAt).toLocaleString(),
+      value: <TimestampPill timestamp={data.meta.updatedAt} />,
     });
   }
   if (data.meta?.generation !== undefined) {
@@ -139,7 +145,15 @@ export default function SwitchInfo({ data }: SwitchInfoProps) {
 
   const nicElements = data.nics.map((nic, index) => (
     <div key={index} className="ml-4">
-      <strong>NIC {index + 1}: {nic.name}</strong>
+      <strong className="flex items-center gap-2">
+        NIC {index + 1}: {nic.name}
+        <CopyButton
+          text={nic.identifier || ""}
+          variant="ghost"
+          size="sm"
+          className="h-6 w-6"
+        />
+      </strong>
       <div className="mt-2">
         <SwitchNicDisplay nic={nic} />
       </div>
@@ -155,7 +169,10 @@ export default function SwitchInfo({ data }: SwitchInfoProps) {
     label: "Replace mode:",
     value: <SwitchReplaceModeBadge mode={data.replaceMode} />,
   });
-  rows.push({ label: "Mgmt IP:", value: data.managementIp });
+  rows.push({
+    label: "Mgmt IP:",
+    value: <span className="font-mono">{data.managementIp}</span>,
+  });
   rows.push({ label: "Mgmt User:", value: data.managementUser || "—" });
   rows.push({
     label: "Console Command:",
@@ -171,7 +188,11 @@ export default function SwitchInfo({ data }: SwitchInfoProps) {
   }
   rows.push({
     label: "Connected Machines:",
-    value: <SwitchConnectedMachinesInfo connectedMachines={data.machineConnections} />,
+    value: (
+      <SwitchConnectedMachinesInfo
+        connectedMachines={data.machineConnections}
+      />
+    ),
     fullWidth: true,
   });
   if (data.lastSync) {
@@ -184,7 +205,9 @@ export default function SwitchInfo({ data }: SwitchInfoProps) {
   if (data.lastSyncError) {
     rows.push({
       label: "Last Sync Error",
-      value: <SwitchSyncDisplay sync={data.lastSyncError} label="Last Sync Error" />,
+      value: (
+        <SwitchSyncDisplay sync={data.lastSyncError} label="Last Sync Error" />
+      ),
       fullWidth: true,
     });
   }

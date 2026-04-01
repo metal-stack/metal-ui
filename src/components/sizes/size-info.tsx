@@ -7,7 +7,8 @@ import { DataTable } from "../ui/data-table/data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import { formatBytesBigInt } from "@/lib/size-utilities";
 import { InfoGrid } from "../info-grid/info-grid";
-import { timestampDate } from "@bufbuild/protobuf/wkt";
+import { CopyableText } from "../ui/copyable-text";
+import { TimestampPill } from "../ui/timestamp-pill";
 
 interface SizeInfoProps {
   data: Size;
@@ -62,13 +63,13 @@ export default function SizeInfo({ data }: SizeInfoProps) {
   if (data.meta?.createdAt) {
     metaFields.push({
       label: "Created at:",
-      value: timestampDate(data.meta.createdAt).toLocaleString(),
+      value: <TimestampPill timestamp={data.meta.createdAt} />,
     });
   }
   if (data.meta?.updatedAt) {
     metaFields.push({
       label: "Updated at:",
-      value: timestampDate(data.meta.updatedAt).toLocaleString(),
+      value: <TimestampPill timestamp={data.meta.updatedAt} />,
     });
   }
   if (data.meta?.generation !== undefined) {
@@ -80,7 +81,7 @@ export default function SizeInfo({ data }: SizeInfoProps) {
       <InfoGrid rows={metaFields} />
       <InfoGrid
         rows={[
-          { label: "ID:", value: data.id },
+          { label: "ID:", value: <CopyableText text={data.id} variant="inline" /> },
           { label: "Name:", value: data.name || "—" },
           { label: "Description:", value: data.description || "—" },
           {

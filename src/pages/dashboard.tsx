@@ -8,10 +8,10 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col gap-4 md:gap-6">
-      <Alert className="border border-border bg-muted text-foreground">
-        <TriangleAlertIcon className="h-4 w-4 !text-primary" />
+      <Alert variant="warning">
+        <TriangleAlertIcon className="h-4 w-4" />
 
-        <AlertTitle className="text-primary">Warning</AlertTitle>
+        <AlertTitle>Warning</AlertTitle>
         <AlertDescription className="inline">
           This UI is under construction. It builds on top of the Metal API with{" "}
           <a

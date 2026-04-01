@@ -1,5 +1,5 @@
 import { useQuery } from "@connectrpc/connect-query";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LoadingTable } from "@/components/ui/loading-table";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { FilesystemService } from "@metal-stack/api/js/metalstack/api/v2/filesystem_pb";
 import FilesystemLayoutInfo from "@/components/filesystem/filesystem-layout-info";
@@ -12,7 +12,7 @@ export default function FilesystemDetailPage() {
   });
 
   if (isLoading) {
-    return <Skeleton className="h-12" />;
+    return <LoadingTable />;
   }
 
   if (error) {

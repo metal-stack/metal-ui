@@ -6,7 +6,7 @@ import {
 } from "@metal-stack/api/js/metalstack/api/v2/filesystem_pb";
 import FilesystemInfo from "./filesystem-info";
 import { InfoGrid } from "../info-grid/info-grid";
-import { timestampDate } from "@bufbuild/protobuf/wkt";
+import { TimestampPill } from "../ui/timestamp-pill";
 
 interface FilesystemLayoutInfoProps {
   data: FilesystemLayout;
@@ -67,13 +67,13 @@ export default function FilesystemLayoutInfo({
   if (data.meta?.createdAt) {
     metaFields.push({
       label: "Created at:",
-      value: timestampDate(data.meta.createdAt).toLocaleString(),
+      value: <TimestampPill timestamp={data.meta.createdAt} />,
     });
   }
   if (data.meta?.updatedAt) {
     metaFields.push({
       label: "Updated at:",
-      value: timestampDate(data.meta.updatedAt).toLocaleString(),
+      value: <TimestampPill timestamp={data.meta.updatedAt} />,
     });
   }
   if (data.meta?.generation !== undefined) {

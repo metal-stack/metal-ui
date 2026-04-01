@@ -3,7 +3,7 @@ import {
   PartitionBootConfiguration,
 } from "@metal-stack/api/js/metalstack/api/v2/partition_pb";
 import { InfoGrid } from "../info-grid/info-grid";
-import { timestampDate } from "@bufbuild/protobuf/wkt";
+import { TimestampPill } from "../ui/timestamp-pill";
 
 interface PartitionInfoProps {
   data: Partition;
@@ -70,13 +70,13 @@ export default function PartitionInfo({ data }: PartitionInfoProps) {
   if (data.meta?.createdAt) {
     metaFields.push({
       label: "Created at:",
-      value: timestampDate(data.meta.createdAt).toLocaleString(),
+      value: <TimestampPill timestamp={data.meta.createdAt} />,
     });
   }
   if (data.meta?.updatedAt) {
     metaFields.push({
       label: "Updated at:",
-      value: timestampDate(data.meta.updatedAt).toLocaleString(),
+      value: <TimestampPill timestamp={data.meta.updatedAt} />,
     });
   }
   if (data.meta?.generation !== undefined) {

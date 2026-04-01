@@ -1,6 +1,6 @@
 import { useQuery } from "@connectrpc/connect-query";
 import { useParams, useSearchParams } from "react-router";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LoadingTable } from "@/components/ui/loading-table";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { IPService } from "@metal-stack/api/js/metalstack/api/v2/ip_pb";
 import IPInfo from "@/components/ips/ip-info";
@@ -17,7 +17,7 @@ export default function AdminIPDetailPage() {
   });
 
   if (isLoading) {
-    return <Skeleton className="h-12" />;
+    return <LoadingTable />;
   }
 
   if (error) {

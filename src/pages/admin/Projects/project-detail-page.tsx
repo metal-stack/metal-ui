@@ -1,5 +1,5 @@
 import { useQuery } from "@connectrpc/connect-query";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LoadingTable } from "@/components/ui/loading-table";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { ProjectService } from "@metal-stack/api/js/metalstack/api/v2/project_pb";
 import { useParams } from "react-router";
@@ -13,7 +13,7 @@ export default function AdminProjectDetailPage() {
   });
 
   if (isLoading) {
-    return <Skeleton className="h-12" />;
+    return <LoadingTable />;
   }
 
   if (error) {

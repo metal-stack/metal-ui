@@ -1,6 +1,7 @@
 import { Filesystem } from "@metal-stack/api/js/metalstack/api/v2/filesystem_pb";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "../ui/data-table/data-table";
+import { CopyableText } from "../ui/copyable-text";
 
 interface FilesystemsInfoProps {
   data: Filesystem[];
@@ -10,6 +11,7 @@ const columns: ColumnDef<Filesystem>[] = [
   {
     accessorKey: "name",
     header: "Name",
+    cell: ({ row }) => <CopyableText text={row.original.name || ""} variant="inline" />,
   },
   {
     accessorKey: "description",
@@ -18,6 +20,7 @@ const columns: ColumnDef<Filesystem>[] = [
   {
     accessorKey: "path",
     header: "Path",
+    cell: ({ row }) => <CopyableText text={row.original.path || ""} variant="block" />,
   },
   {
     accessorKey: "label",

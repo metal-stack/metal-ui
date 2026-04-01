@@ -4,6 +4,7 @@ import { Switch } from "@metal-stack/api/js/metalstack/api/v2/switch_pb";
 import SwitchOSBadge from "./switch-os-badge";
 import SwitchLastSync from "./switch-last-sync";
 import { Link } from "react-router";
+import { CopyButton } from "@/components/ui/copy-button";
 
 const columns: ColumnDef<Switch>[] = [
   {
@@ -11,7 +12,10 @@ const columns: ColumnDef<Switch>[] = [
     header: "ID",
     enableHiding: false,
     cell: ({ row }) => (
-      <Link to={"/admin/switches/" + row.original.id}>{row.original.id}</Link>
+      <div className="flex items-center gap-2">
+        <Link to={"/admin/switches/" + row.original.id}>{row.original.id}</Link>
+        <CopyButton text={row.original.id} variant="ghost" size="sm" className="h-6 w-6" />
+      </div>
     ),
   },
   {

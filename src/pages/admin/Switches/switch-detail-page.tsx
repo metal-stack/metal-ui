@@ -1,6 +1,6 @@
 import { useQuery } from "@connectrpc/connect-query";
 import { useParams } from "react-router";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LoadingTable } from "@/components/ui/loading-table";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { SwitchService } from "@metal-stack/api/js/metalstack/admin/v2/switch_pb";
 import SwitchInfo from "@/components/switches/switch-info";
@@ -13,7 +13,7 @@ export default function AdminSwitchDetailPage() {
   });
 
   if (isLoading) {
-    return <Skeleton className="h-12" />;
+    return <LoadingTable />;
   }
 
   if (error) {

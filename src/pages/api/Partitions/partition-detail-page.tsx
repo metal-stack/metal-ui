@@ -1,5 +1,5 @@
 import { useQuery } from "@connectrpc/connect-query";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LoadingTable } from "@/components/ui/loading-table";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { PartitionService } from "@metal-stack/api/js/metalstack/api/v2/partition_pb";
 import { useParams } from "react-router";
@@ -12,7 +12,7 @@ export default function PartitionDetailPage() {
   });
 
   if (isLoading) {
-    return <Skeleton className="h-12" />;
+    return <LoadingTable />;
   }
 
   if (error) {

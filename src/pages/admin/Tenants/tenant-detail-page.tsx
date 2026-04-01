@@ -1,6 +1,6 @@
 import { TenantService } from "@metal-stack/api/js/metalstack/api/v2/tenant_pb";
 import { useQuery } from "@connectrpc/connect-query";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LoadingTable } from "@/components/ui/loading-table";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { useParams } from "react-router";
 import TenantInfo from "@/components/tenants/tenant-info";
@@ -13,7 +13,7 @@ export default function AdminTenantDetailPage() {
   });
 
   if (isLoading) {
-    return <Skeleton className="h-12" />;
+    return <LoadingTable />;
   }
 
   if (error) {

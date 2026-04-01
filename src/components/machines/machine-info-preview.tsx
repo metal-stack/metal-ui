@@ -29,28 +29,28 @@ function MachineConditionBadge({
     );
   }
 
-  let colorClass = "";
-  let icon = <IconQuestionMark className="w-3 h-3 mr-1" />;
+   let colorClass = "";
+   let icon = <IconQuestionMark className="w-3 h-3 mr-1" />;
 
-  switch (condition.state) {
-    case MachineState.AVAILABLE:
-      colorClass = "bg-green-100 text-green-800 border-green-200 hover:bg-green-200";
-      icon = <IconCheck className="w-3 h-3 mr-1" />;
-      break;
-    case MachineState.LOCKED:
-      colorClass = "bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-200";
-      icon = <IconCheck className="w-3 h-3 mr-1" />;
-      break;
-    case MachineState.RESERVED:
-      colorClass = "bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200";
-      icon = <IconCheck className="w-3 h-3 mr-1" />;
-      break;
-    case MachineState.UNSPECIFIED:
-    default:
-      colorClass = "bg-red-100 text-red-800 border-red-200 hover:bg-red-200";
-      icon = <IconX className="w-3 h-3 mr-1" />;
-      break;
-  }
+   switch (condition.state) {
+     case MachineState.AVAILABLE:
+       colorClass = "dark:bg-green-900 dark:text-green-300 dark:border-green-800 hover:dark:bg-green-800 bg-green-100 text-green-800 border-green-200 hover:bg-green-200";
+       icon = <IconCheck className="w-3 h-3 mr-1" />;
+       break;
+     case MachineState.LOCKED:
+       colorClass = "dark:bg-yellow-900 dark:text-yellow-300 dark:border-yellow-800 hover:dark:bg-yellow-800 bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-200";
+       icon = <IconCheck className="w-3 h-3 mr-1" />;
+       break;
+     case MachineState.RESERVED:
+       colorClass = "dark:bg-blue-900 dark:text-blue-300 dark:border-blue-800 hover:dark:bg-blue-800 bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200";
+       icon = <IconCheck className="w-3 h-3 mr-1" />;
+       break;
+     case MachineState.UNSPECIFIED:
+     default:
+       colorClass = "dark:bg-red-900 dark:text-red-300 dark:border-red-800 hover:dark:bg-red-800 bg-red-100 text-red-800 border-red-200 hover:bg-red-200";
+       icon = <IconX className="w-3 h-3 mr-1" />;
+       break;
+   }
 
   return (
     <Tooltip>
@@ -82,7 +82,7 @@ function MachineLEDBadge({ led }: { led?: MachineChassisIdentifyLEDState }) {
   return (
     <Tooltip>
       <TooltipTrigger>
-        <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-200">
+        <Badge variant="outline" className="dark:bg-yellow-900 dark:text-yellow-300 dark:border-yellow-800 hover:dark:bg-yellow-800 bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-200">
           <span className="inline-block w-2 h-2 rounded-full bg-yellow-500 mr-1" />
           LED ON
         </Badge>
@@ -110,18 +110,18 @@ function MachineLivelinessBadge({
     return <Badge variant="outline">Unknown</Badge>;
   }
 
-  let colorClass = "";
-  switch (liveliness) {
-    case MachineLiveliness.ALIVE:
-      colorClass = "bg-green-100 text-green-800 border-green-200 hover:bg-green-200";
-      break;
-    case MachineLiveliness.DEAD:
-      colorClass = "bg-red-100 text-red-800 border-red-200 hover:bg-red-200";
-      break;
-    default:
-      colorClass = "bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-200";
-      break;
-  }
+   let colorClass = "";
+   switch (liveliness) {
+     case MachineLiveliness.ALIVE:
+       colorClass = "dark:bg-green-900 dark:text-green-300 dark:border-green-800 hover:dark:bg-green-800 bg-green-100 text-green-800 border-green-200 hover:bg-green-200";
+       break;
+     case MachineLiveliness.DEAD:
+       colorClass = "dark:bg-red-900 dark:text-red-300 dark:border-red-800 hover:dark:bg-red-800 bg-red-100 text-red-800 border-red-200 hover:bg-red-200";
+       break;
+     default:
+       colorClass = "dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700 hover:dark:bg-gray-700 bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-200";
+       break;
+   }
 
   return (
     <Badge variant="outline" className={colorClass}>
@@ -171,10 +171,10 @@ export default function MachineInfoPreview({ data }: MachineInfoPreviewProps) {
   });
 
   return (
-    <div className="p-4 border rounded-lg bg-white shadow-sm">
+    <div className="p-4 border rounded-lg dark:bg-slate-900 dark:border-slate-700 bg-white shadow-sm">
       {metaFields.length > 0 && (
         <div className="mb-4 pb-4 border-b">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              <div className="text-xs font-semibold dark:text-muted-foreground text-muted-foreground uppercase tracking-wider mb-2">
             Metadata
           </div>
           <InfoGrid rows={metaFields} className="grid-cols-2 sm:grid-cols-3" />
@@ -183,30 +183,30 @@ export default function MachineInfoPreview({ data }: MachineInfoPreviewProps) {
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4 pb-4 border-b">
         <div className="flex flex-col">
-          <span className="text-xs font-semibold text-muted-foreground mb-1">
+          <span className="text-xs font-semibold dark:text-muted-foreground text-muted-foreground mb-1">
             Partition
           </span>
-          <span className="text-sm font-medium">{data.partition?.id || "-"}</span>
+          <span className="text-sm font-medium dark:text-slate-200">{data.partition?.id || "-"}</span>
         </div>
         <div className="flex flex-col">
-          <span className="text-xs font-semibold text-muted-foreground mb-1">
+          <span className="text-xs font-semibold dark:text-muted-foreground text-muted-foreground mb-1">
             Rack
           </span>
-          <span className="text-sm font-medium">{data.rack || "-"}</span>
+          <span className="text-sm font-medium dark:text-slate-200">{data.rack || "-"}</span>
         </div>
         <div className="flex flex-col">
-          <span className="text-xs font-semibold text-muted-foreground mb-1">
+          <span className="text-xs font-semibold dark:text-muted-foreground text-muted-foreground mb-1">
             Size ID
           </span>
-          <span className="text-sm font-medium">{data.size?.id || "-"}</span>
+          <span className="text-sm font-medium dark:text-slate-200">{data.size?.id || "-"}</span>
         </div>
         <div className="flex flex-col">
-          <span className="text-xs font-semibold text-muted-foreground mb-1">
+          <span className="text-xs font-semibold dark:text-muted-foreground text-muted-foreground mb-1">
             Allocated
           </span>
           <span
-            className={`text-sm font-medium ${
-              allocated === "Yes" ? "text-green-600" : "text-red-600"
+            className={`text-sm font-medium dark:text-slate-200 ${
+              allocated === "Yes" ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
             }`}
           >
             {allocated}
@@ -216,7 +216,7 @@ export default function MachineInfoPreview({ data }: MachineInfoPreviewProps) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="flex flex-col">
-          <span className="text-xs font-semibold text-muted-foreground mb-2">
+          <span className="text-xs font-semibold dark:text-muted-foreground text-muted-foreground mb-2">
             System Status
           </span>
           <InfoGrid rows={statusFields} />

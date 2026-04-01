@@ -47,7 +47,9 @@ export function InfoGrid({
               <div className={`${labelClassName} sm:col-span-2`}>
                 {row.label}
               </div>
-              <div className={`break-words sm:col-span-2 ${valueClassName}`}>
+              <div
+                className={`warp-break-word sm:col-span-2 ${valueClassName}`}
+              >
                 {renderValue(row.value)}
               </div>
             </React.Fragment>
@@ -57,7 +59,7 @@ export function InfoGrid({
         return (
           <React.Fragment key={key}>
             <div className={labelClassName}>{row.label}</div>
-            <div className={`break-words ${valueClassName}`}>
+            <div className={`wrap-break-word ${valueClassName}`}>
               {renderValue(row.value)}
             </div>
           </React.Fragment>

@@ -1,14 +1,9 @@
-import {
-  MachineConnection,
-  SwitchPortStatus,
-} from "@metal-stack/api/js/metalstack/api/v2/switch_pb";
+import { MachineConnection } from "@metal-stack/api/js/metalstack/api/v2/switch_pb";
 import { DataTable } from "../ui/data-table/data-table";
 import { ColumnDef } from "@tanstack/react-table";
+import { SwitchPortStatus } from "@metal-stack/api/js/metalstack/api/v2/switch_pb";
 
-interface SwitchConnectedMachinesInfoProps {
-  connectedMachines: MachineConnection[];
-}
-export function SwitchPortState(state?: SwitchPortStatus) {
+function SwitchPortState(state?: SwitchPortStatus) {
   let stateString = "";
   switch (state) {
     case SwitchPortStatus.DOWN:
@@ -26,6 +21,11 @@ export function SwitchPortState(state?: SwitchPortStatus) {
 
   return stateString;
 }
+
+interface SwitchConnectedMachinesInfoProps {
+  connectedMachines: MachineConnection[];
+}
+
 const columns: ColumnDef<MachineConnection>[] = [
   {
     accessorKey: "machineId",

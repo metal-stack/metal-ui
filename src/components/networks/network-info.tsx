@@ -2,6 +2,7 @@ import { Network } from "@metal-stack/api/js/metalstack/api/v2/network_pb";
 import { timestampDate } from "@bufbuild/protobuf/wkt";
 import { InfoGrid } from "../info-grid/info-grid";
 import { TimeStampPill } from "../ui/timeStamp-pill";
+import { CopyText } from "../ui/copy-text";
 
 interface NetworkInfoProps {
   data: Network;
@@ -11,6 +12,7 @@ export default function NetworkInfo({ data }: NetworkInfoProps) {
   return (
     <InfoGrid
       rows={[
+        { label: "ID:", value: <CopyText text={data.id} /> },
         { label: "Network:", value: data.name },
         { label: "Name:", value: data.name },
         { label: "Description:", value: data.description },

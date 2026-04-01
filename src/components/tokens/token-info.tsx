@@ -6,6 +6,7 @@ import CodeBlock from "../code-block/code-block";
 import { timestampDate } from "@bufbuild/protobuf/wkt";
 import { InfoGrid } from "../info-grid/info-grid";
 import { TimeStampPill } from "../ui/timeStamp-pill";
+import { CopyText } from "../ui/copy-text";
 
 interface TokenInfoProps {
   data: Token;
@@ -15,7 +16,7 @@ export default function TokenInfo({ data }: TokenInfoProps) {
   return (
     <InfoGrid
       rows={[
-        { label: "ID:", value: data.uuid },
+        { label: "ID:", value: <CopyText text={data.uuid} /> },
         { label: "Description:", value: data.description },
         {
           label: "Expires:",

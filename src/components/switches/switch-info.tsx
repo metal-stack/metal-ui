@@ -5,6 +5,7 @@ import SwitchOSBadge from "./switch-os-badge";
 import SwitchConnectedMachinesInfo from "./switch-connected-machines";
 import { InfoGrid } from "../info-grid/info-grid";
 import { TimeStampPill } from "../ui/timeStamp-pill";
+import { CopyText } from "../ui/copy-text";
 
 interface SwitchInfoProps {
   data: Switch;
@@ -14,7 +15,7 @@ export default function SwitchInfo({ data }: SwitchInfoProps) {
   return (
     <InfoGrid
       rows={[
-        { label: "ID:", value: data.id },
+        { label: "ID:", value: <CopyText text={data.id} /> },
         { label: "Description:", value: data.description },
         { label: "Partition:", value: data.partition },
         { label: "Rack:", value: data.rack },

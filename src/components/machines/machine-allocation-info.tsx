@@ -2,6 +2,7 @@ import {
   MachineAllocation,
   MachineAllocationType,
 } from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
+import { timestampDate } from "@bufbuild/protobuf/wkt";
 import ImageInfo from "../images/image-info";
 import InfoCollapsible from "../info-collapsible/info-collapsible";
 import FilesystemLayoutInfo from "../filesystem/filesystem-layout-info";
@@ -9,6 +10,8 @@ import FirewallRulesInfo from "./allocation/firewall/firewall-rules-info";
 import MachineNetworkInfo from "./allocation/machine-network-info";
 import { InfoGrid } from "../info-grid/info-grid";
 import MachineVPNInfo from "./allocation/machine-vpn-info";
+import { CopyText } from "../ui/copy-text";
+import { TimeStampPill } from "../ui/timeStamp-pill";
 
 interface MachineAllocationInfoProps {
   data: MachineAllocation;
@@ -20,12 +23,24 @@ export default function MachineAllocationInfo({
   return (
     <InfoGrid
       rows={[
-        { label: "UUID:", value: data.uuid },
+        { label: "UUID:", value: <CopyText text={data.uuid} /> },
         { label: "Name:", value: data.name },
         { label: "Description:", value: data.description },
         { label: "Project:", value: data.project },
         { label: "Created by:", value: data.createdBy },
         { label: "Hostname:", value: data.hostname },
+        {
+          label: "Created at:",
+          value: data.meta?.createdAt ? (
+            <TimeStampPill date={timestampDate(data.meta.createdAt)} />
+          ) : undefined,
+        },
+        {
+          label: "Updated at:",
+          value: data.meta?.updatedAt ? (
+            <TimeStampPill date={timestampDate(data.meta.updatedAt)} />
+          ) : undefined,
+        },
         {
           label: "Allocation type:",
           value: MachineAllocationType[data.allocationType],

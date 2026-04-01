@@ -2,6 +2,7 @@ import { Partition } from "@metal-stack/api/js/metalstack/api/v2/partition_pb";
 import { timestampDate } from "@bufbuild/protobuf/wkt";
 import { InfoGrid } from "../info-grid/info-grid";
 import { TimeStampPill } from "../ui/timeStamp-pill";
+import { CopyText } from "../ui/copy-text";
 
 interface PartitionInfoProps {
   data: Partition;
@@ -11,7 +12,7 @@ export default function PartitionInfo({ data }: PartitionInfoProps) {
   return (
     <InfoGrid
       rows={[
-        { label: "ID:", value: data.id },
+        { label: "ID:", value: <CopyText text={data.id} /> },
         { label: "Description:", value: data.description },
         {
           label: "Created at:",

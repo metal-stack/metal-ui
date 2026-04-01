@@ -2,6 +2,7 @@ import { Tenant } from "@metal-stack/api/js/metalstack/api/v2/tenant_pb";
 import { timestampDate } from "@bufbuild/protobuf/wkt";
 import { InfoGrid } from "../info-grid/info-grid";
 import { TimeStampPill } from "../ui/timeStamp-pill";
+import { CopyText } from "../ui/copy-text";
 
 interface TenantsInfoProps {
   data: Tenant;
@@ -11,7 +12,7 @@ export default function TenantInfo({ data }: TenantsInfoProps) {
   return (
     <InfoGrid
       rows={[
-        { label: "Login:", value: data.login },
+        { label: "Login:", value: <CopyText text={data.login} /> },
         { label: "Name:", value: data.name },
         {
           label: "Description:",

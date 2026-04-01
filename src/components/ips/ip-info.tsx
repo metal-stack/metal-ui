@@ -3,6 +3,7 @@ import { timestampDate } from "@bufbuild/protobuf/wkt";
 import { InfoGrid } from "../info-grid/info-grid";
 import { Badge } from "../ui/badge";
 import { TimeStampPill } from "../ui/timeStamp-pill";
+import { CopyText } from "../ui/copy-text";
 
 interface IPInfoProps {
   data: IP;
@@ -39,6 +40,7 @@ export default function IPInfo({ data }: IPInfoProps) {
   return (
     <InfoGrid
       rows={[
+        { label: "ID:", value: <CopyText text={data.uuid} /> },
         { label: "IP:", value: data.ip },
         { label: "Name:", value: data.name },
         {

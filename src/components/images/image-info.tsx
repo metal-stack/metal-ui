@@ -6,6 +6,7 @@ import {
 import { timestampDate } from "@bufbuild/protobuf/wkt";
 import { InfoGrid } from "../info-grid/info-grid";
 import { TimeStampPill } from "../ui/timeStamp-pill";
+import { CopyText } from "../ui/copy-text";
 
 interface ImageInfoProps {
   data: Image;
@@ -15,7 +16,7 @@ export default function ImageInfo({ data }: ImageInfoProps) {
   return (
     <InfoGrid
       rows={[
-        { label: "ID:", value: data.id },
+        { label: "ID:", value: <CopyText text={data.id} /> },
         { label: "Name:", value: data.name },
         { label: "Description:", value: data.description },
         { label: "URL:", value: data.url },

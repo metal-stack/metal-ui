@@ -1,12 +1,18 @@
 import { Filesystem } from "@metal-stack/api/js/metalstack/api/v2/filesystem_pb";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "../ui/data-table/data-table";
+import { CopyText } from "../ui/copy-text";
 
 interface FilesystemsInfoProps {
   data: Filesystem[];
 }
 
 const columns: ColumnDef<Filesystem>[] = [
+  {
+    accessorKey: "device",
+    header: "Device",
+    cell: ({ row }) => <CopyText text={row.original.device} />,
+  },
   {
     accessorKey: "name",
     header: "Name",

@@ -8,6 +8,7 @@ import { timestampDate } from "@bufbuild/protobuf/wkt";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "../ui/data-table/data-table";
 import { InfoGrid } from "../info-grid/info-grid";
+import { TimeStampPill } from "../ui/timeStamp-pill";
 
 interface MachineEventsInfoProps {
   data: MachineRecentProvisioningEvents;
@@ -27,9 +28,11 @@ const eventsColumn: ColumnDef<MachineProvisioningEvent>[] = [
     accessorKey: "time",
     header: "Time",
     cell: ({ row }) =>
-      row.original.time
-        ? timestampDate(row.original.time).toLocaleString()
-        : "-",
+      row.original.time ? (
+        <TimeStampPill date={timestampDate(row.original.time)} />
+      ) : (
+        "-"
+      ),
   },
 ];
 
@@ -39,9 +42,11 @@ export default function MachineEventsInfo({ data }: MachineEventsInfoProps) {
       rows={[
         {
           label: "Last Event:",
-          value: data.lastEventTime
-            ? timestampDate(data.lastEventTime).toLocaleString()
-            : undefined,
+          value: data.lastEventTime ? (
+            <TimeStampPill date={timestampDate(data.lastEventTime)} />
+          ) : (
+            undefined
+          ),
         },
         {
           label: "Provisioning state:",
@@ -55,9 +60,11 @@ export default function MachineEventsInfo({ data }: MachineEventsInfoProps) {
             <div className="mt-2 p-2 border border-red-500 rounded bg-red-50">
               <div>
                 <strong>Time:</strong>{" "}
-                {data.lastErrorEvent.time
-                  ? timestampDate(data.lastErrorEvent.time).toLocaleString()
-                  : "—"}
+                {data.lastErrorEvent.time ? (
+                  <TimeStampPill date={timestampDate(data.lastErrorEvent.time)} />
+                ) : (
+                  "—"
+                )}
               </div>
               <div>
                 <strong>Message:</strong> {data.lastErrorEvent.message || "—"}

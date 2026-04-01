@@ -3,10 +3,9 @@ import {
   TokenType,
 } from "@metal-stack/api/js/metalstack/api/v2/token_pb";
 import CodeBlock from "../code-block/code-block";
-import { Badge } from "../ui/badge";
 import { timestampDate } from "@bufbuild/protobuf/wkt";
-import { IconCalendar } from "@tabler/icons-react";
 import { InfoGrid } from "../info-grid/info-grid";
+import { TimeStampPill } from "../ui/timeStamp-pill";
 
 interface TokenInfoProps {
   data: Token;
@@ -21,21 +20,17 @@ export default function TokenInfo({ data }: TokenInfoProps) {
         {
           label: "Expires:",
           value: (
-            <Badge variant="outline">
-              <IconCalendar />
-              {data.expires ? timestampDate(data.expires).toISOString() : null}
-            </Badge>
+            <TimeStampPill
+              date={data.expires ? timestampDate(data.expires) : new Date()}
+            />
           ),
         },
         {
           label: "Issued at:",
           value: (
-            <Badge variant="outline">
-              <IconCalendar />
-              {data.issuedAt
-                ? timestampDate(data.issuedAt).toISOString()
-                : null}
-            </Badge>
+            <TimeStampPill
+              date={data.issuedAt ? timestampDate(data.issuedAt) : new Date()}
+            />
           ),
         },
         {

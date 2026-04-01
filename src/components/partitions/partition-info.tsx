@@ -1,5 +1,7 @@
 import { Partition } from "@metal-stack/api/js/metalstack/api/v2/partition_pb";
+import { timestampDate } from "@bufbuild/protobuf/wkt";
 import { InfoGrid } from "../info-grid/info-grid";
+import { TimeStampPill } from "../ui/timeStamp-pill";
 
 interface PartitionInfoProps {
   data: Partition;
@@ -11,7 +13,18 @@ export default function PartitionInfo({ data }: PartitionInfoProps) {
       rows={[
         { label: "ID:", value: data.id },
         { label: "Description:", value: data.description },
-
+        {
+          label: "Created at:",
+          value: data.meta?.createdAt ? (
+            <TimeStampPill date={timestampDate(data.meta.createdAt)} />
+          ) : undefined,
+        },
+        {
+          label: "Updated at:",
+          value: data.meta?.updatedAt ? (
+            <TimeStampPill date={timestampDate(data.meta.updatedAt)} />
+          ) : undefined,
+        },
         {
           label: "DNS-Server",
           value: (

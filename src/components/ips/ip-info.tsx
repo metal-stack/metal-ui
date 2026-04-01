@@ -1,6 +1,8 @@
 import { IP, IPType } from "@metal-stack/api/js/metalstack/api/v2/ip_pb";
+import { timestampDate } from "@bufbuild/protobuf/wkt";
 import { InfoGrid } from "../info-grid/info-grid";
 import { Badge } from "../ui/badge";
+import { TimeStampPill } from "../ui/timeStamp-pill";
 
 interface IPInfoProps {
   data: IP;
@@ -50,6 +52,18 @@ export default function IPInfo({ data }: IPInfoProps) {
           value: <IPTypeBadge type={data.type} withLabel={true} />,
         },
         { label: "Namespace:", value: data.namespace },
+        {
+          label: "Created at:",
+          value: data.meta?.createdAt ? (
+            <TimeStampPill date={timestampDate(data.meta.createdAt)} />
+          ) : undefined,
+        },
+        {
+          label: "Updated at:",
+          value: data.meta?.updatedAt ? (
+            <TimeStampPill date={timestampDate(data.meta.updatedAt)} />
+          ) : undefined,
+        },
       ]}
     />
   );

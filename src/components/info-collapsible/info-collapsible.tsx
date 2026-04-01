@@ -1,9 +1,8 @@
 import * as React from "react";
 import { Collapsible, CollapsibleTrigger } from "../ui/collapsible";
-import { Button } from "../ui/button";
-import { ChevronsUpDown } from "lucide-react";
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { CollapsibleContent } from "@radix-ui/react-collapsible";
-import { Separator } from "../ui/separator";
+import { Card, CardContent } from "../ui/card";
 
 type InfoCollapsibleProps = {
   title: string;
@@ -16,24 +15,29 @@ export default function InfoCollapsible({
 }: InfoCollapsibleProps) {
   const [open, onOpenChange] = React.useState(false);
   return (
-    <Collapsible open={open} onOpenChange={onOpenChange}>
-      <div className="flex items-center justify-between gap-4">
-        <h4 className="text-md font-semibold text-primary">{title}: </h4>
-
+    <Collapsible open={open} onOpenChange={onOpenChange} className="w-full">
+      <Card className="w-full">
         {children ? (
           <CollapsibleTrigger asChild>
-            <Button variant="ghost" size="icon" className="size-4">
-              <ChevronsUpDown />
-            </Button>
+            <div className="flex items-center justify-between px-4 cursor-pointer transition-colors">
+              <h4 className="text-lg font-semibold">{title}</h4>
+              {open ? (
+                <IconChevronUp className="size-5 text-muted-foreground" />
+              ) : (
+                <IconChevronDown className="size-5 text-muted-foreground" />
+              )}
+            </div>
           </CollapsibleTrigger>
         ) : (
-          <span className="text-sm text-muted-foreground">No data</span>
+          <div className="flex items-center justify-between px-4 cursor-pointer hover:bg-accent/50 transition-colors">
+            <h4 className="text-lg font-semibold">{title}</h4>
+            <span className="text-sm text-muted-foreground">No data</span>
+          </div>
         )}
-      </div>
-
-      {open && <Separator className="my-2" />}
-      <CollapsibleContent>{children}</CollapsibleContent>
-      {open && <Separator className="my-2" />}
+        <CollapsibleContent>
+          <CardContent className="pt-0">{children}</CardContent>
+        </CollapsibleContent>
+      </Card>
     </Collapsible>
   );
 }

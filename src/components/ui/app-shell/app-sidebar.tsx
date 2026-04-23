@@ -18,7 +18,6 @@ import {
   IconTopologyStarRing2,
 } from "@tabler/icons-react";
 import { NavSection } from "@/components/ui/app-shell/nav-section";
-import { NavMain } from "@/components/ui/app-shell/nav-main";
 import { NavSecondary } from "@/components/ui/app-shell/nav-secondary";
 import { NavUser } from "@/components/ui/app-shell/nav-user";
 import {
@@ -242,7 +241,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavCtx />
         <Separator />
-        <NavMain items={data.navMain} />
+        <NavSection items={data.navMain} title="General" />
         <NavSection items={data.admin} title="Admin" />
         <NavSection items={data.api} title="API" />
         <NavSecondary items={data.navSecondary} className="mt-auto" />

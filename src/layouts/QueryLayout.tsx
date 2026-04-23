@@ -4,10 +4,12 @@ import { QueryProvider } from "@/providers/QueryProvider";
 import { TenantProvider } from "@/providers/TenantProvider";
 import { UserProvider } from "@/providers/UserProvider";
 import { Outlet } from "react-router";
+import { useAuth } from "@/providers/AuthProvider";
 
 export function QueryLayout() {
+  const auth = useAuth();
   return (
-    <QueryProvider>
+    <QueryProvider key={auth.apiToken ?? "loading"}>
       <MethodsProvider>
         <UserProvider>
           <TenantProvider>

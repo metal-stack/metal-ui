@@ -1,3 +1,17 @@
+// Re-export token store helpers for backward compatibility
+export type { TokenEntry } from "./token-store";
+export {
+  getTokenStore,
+  saveTokenStore,
+  addTokenToStore,
+  removeTokenFromStore,
+  switchTokenInStore,
+  getActiveToken,
+  getAllTokens,
+} from "./token-store";
+
+// Legacy single-token API — deprecated, kept for backward compat
+// These still use sessionStorage but are not used by new multi-token flow
 const AUTH_KEY = "metal-ui.auth";
 
 export function loadAuth(): { apiToken: string; apiUrl: string } | null {

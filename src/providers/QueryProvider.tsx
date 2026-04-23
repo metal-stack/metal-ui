@@ -26,7 +26,7 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
       description: "Session expired. Please log in again.",
     });
 
-    queryClient.clear(); // 🔑 extrem wichtig
+    queryClient.clear();
     auth.logout();
   }, [auth]);
 
@@ -43,12 +43,7 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
       interceptors: [interceptor],
       useBinaryFormat: false,
     });
-  }, [
-    auth.status,
-    auth.status === "authenticated" ? auth.apiToken : null,
-    auth.status === "authenticated" ? auth.apiUrl : null,
-    onUnauthorized,
-  ]);
+  }, [auth.status, auth.apiToken, auth.apiUrl, onUnauthorized]);
 
   if (auth.status !== "authenticated" || !transport) return null;
 

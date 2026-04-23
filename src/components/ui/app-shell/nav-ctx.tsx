@@ -11,12 +11,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "../label";
+import { TokenSelector } from "./token-selector";
 
 export function NavCtx() {
   const projectCtx = useProject();
   const tenantCtx = useTenant();
   return (
     <SidebarGroup>
+      <TokenSelector />
       <SidebarGroupContent className="flex flex-col gap-2">
         <Select
           value={tenantCtx.currentTenant.login}

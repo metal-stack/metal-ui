@@ -8,6 +8,7 @@ export {
   switchTokenInStore,
   getActiveToken,
   getAllTokens,
+  clearTokenStore,
 } from "./token-store";
 
 // Legacy single-token API — deprecated, kept for backward compat

@@ -93,3 +93,7 @@ export function getAllTokens(): TokenEntry[] {
   const store = getTokenStore();
   return store.tokens;
 }
+
+export function clearTokenStore(): void {
+  localStorage.removeItem(TOKENS_KEY);
+}

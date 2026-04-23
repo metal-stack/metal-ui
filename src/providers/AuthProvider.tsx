@@ -13,6 +13,7 @@ import {
   removeTokenFromStore,
   switchTokenInStore,
   getAllTokens,
+  clearTokenStore,
 } from "@/lib/auth-storage";
 import { toast } from "sonner";
 
@@ -122,6 +123,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
+    clearTokenStore();
     setState({ status: "unauthenticated", apiToken: null, apiUrl: null, allTokens: [] });
     toast.success("Auth", {
       id: "logged-out",

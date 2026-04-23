@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router";
 import Login from "./pages/login";
+import AuthCallback from "./pages/auth/callback";
 import Dashboard from "./pages/dashboard";
 import { QueryLayout } from "./layouts/QueryLayout";
 import { AuthLayout } from "./layouts/AuthLayout";
@@ -55,6 +56,10 @@ export const router = createBrowserRouter([
           {
             path: "/login",
             element: <Login />,
+          },
+          {
+            path: "/auth/callback",
+            element: <AuthCallback />,
           },
         ],
       },

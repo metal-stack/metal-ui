@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
+
 import { IconSend, IconLoader2, IconSparkles2 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,7 +14,7 @@ export function ChatInterface() {
   const [mockedStreaming, setMockedStreaming] = useState(false);
 
   const { messages, status, setMessages } = useChat({
-    transport: new DefaultChatTransport({ api: "/api/chat" }),
+    // transport handled by a real API integration
   });
 
   const isLoading =

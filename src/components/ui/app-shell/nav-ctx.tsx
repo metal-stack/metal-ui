@@ -2,6 +2,7 @@
 
 import { SidebarGroup, SidebarGroupContent } from "@/components/ui/sidebar";
 import { useProject } from "@/providers/ProjectProvider";
+import { useTenant } from "@/providers/TenantProvider";
 import {
   Select,
   SelectContent,
@@ -10,39 +11,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "../label";
-import { useTenant } from "@/providers/TenantProvider";
-import { useAuthenticatedAuth } from "@/providers/AuthProvider";
-import { useQueryClient } from "@tanstack/react-query";
+import { TokenSelector } from "./token-selector";
 
 export function NavCtx() {
-  const { clear } = useQueryClient();
-  const authenticatedAuth = useAuthenticatedAuth();
   const projectCtx = useProject();
   const tenantCtx = useTenant();
   return (
     <SidebarGroup>
+      <TokenSelector />
       <SidebarGroupContent className="flex flex-col gap-2">
-        <Select
-          value={authenticatedAuth.currentContext.name}
-          onValueChange={(value) => {
-            authenticatedAuth.setCurrentContext(
-              authenticatedAuth.contexts.find((c) => c.name === value)!,
-            );
-            clear();
-          }}
-        >
-          <Label className="text-xs text-muted-foreground">Context</Label>
-          <SelectTrigger id="rows-per-page" size="sm" className="w-full">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent side="top">
-            {authenticatedAuth.contexts.map((context) => (
-              <SelectItem key={context.name} value={context.name}>
-                {context.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
         <Select
           value={tenantCtx.currentTenant.login}
           onValueChange={(value) =>

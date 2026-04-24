@@ -154,7 +154,7 @@ export function ChatInterface() {
               onKeyDown={handleKeyDown}
               placeholder="Type your message..."
               disabled={isLoading}
-              className="min-h-[52px] max-h-[200px] resize-none pr-12"
+              className="min-h-13 max-h-50 resize-none pr-12"
               rows={1}
             />
             <Button

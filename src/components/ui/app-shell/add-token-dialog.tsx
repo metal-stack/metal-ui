@@ -52,13 +52,18 @@ export function AddTokenDialog({
 
   const onSubmit = async (values: FormValues) => {
     setIsSubmitting(true);
-    addToken(values.name.trim(), values.token.trim(), apiUrl);
-    form.reset();
-    onOpenChange(false);
-    toast.success("Token added", {
-      description: `${values.name.trim()} has been added to your token library.`,
-    });
-    setIsSubmitting(false);
+    try {
+      addToken(values.name.trim(), values.token.trim(), apiUrl);
+      form.reset();
+      onOpenChange(false);
+      toast.success("Token added", {
+        description: `${values.name.trim()} has been added to your token library.`,
+      });
+    } catch (err) {
+      toast.error("Failed to add token", { description: String(err) });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

@@ -109,7 +109,7 @@ function useMultiToken() {
   return {
     allTokens,
     activeTokenId,
-    switchToken: switchToken!,
-    removeToken: removeToken!,
+    switchToken,
+    removeToken,
   };
 }

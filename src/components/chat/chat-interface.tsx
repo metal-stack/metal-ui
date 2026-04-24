@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useChat } from "@ai-sdk/react";
-
+import { DefaultChatTransport } from "ai";
 import { IconSend, IconLoader2, IconSparkles2 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,7 +14,7 @@ export function ChatInterface() {
   const [mockedStreaming, setMockedStreaming] = useState(false);
 
   const { messages, status, setMessages } = useChat({
-    // transport handled by a real API integration
+    transport: new DefaultChatTransport({ api: "/api/chat" }),
   });
 
   const isLoading =
@@ -154,7 +154,7 @@ export function ChatInterface() {
               onKeyDown={handleKeyDown}
               placeholder="Type your message..."
               disabled={isLoading}
-              className="min-h-[52px] max-h-[200px] resize-none pr-12"
+              className="min-h-13 max-h-50 resize-none pr-12"
               rows={1}
             />
             <Button

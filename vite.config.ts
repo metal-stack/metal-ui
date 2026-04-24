@@ -12,7 +12,4 @@ export default defineConfig(async () => ({
     },
   },
   clearScreen: false,
-  server: {
-    port: 5173,
-  },
 }));

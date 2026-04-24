@@ -14,12 +14,17 @@ import {
   switchTokenInStore,
   getAllTokens,
   clearTokenStore,
-} from "@/lib/auth-storage";
+} from "@/lib/token-store";
 import { toast } from "sonner";
 
 type AuthState =
   | { status: "loading"; apiToken: null; apiUrl: null; allTokens: TokenEntry[] }
-  | { status: "unauthenticated"; apiToken: null; apiUrl: null; allTokens: TokenEntry[] }
+  | {
+      status: "unauthenticated";
+      apiToken: null;
+      apiUrl: null;
+      allTokens: TokenEntry[];
+    }
   | {
       status: "authenticated";
       apiToken: string;
@@ -55,7 +60,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         allTokens: getAllTokens(),
       });
     } else {
-      setState({ status: "unauthenticated", apiToken: null, apiUrl: null, allTokens: [] });
+      setState({
+        status: "unauthenticated",
+        apiToken: null,
+        apiUrl: null,
+        allTokens: [],
+      });
     }
   }, []);
 
@@ -97,7 +107,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           allTokens: store.tokens,
         });
       } else {
-        setState({ status: "unauthenticated", apiToken: null, apiUrl: null, allTokens: [] });
+        setState({
+          status: "unauthenticated",
+          apiToken: null,
+          apiUrl: null,
+          allTokens: [],
+        });
       }
     } else {
       setState((prev) => {
@@ -118,13 +133,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         allTokens: store.tokens,
       });
     } else {
-      setState({ status: "unauthenticated", apiToken: null, apiUrl: null, allTokens: [] });
+      setState({
+        status: "unauthenticated",
+        apiToken: null,
+        apiUrl: null,
+        allTokens: [],
+      });
     }
   }, []);
 
   const logout = useCallback(() => {
     clearTokenStore();
-    setState({ status: "unauthenticated", apiToken: null, apiUrl: null, allTokens: [] });
+    setState({
+      status: "unauthenticated",
+      apiToken: null,
+      apiUrl: null,
+      allTokens: [],
+    });
     toast.success("Auth", {
       id: "logged-out",
       richColors: true,
@@ -137,9 +162,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [state, reload, logout, addToken, removeToken, switchToken],
   );
 
-  return (
-    <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
@@ -151,8 +174,6 @@ export function useAuth() {
 export function useAuthenticatedAuth() {
   const auth = useAuth();
   if (auth.status !== "authenticated")
-    throw new Error(
-      "useAuthenticatedAuth must be used when authenticated",
-    );
+    throw new Error("useAuthenticatedAuth must be used when authenticated");
   return auth;
 }

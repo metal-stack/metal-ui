@@ -31,7 +31,9 @@ export default function CollapsibleSection({
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div className="rounded-b-lg border-x border-b bg-card p-4">
-          {children ?? (
+          {children ? (
+            children
+          ) : (
             <span className="text-sm text-muted-foreground">No data</span>
           )}
         </div>

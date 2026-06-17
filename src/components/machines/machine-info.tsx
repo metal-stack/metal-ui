@@ -8,16 +8,15 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { InfoGrid } from "@/components/info-grid/info-grid";
 import CollapsibleSection from "@/components/collapsible-section/collapsible-section";
 import MachineAllocationInfo from "./machine-allocation-info";
-import SizeInfo from "../sizes/size-info";
 import MachineHardwareInfo from "./machine-hardware-info";
 import MachineStatusInfo from "./machine-status-info";
 import MachineEventsInfo from "./machine-events-info";
 import { formatDate } from "@/lib/date-formatting";
 import { useState } from "react";
 import { Link } from "react-router";
+import { IconMaximize } from "@tabler/icons-react";
 
 interface MachineInfoProps {
   data: Machine;
@@ -109,11 +108,27 @@ export default function MachineInfo({ data }: MachineInfoProps) {
             </div>
           )}
 
+          {/* Size */}
+          {data.size && (
+            <div className="flex items-center gap-2 text-sm">
+              <IconMaximize className="size-4 shrink-0 text-muted-foreground" />
+              <span className="text-muted-foreground">Size:</span>
+              <Link
+                to={`/sizes/${data.size.id}`}
+                className="font-semibold text-primary hover:underline"
+              >
+                {data.size.id}
+              </Link>
+            </div>
+          )}
+
           {/* Meta (labels, dates, generation) */}
           {data.meta && (
             <>
               <div className="pt-2 border-t">
-                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Meta</span>
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Meta
+                </span>
               </div>
 
               {/* Labels */}
@@ -157,19 +172,18 @@ export default function MachineInfo({ data }: MachineInfoProps) {
               {/* Deletion Task ID */}
               {data.meta.deletionTaskId ? (
                 <div className="flex items-center gap-1.5 text-xs">
-                  <span className="text-muted-foreground">Deletion Task ID:</span>
-                  <code className="text-xs bg-muted px-1.5 py-0.5 rounded">{data.meta.deletionTaskId}</code>
+                  <span className="text-muted-foreground">
+                    Deletion Task ID:
+                  </span>
+                  <code className="text-xs bg-muted px-1.5 py-0.5 rounded">
+                    {data.meta.deletionTaskId}
+                  </code>
                 </div>
               ) : null}
             </>
           )}
         </CardContent>
       </Card>
-
-      {/* Size */}
-      <CollapsibleSection title="Size">
-        {data.size && <SizeInfo data={data.size} />}
-      </CollapsibleSection>
 
       {/* Allocation */}
       <CollapsibleSection title="Allocation">

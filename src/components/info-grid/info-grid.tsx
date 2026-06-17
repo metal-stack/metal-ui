@@ -19,7 +19,7 @@ type InfoGridProps = {
 export function InfoGrid({
   rows,
   className,
-  labelClassName = "font-semibold",
+  labelClassName = "",
   valueClassName = "",
   responsive = true,
   emptyValue = "—",
@@ -37,14 +37,18 @@ export function InfoGrid({
   };
 
   return (
-    <div className={`grid ${gridCols} gap-2 sm:gap-x-4 ${className ?? ""}`}>
+    <div
+      className={`grid ${gridCols} gap-2 sm:gap-x-4 text-sm ${className ?? ""}`}
+    >
       {rows.map((row, idx) => {
         const key = typeof row.label === "string" ? row.label : idx;
 
         if (row.fullWidth) {
           return (
             <React.Fragment key={key}>
-              <div className={`${labelClassName} sm:col-span-2`}>
+              <div
+                className={`${labelClassName} text-sm text-muted-foreground sm:col-span-2`}
+              >
                 {row.label}
               </div>
               <div
@@ -58,7 +62,9 @@ export function InfoGrid({
 
         return (
           <React.Fragment key={key}>
-            <div className={labelClassName}>{row.label}</div>
+            <div className={`${labelClassName} text-muted-foreground`}>
+              {row.label}
+            </div>
             <div className={`wrap-break-word ${valueClassName}`}>
               {renderValue(row.value)}
             </div>

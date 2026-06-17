@@ -3,7 +3,6 @@ import InfoCollapsible from "../info-collapsible/info-collapsible";
 import MachineAllocationInfo from "./machine-allocation-info";
 import SizeInfo from "../sizes/size-info";
 import MachineHardwareInfo from "./machine-hardware-info";
-import MachineBiosInfo from "./machine-bios";
 import MachineStatusInfo from "./machine-status-info";
 import MachineEventsInfo from "./machine-events-info";
 
@@ -28,9 +27,6 @@ export default function MachineInfo({ data }: MachineInfoProps) {
       </InfoCollapsible>
       <InfoCollapsible title="Hardware">
         {data.hardware && <MachineHardwareInfo data={data.hardware} />}
-      </InfoCollapsible>
-      <InfoCollapsible title="Bios">
-        {data.bios && <MachineBiosInfo data={data.bios} />}
       </InfoCollapsible>
       <InfoCollapsible title="Status">
         {data.status && <MachineStatusInfo data={data.status} />}

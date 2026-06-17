@@ -5,7 +5,7 @@ import { FilesystemService } from "@metal-stack/api/js/metalstack/api/v2/filesys
 import FilesystemLayoutInfo from "@/components/filesystem/filesystem-layout-info";
 import { useParams } from "react-router";
 
-export default function FilesystemDetailPage() {
+export default function FilesystemLayoutDetailPage() {
   const { id } = useParams();
   const { data, isLoading, error } = useQuery(FilesystemService.method.get, {
     id,

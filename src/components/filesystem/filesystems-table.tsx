@@ -11,7 +11,9 @@ const columns: ColumnDef<FilesystemLayout>[] = [
     header: "ID",
     enableHiding: false,
     cell: ({ row }) => (
-      <Link to={"/filesystems/" + row.original.id}>{row.original.id}</Link>
+      <Link to={"/filesystemlayouts/" + row.original.id}>
+        {row.original.id}
+      </Link>
     ),
   },
   {

@@ -13,7 +13,7 @@ import IPsPage from "./pages/api/IPs/ips-page";
 import PartitionsPage from "./pages/api/Partitions/partitions-page";
 import SizesPage from "./pages/api/Sizes/sizes-page";
 import NetworksPage from "./pages/api/Networks/networks-page";
-import FilesystemsPage from "./pages/api/Filesystems/filesystems-page";
+import FilesystemLayoutsPage from "./pages/api/Filesystems/filesystems-page";
 import TokensPage from "./pages/api/Tokens/tokens-page";
 import AdminMachinesPage from "./pages/admin/Machines/machines-page";
 import AdminIPsPage from "./pages/admin/IPs/ips-page";
@@ -28,7 +28,7 @@ import { ProtectedRoute } from "./layouts/routes/private-route";
 import { PermissionLayout } from "./layouts/PermissionLayout";
 import { permissions } from "./lib/permissions-util";
 import MachineDetailPage from "./pages/api/Machines/machine-detail-page";
-import FilesystemDetailPage from "./pages/api/Filesystems/filesystem-detail-page";
+import FilesystemLayoutDetailPage from "./pages/api/Filesystems/filesystem-detail-page";
 import ImageDetailPage from "./pages/api/Images/image-detail-page";
 import PartitionDetailPage from "./pages/api/Partitions/partition-detail-page";
 import ProjectDetailPage from "./pages/api/Projects/project-detail-page";
@@ -259,21 +259,21 @@ export const router = createBrowserRouter([
                         ],
                       },
                       {
-                        path: "/filesystems",
+                        path: "/filesystemlayouts",
                         children: [
                           {
                             index: true,
-                            element: <FilesystemsPage />,
+                            element: <FilesystemLayoutsPage />,
                             handle: {
-                              title: "Filesystems",
+                              title: "Filesystem layouts",
                               permission: permissions.API.filesystems,
                             },
                           },
                           {
                             path: ":id",
-                            element: <FilesystemDetailPage />,
+                            element: <FilesystemLayoutDetailPage />,
                             handle: {
-                              title: "Filesystem detail",
+                              title: "Filesystem layout detail",
                               permission: permissions.API.filesystems,
                             },
                           },

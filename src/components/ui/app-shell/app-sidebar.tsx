@@ -144,8 +144,8 @@ const data: {
       },
     },
     {
-      title: "Filesystems",
-      url: "/filesystems",
+      title: "Filesystem layouts",
+      url: "/filesystemlayouts",
       icon: IconDeviceSdCard,
       requires: {
         methods: permissions.API.filesystems,

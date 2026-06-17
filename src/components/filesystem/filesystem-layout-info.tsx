@@ -1,6 +1,9 @@
 import { FilesystemLayout } from "@metal-stack/api/js/metalstack/api/v2/filesystem_pb";
 import FilesystemInfo from "./filesystem-info";
-import { InfoGrid } from "../info-grid/info-grid";
+import { toast } from "sonner";
+import { CopyIcon, FingerprintPattern } from "lucide-react";
+import { IdentityCard } from "../identity-card/identity-card";
+import CollapsibleSection from "../collapsible-section/collapsible-section";
 
 interface FilesystemLayoutInfoProps {
   data: FilesystemLayout;
@@ -9,18 +12,58 @@ interface FilesystemLayoutInfoProps {
 export default function FilesystemLayoutInfo({
   data,
 }: FilesystemLayoutInfoProps) {
+  const handleCopyId = () => {
+    navigator.clipboard.writeText(data.id);
+    toast.success("Copied id");
+  };
+
+  const identityHeader = (
+    <>
+      {/* ID */}
+      <div className="flex items-center gap-2 text-sm">
+        <FingerprintPattern className="size-4 shrink-0 text-muted-foreground" />
+        <span className="text-muted-foreground">Id:</span>
+        <button
+          onClick={handleCopyId}
+          className="font-bold text-xs flex items-center gap-1"
+          aria-label="Copy ID"
+          title={data.id}
+        >
+          {data.id}
+          <CopyIcon className="size-3" />
+        </button>
+      </div>
+
+      {/* Name */}
+      {data.name && (
+        <div className="flex items-center gap-2 text-sm">
+          <span className="text-muted-foreground">Name:</span>
+          <span>{data.name}</span>
+        </div>
+      )}
+
+      {/* Description */}
+      {data.description && (
+        <div className="flex items-center gap-2 text-sm">
+          <span className="text-muted-foreground">Description:</span>
+          <span>{data.description}</span>
+        </div>
+      )}
+    </>
+  );
+
   return (
-    <InfoGrid
-      rows={[
-        { label: "ID:", value: data.id },
-        { label: "Name:", value: data.name },
-        { label: "Description:", value: data.description },
-        {
-          label: "Filesystems",
-          value: <FilesystemInfo data={data.filesystems} />,
-          fullWidth: true,
-        },
-      ]}
-    />
+    <div className="flex flex-col gap-3">
+      <IdentityCard header={identityHeader} meta={data.meta} />
+
+      {/* Filesystems */}
+      <CollapsibleSection title="Filesystems">
+        {data.filesystems.length > 0 && (
+          <div className="ml-4 flex flex-col gap-2">
+            <FilesystemInfo data={data.filesystems} />
+          </div>
+        )}
+      </CollapsibleSection>
+    </div>
   );
 }

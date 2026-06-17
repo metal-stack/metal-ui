@@ -1,18 +1,34 @@
 import { Partition } from "@metal-stack/api/js/metalstack/api/v2/partition_pb";
 import { IdentityCard } from "../identity-card/identity-card";
 import CollapsibleSection from "@/components/collapsible-section/collapsible-section";
+import { CopyIcon, FingerprintPattern } from "lucide-react";
+import { toast } from "sonner";
 
 interface PartitionInfoProps {
   data: Partition;
 }
 
 export default function PartitionInfo({ data }: PartitionInfoProps) {
+  const handleCopyId = () => {
+    navigator.clipboard.writeText(data.id);
+    toast.success("Copied id");
+  };
+
   const identityHeader = (
     <>
       {/* ID */}
       <div className="flex items-center gap-2 text-sm">
-        <span className="text-muted-foreground">ID:</span>
-        <span>{data.id}</span>
+        <FingerprintPattern className="size-4 shrink-0 text-muted-foreground" />
+        <span className="text-muted-foreground">Id:</span>
+        <button
+          onClick={handleCopyId}
+          className="font-bold text-xs flex items-center gap-1"
+          aria-label="Copy ID"
+          title={data.id}
+        >
+          {data.id}
+          <CopyIcon className="size-3" />
+        </button>
       </div>
 
       {/* Description */}

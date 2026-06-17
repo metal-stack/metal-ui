@@ -40,11 +40,7 @@ export function IdentityCard({ header, meta, className }: IdentityCardProps) {
 
         {meta && (
           <>
-            <div className="pt-2 border-t">
-              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Meta
-              </span>
-            </div>
+            <div className="pt-2 border-t"></div>
 
             {/* Labels */}
             <div>

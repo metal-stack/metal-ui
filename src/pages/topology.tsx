@@ -12,14 +12,12 @@ import dagre from "@dagrejs/dagre";
 
 import "@xyflow/react/dist/style.css";
 import LeafNode from "@/components/topology/LeafNode";
-import { CustomeNode } from "@/components/topology/CustomeNode";
+import { CustomNode } from "@/components/topology/CustomeNode";
 import SpineNode from "@/components/topology/SpineNode";
 import ExitNode from "@/components/topology/ExitNode";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { TriangleAlertIcon } from "lucide-react";
 import MachineNode from "@/components/topology/MachineNode";
 
-const initialNodes: CustomeNode[] = [
+const initialNodes: CustomNode[] = [
   // Exit
   {
     id: "exit-0",
@@ -191,14 +189,14 @@ export default function TopologyPage() {
   const [edges] = useEdgesState(layoutedEdges);
   return (
     <>
-      <Alert className="border border-border bg-muted text-foreground">
+      {/*<Alert className="border border-border bg-muted text-foreground">
         <TriangleAlertIcon className="h-4 w-4 !text-primary" />
 
         <AlertTitle className="text-primary">Warning</AlertTitle>
         <AlertDescription className="inline">
           This topology view is mocked and doesn't reflect real data.
         </AlertDescription>
-      </Alert>
+      </Alert>*/}
       <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView>
         <Background />
         <Controls />

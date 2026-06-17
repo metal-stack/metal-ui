@@ -8,4 +8,4 @@ export type ExitNode = Node<{}, "exit">;
 
 export type MachineNode = Node<{}, "machine">;
 
-export type CustomeNode = LeafNode | SpineNode | ExitNode | MachineNode | Node;
+export type CustomNode = LeafNode | SpineNode | ExitNode | MachineNode | Node;

@@ -1,31 +1,23 @@
 import { Machine } from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
 import { CopyIcon, FingerprintPattern, HardDrive, Server } from "lucide-react";
 import { IconMaximize } from "@tabler/icons-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import CollapsibleSection from "@/components/collapsible-section/collapsible-section";
 import MachineAllocationInfo from "./machine-allocation-info";
 import MachineHardwareInfo from "./machine-hardware-info";
 import MachineStatusInfo from "./machine-status-info";
 import MachineEventsInfo from "./machine-events-info";
 import { IdentityCard } from "../identity-card/identity-card";
-import { useState } from "react";
 import { Link } from "react-router";
+import { toast } from "sonner";
 
 interface MachineInfoProps {
   data: Machine;
 }
 
 export default function MachineInfo({ data }: MachineInfoProps) {
-  const [copied, setCopied] = useState(false);
-
   const handleCopyUUID = () => {
     navigator.clipboard.writeText(data.uuid);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+    toast.success("Copied id");
   };
 
   const identityHeader = (
@@ -34,25 +26,15 @@ export default function MachineInfo({ data }: MachineInfoProps) {
       <div className="flex items-center gap-2 text-sm">
         <FingerprintPattern className="size-4 shrink-0 text-muted-foreground" />
         <span className="text-muted-foreground">UUID:</span>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              onClick={handleCopyUUID}
-              className="font-mono text-xs hover:underline flex items-center gap-1"
-              aria-label="Copy UUID"
-              title={data.uuid}
-            >
-              {data.uuid}
-              <CopyIcon className="size-3" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">
-            <div className="flex items-center gap-1">
-              <span className="font-mono">{data.uuid}</span>
-              {copied && <span className="text-green-600 ml-2">Copied!</span>}
-            </div>
-          </TooltipContent>
-        </Tooltip>
+        <button
+          onClick={handleCopyUUID}
+          className="font-mono text-xs flex items-center gap-1"
+          aria-label="Copy UUID"
+          title={data.uuid}
+        >
+          {data.uuid}
+          <CopyIcon className="size-3" />
+        </button>
       </div>
 
       {/* Rack */}

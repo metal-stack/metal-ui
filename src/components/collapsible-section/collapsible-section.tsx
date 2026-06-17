@@ -1,5 +1,9 @@
 import { ChevronDown } from "lucide-react";
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/collapsible";
 
 interface CollapsibleSectionProps {
   title: string;
@@ -13,7 +17,7 @@ export default function CollapsibleSection({
   title,
   icon,
   children,
-  defaultOpen = true,
+  defaultOpen = false,
   className,
 }: CollapsibleSectionProps) {
   return (

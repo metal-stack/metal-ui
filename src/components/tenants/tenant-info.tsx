@@ -1,20 +1,16 @@
 import { Tenant } from "@metal-stack/api/js/metalstack/api/v2/tenant_pb";
 import { CopyIcon, FingerprintPattern } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { IdentityCard } from "@/components/identity-card/identity-card";
-import { useState } from "react";
+import { toast } from "sonner";
 
 interface TenantsInfoProps {
   data: Tenant;
 }
 
 export default function TenantInfo({ data }: TenantsInfoProps) {
-  const [copied, setCopied] = useState(false);
-
   const handleCopyLogin = () => {
     navigator.clipboard.writeText(data.login);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+    toast.success("Copied id");
   };
 
   const header = (
@@ -23,25 +19,15 @@ export default function TenantInfo({ data }: TenantsInfoProps) {
       <div className="flex items-center gap-2 text-sm">
         <FingerprintPattern className="size-4 shrink-0 text-muted-foreground" />
         <span className="text-muted-foreground">Login:</span>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              onClick={handleCopyLogin}
-              className="font-bold text-xs hover:underline flex items-center gap-1"
-              aria-label="Copy Login"
-              title={data.login}
-            >
-              {data.login}
-              <CopyIcon className="size-3" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">
-            <div className="flex items-center gap-1">
-              <span className="font-mono">{data.login}</span>
-              {copied && <span className="text-green-600 ml-2">Copied!</span>}
-            </div>
-          </TooltipContent>
-        </Tooltip>
+        <button
+          onClick={handleCopyLogin}
+          className="font-bold text-xs flex items-center gap-1"
+          aria-label="Copy Login"
+          title={data.login}
+        >
+          {data.login}
+          <CopyIcon className="size-3" />
+        </button>
       </div>
 
       {/* Name */}

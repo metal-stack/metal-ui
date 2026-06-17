@@ -1,13 +1,14 @@
 import {
   MachineProvisioningEvent,
   MachineProvisioningEventState,
-  MachineProvisioningEventType,
   MachineRecentProvisioningEvents,
 } from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
 import { timestampDate } from "@bufbuild/protobuf/wkt";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "../ui/data-table/data-table";
 import { InfoGrid } from "../info-grid/info-grid";
+import { Badge } from "@/components/ui/badge";
+import { formatDate } from "@/lib/date-formatting";
 
 interface MachineEventsInfoProps {
   data: MachineRecentProvisioningEvents;
@@ -17,7 +18,7 @@ const eventsColumn: ColumnDef<MachineProvisioningEvent>[] = [
   {
     accessorKey: "event",
     header: "Event",
-    cell: ({ row }) => MachineProvisioningEventType[row.original.event],
+    cell: ({ row }) => MachineProvisioningEventState[row.original.event],
   },
   {
     accessorKey: "message",
@@ -28,7 +29,7 @@ const eventsColumn: ColumnDef<MachineProvisioningEvent>[] = [
     header: "Time",
     cell: ({ row }) =>
       row.original.time
-        ? timestampDate(row.original.time).toLocaleString()
+        ? formatDate(timestampDate(row.original.time))
         : "-",
   },
 ];
@@ -40,7 +41,7 @@ export default function MachineEventsInfo({ data }: MachineEventsInfoProps) {
         {
           label: "Last Event:",
           value: data.lastEventTime
-            ? timestampDate(data.lastEventTime).toLocaleString()
+            ? <Badge variant="secondary">{formatDate(timestampDate(data.lastEventTime))}</Badge>
             : undefined,
         },
         {
@@ -52,11 +53,11 @@ export default function MachineEventsInfo({ data }: MachineEventsInfoProps) {
         {
           label: "Last error event:",
           value: data.lastErrorEvent ? (
-            <div className="mt-2 p-2 border border-red-500 rounded bg-red-50">
+            <div className="mt-2 p-3 border rounded border-red-300 bg-red-50 text-sm space-y-1">
               <div>
                 <strong>Time:</strong>{" "}
                 {data.lastErrorEvent.time
-                  ? timestampDate(data.lastErrorEvent.time).toLocaleString()
+                  ? <Badge variant="secondary">{formatDate(timestampDate(data.lastErrorEvent.time))}</Badge>
                   : "—"}
               </div>
               <div>

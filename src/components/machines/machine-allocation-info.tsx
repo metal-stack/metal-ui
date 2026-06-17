@@ -2,6 +2,8 @@ import {
   MachineAllocation,
   MachineAllocationType,
 } from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
+import { timestampDate } from "@bufbuild/protobuf/wkt";
+import { Badge } from "@/components/ui/badge";
 import ImageInfo from "../images/image-info";
 import InfoCollapsible from "../info-collapsible/info-collapsible";
 import FilesystemLayoutInfo from "../filesystem/filesystem-layout-info";
@@ -9,6 +11,7 @@ import FirewallRulesInfo from "./allocation/firewall/firewall-rules-info";
 import MachineNetworkInfo from "./allocation/machine-network-info";
 import { InfoGrid } from "../info-grid/info-grid";
 import MachineVPNInfo from "./allocation/machine-vpn-info";
+import { formatDate } from "@/lib/date-formatting";
 
 interface MachineAllocationInfoProps {
   data: MachineAllocation;
@@ -79,11 +82,11 @@ export default function MachineAllocationInfo({
 
         {
           label: "DNS server:",
-          value: data.dnsServer.map((dns) => dns.ip).join(", "),
+          value: data.dnsServers.map((dns) => dns.ip).join(", "),
         },
         {
           label: "NTP server:",
-          value: data.ntpServer.map((ntp) => ntp.address).join(", "),
+          value: data.ntpServers.map((ntp) => ntp.address).join(", "),
         },
         {
           label: "VPN",
@@ -93,6 +96,72 @@ export default function MachineAllocationInfo({
             </InfoCollapsible>
           ),
           fullWidth: true,
+        },
+
+        // SSH Public Keys
+        {
+          label: "SSH Public Keys:",
+          value:
+            data.sshPublicKeys.filter((k) => k !== "").length > 0
+              ? data.sshPublicKeys
+                  .map((k, i) =>
+                    k !== "" ? (
+                      <div key={i} className="flex items-center gap-2">
+                        <code className="text-xs bg-muted px-1.5 py-0.5 rounded break-all">
+                          {k}
+                        </code>
+                      </div>
+                    ) : null
+                  )
+                  .filter(Boolean)
+              : "—",
+          fullWidth: true,
+        },
+
+        // Allocation-level Meta
+        {
+          label: "Labels:",
+          value: (() => {
+            const metaLabels =
+              data.meta?.labels?.labels ??
+              (data.meta?.labels as Record<string, string> | undefined);
+            if (!metaLabels || Object.keys(metaLabels).length === 0) {
+              return "—";
+            }
+            return (
+              <div className="flex flex-wrap gap-1">
+                {Object.entries(metaLabels).map(([k, v]) => (
+                  <span
+                    key={k}
+                    className="text-xs bg-muted px-1.5 py-0.5 rounded"
+                  >
+                    {k}: {v}
+                  </span>
+                ))}
+              </div>
+            );
+          })(),
+          fullWidth: true,
+        },
+        {
+          label: "Created:",
+          value: data.meta?.createdAt
+            ? <Badge variant="secondary">{formatDate(timestampDate(data.meta.createdAt))}</Badge>
+            : "—",
+        },
+        {
+          label: "Updated:",
+          value: data.meta?.updatedAt
+            ? <Badge variant="secondary">{formatDate(timestampDate(data.meta.updatedAt))}</Badge>
+            : "—",
+        },
+        {
+          label: "Generation:",
+          value: data.meta?.generation ? data.meta.generation.toString() : "—",
+        },
+        {
+          label: "Deletion_task_ID:",
+          value: data.meta?.deletionTaskId || "—",
         },
       ]}
     />

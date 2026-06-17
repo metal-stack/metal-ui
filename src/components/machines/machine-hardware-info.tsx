@@ -66,9 +66,23 @@ const nicColumns: ColumnDef<MachineNic>[] = [
     header: "MAC Address",
   },
   { accessorKey: "identifier", header: "Identifier" },
+  { accessorKey: "vendor", header: "Vendor" },
   { accessorKey: "model", header: "Model" },
   { accessorKey: "speed", header: "Speed" },
   { accessorKey: "hostname", header: "Hostname" },
+  {
+    header: "Neighbors",
+    cell: ({ row }) => {
+      const nics = row.original;
+      if (!nics.neighbors || nics.neighbors.length === 0) return "-";
+      return nics.neighbors
+        .map(
+          (n) =>
+            `${n.name || n.identifier || "?"} (${n.mac || "?"})`
+        )
+        .join(", ");
+    },
+  },
 ];
 
 export default function MachineHardwareInfo({

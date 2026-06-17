@@ -18,8 +18,8 @@ export function NavCtx() {
   const tenantCtx = useTenant();
   return (
     <SidebarGroup>
-      <TokenSelector />
       <SidebarGroupContent className="flex flex-col gap-2">
+        <TokenSelector />
         <Select
           value={tenantCtx.currentTenant.login}
           onValueChange={(value) =>

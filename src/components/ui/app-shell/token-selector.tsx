@@ -16,6 +16,7 @@ import {
 import { useState } from "react";
 import { AddTokenDialog } from "./add-token-dialog";
 import { toast } from "sonner";
+import { Label } from "../label";
 
 export function TokenSelector() {
   const { allTokens, activeTokenId, switchToken, removeToken } =
@@ -37,6 +38,7 @@ export function TokenSelector() {
   return (
     <>
       <div className="flex flex-col gap-2">
+        <Label className="text-xs text-muted-foreground">Token context</Label>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -54,7 +56,7 @@ export function TokenSelector() {
               <IconChevronDown className="size-3 shrink-0 text-muted-foreground" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="min-w-[220px]">
+          <DropdownMenuContent align="start" className="min-w-55">
             {allTokens.map((token) => (
               <DropdownMenuItem
                 key={token.id}

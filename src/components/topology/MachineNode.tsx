@@ -7,7 +7,7 @@ import CodeBlock from "../code-block/code-block";
 
 function MachineNode({ id, data }: NodeProps<Node>) {
   return (
-    <div className="w-40 h-14 rounded-xl border border-green-300 bg-gradient-to-b from-green-100 to-green-200 shadow-sm flex items-center justify-between px-3">
+    <div className="w-40 h-14 rounded-xl border border-green-300 bg-linear-to-b from-green-100 to-green-200 shadow-sm flex items-center justify-between px-3">
       <span className="text-sm font-semibold text-green-900">{id}</span>
       <Popover>
         <PopoverTrigger asChild>
@@ -24,7 +24,7 @@ function MachineNode({ id, data }: NodeProps<Node>) {
         </PopoverContent>
       </Popover>
 
-      <Handle type="target" position={Position.Top} className="!bg-green-400" />
+      <Handle type="target" position={Position.Top} className="bg-green-400!" />
     </div>
   );
 }

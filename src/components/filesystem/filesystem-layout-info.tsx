@@ -59,9 +59,7 @@ export default function FilesystemLayoutInfo({
       {/* Filesystems */}
       <CollapsibleSection title="Filesystems">
         {data.filesystems.length > 0 && (
-          <div className="ml-4 flex flex-col gap-2">
-            <FilesystemInfo data={data.filesystems} />
-          </div>
+          <FilesystemInfo data={data.filesystems} />
         )}
       </CollapsibleSection>
     </div>

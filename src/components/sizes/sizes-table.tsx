@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Size } from "@metal-stack/api/js/metalstack/api/v2/size_pb";
 import { DataTable } from "../ui/data-table/data-table";
 import { Link } from "react-router";
+import SizeConstraintBadge from "./size-constraint-badge";
 
 const columns: ColumnDef<Size>[] = [
   {
@@ -15,6 +16,21 @@ const columns: ColumnDef<Size>[] = [
   {
     accessorKey: "name",
     header: "Name",
+  },
+  {
+    accessorKey: "constraints",
+    header: "Constraints",
+    cell: ({ row }) => (
+      <div className="flex gap-2">
+        {row.original.constraints.map((constraint) => (
+          <SizeConstraintBadge
+            type={constraint.type}
+            withLabel
+            sizeConfig={{ min: constraint.min, max: constraint.max }}
+          />
+        ))}
+      </div>
+    ),
   },
 ];
 

@@ -55,7 +55,10 @@ function MachineConditionBadge({
   return (
     <Tooltip>
       <TooltipTrigger>
-        <Badge variant="outline" className={cn("flex items-center gap-1", iconClassName)}>
+        <Badge
+          variant="outline"
+          className={cn("flex items-center gap-1", iconClassName)}
+        >
           <Icon className="size-3" />
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           {(condition.state as any) ? "AVAILABLE" : ""}
@@ -132,7 +135,10 @@ function MachineLivelinessBadge({
       break;
   }
   return (
-    <Badge variant="outline" className={cn("flex items-center gap-1", iconClassName)}>
+    <Badge
+      variant="outline"
+      className={cn("flex items-center gap-1", iconClassName)}
+    >
       <Icon className="size-3" />
       {MachineLiveliness[liveliness] || "UNKNOWN"}
     </Badge>

@@ -2,8 +2,7 @@ import {
   SwitchOS,
   SwitchOSVendor,
 } from "@metal-stack/api/js/metalstack/api/v2/switch_pb";
-import { Badge } from "../ui/badge";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Badge, Tooltip } from "@mantine/core";
 
 interface SwitchOSBadgeProps {
   os?: SwitchOS;
@@ -27,11 +26,9 @@ export default function SwitchOSBadge({ os }: SwitchOSBadgeProps) {
   }
 
   return (
-    <Tooltip>
-      <TooltipTrigger>
-        <Badge>{icon}</Badge>
-      </TooltipTrigger>
-      <TooltipContent>
+    <Tooltip
+      label={
+        <>
         <div>
           <strong>OS version: </strong>
           {os.version}
@@ -40,7 +37,10 @@ export default function SwitchOSBadge({ os }: SwitchOSBadgeProps) {
           <strong>Metal Core version: </strong>
           {os.metalCoreVersion}
         </div>
-      </TooltipContent>
+        </>
+      }
+    >
+      <Badge>{icon}</Badge>
     </Tooltip>
   );
 }

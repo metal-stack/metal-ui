@@ -1,6 +1,6 @@
 import { IP, IPType } from "@metal-stack/api/js/metalstack/api/v2/ip_pb";
 import { InfoGrid } from "../info-grid/info-grid";
-import { Badge } from "../ui/badge";
+import { Badge } from "@mantine/core";
 
 interface IPInfoProps {
   data: IP;

@@ -1,3 +1,4 @@
+import { Alert } from "@mantine/core";
 import {
   MachineProvisioningEvent,
   MachineProvisioningEventState,
@@ -52,7 +53,7 @@ export default function MachineEventsInfo({ data }: MachineEventsInfoProps) {
         {
           label: "Last error event:",
           value: data.lastErrorEvent ? (
-            <div className="mt-2 p-2 border border-red-500 rounded bg-red-50">
+            <Alert color="red" variant="light" mt="xs" p="xs">
               <div>
                 <strong>Time:</strong>{" "}
                 {data.lastErrorEvent.time
@@ -62,7 +63,7 @@ export default function MachineEventsInfo({ data }: MachineEventsInfoProps) {
               <div>
                 <strong>Message:</strong> {data.lastErrorEvent.message || "—"}
               </div>
-            </div>
+            </Alert>
           ) : undefined,
           fullWidth: data.lastErrorEvent !== undefined,
         },

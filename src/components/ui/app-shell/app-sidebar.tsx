@@ -1,5 +1,3 @@
-"use client";
-import * as React from "react";
 import {
   Icon,
   IconBuilding,
@@ -20,19 +18,9 @@ import {
 import { NavSection } from "@/components/ui/app-shell/nav-section";
 import { NavSecondary } from "@/components/ui/app-shell/nav-secondary";
 import { NavUser } from "@/components/ui/app-shell/nav-user";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
-
+import { AppShell, Divider, Group, ScrollArea, Text } from "@mantine/core";
 import logo from "@/assets/metal-stack.png";
 import { NavCtx } from "./nav-ctx";
-import { Separator } from "../separator";
 import { permissions } from "@/lib/permissions-util";
 
 export interface NavItem {
@@ -220,35 +208,26 @@ const data: {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar() {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
-              <a href="#">
-                <img src={logo} alt="metal-stack" className="h-5 w-5" />
-                <span className="text-base font-semibold">metal-stack.io</span>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
+    <>
+      <AppShell.Section p="md">
+        <Group gap="xs">
+          <img src={logo} alt="metal-stack" width={20} height={20} />
+          <Text fw={600}>metal-stack.io</Text>
+        </Group>
+      </AppShell.Section>
+      <AppShell.Section grow component={ScrollArea} px="md">
         <NavCtx />
-        <Separator />
+        <Divider my="sm" />
         <NavSection items={data.navMain} title="General" />
         <NavSection items={data.admin} title="Admin" />
         <NavSection items={data.api} title="API" />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
-      </SidebarContent>
-      <SidebarFooter>
+        <NavSecondary items={data.navSecondary} />
+      </AppShell.Section>
+      <AppShell.Section p="md">
         <NavUser />
-      </SidebarFooter>
-    </Sidebar>
+      </AppShell.Section>
+    </>
   );
 }

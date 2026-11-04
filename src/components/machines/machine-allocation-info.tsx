@@ -1,3 +1,4 @@
+import { Box } from "@mantine/core";
 import {
   MachineAllocation,
   MachineAllocationType,
@@ -66,13 +67,13 @@ export default function MachineAllocationInfo({
         {
           label: "Networks",
           value: (
-            <div className="ml-4">
+            <Box ml="md">
               {data.networks.map((mn, index) => (
                 <InfoCollapsible key={index} title="Network">
                   <MachineNetworkInfo data={mn} />
                 </InfoCollapsible>
               ))}
-            </div>
+            </Box>
           ),
           fullWidth: true,
         },

@@ -1,12 +1,6 @@
 import { useAuth } from "@/providers/AuthProvider";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { ActionIcon, Button, Menu, Text } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import {
   IconChevronDown,
   IconKey,
@@ -15,7 +9,6 @@ import {
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { AddTokenDialog } from "./add-token-dialog";
-import { toast } from "sonner";
 
 export function TokenSelector() {
   const { allTokens, activeTokenId, switchToken, removeToken } =
@@ -24,8 +17,10 @@ export function TokenSelector() {
 
   const handleRemove = (id: string, name: string) => {
     removeToken(id);
-    toast.success("Token removed", {
-      description: `${name} has been removed.`,
+    notifications.show({
+      color: "green",
+      title: "Token removed",
+      message: `${name} has been removed.`,
     });
   };
 
@@ -36,61 +31,65 @@ export function TokenSelector() {
 
   return (
     <>
-      <div className="flex flex-col gap-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full justify-between font-normal"
-            >
-              <span className="flex items-center gap-2 truncate">
-                <IconKey className="size-4 shrink-0" />
-                {activeTokenId
-                  ? (allTokens.find((t) => t.id === activeTokenId)?.name ??
-                    "No token")
-                  : "No token"}
-              </span>
-              <IconChevronDown className="size-3 shrink-0 text-muted-foreground" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="min-w-[220px]">
-            {allTokens.map((token) => (
-              <DropdownMenuItem
-                key={token.id}
-                className={token.id === activeTokenId ? "bg-input" : ""}
-                onClick={() => switchToken(token.id)}
-              >
-                <span className="flex-1 truncate">{token.name}</span>
-                <span className="text-xs text-muted-foreground">
-                  {previewToken(token.token)}
-                </span>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="size-6 -mr-2 shrink-0 text-muted-foreground hover:text-destructive"
+      <Menu width={260} position="bottom-start">
+        <Menu.Target>
+          <Button
+            variant="default"
+            size="xs"
+            fullWidth
+            justify="space-between"
+            leftSection={<IconKey size={16} />}
+            rightSection={<IconChevronDown size={12} />}
+          >
+            {activeTokenId
+              ? (allTokens.find((t) => t.id === activeTokenId)?.name ??
+                "No token")
+              : "No token"}
+          </Button>
+        </Menu.Target>
+        <Menu.Dropdown>
+          {allTokens.map((token) => (
+            <Menu.Item
+              key={token.id}
+              bg={
+                token.id === activeTokenId
+                  ? "var(--mantine-color-default-hover)"
+                  : undefined
+              }
+              onClick={() => switchToken(token.id)}
+              rightSection={
+                <ActionIcon
+                  variant="subtle"
+                  color="red"
+                  size="sm"
+                  aria-label={`Remove ${token.name}`}
                   onClick={(e) => {
                     e.stopPropagation();
                     handleRemove(token.id, token.name);
                   }}
                 >
-                  <IconTrash className="size-3" />
-                </Button>
-              </DropdownMenuItem>
-            ))}
-
-            {allTokens.length > 0 && <DropdownMenuSeparator />}
-
-            <DropdownMenuItem
-              className="text-primary"
-              onClick={() => setAddDialogOpen(true)}
+                  <IconTrash size={14} />
+                </ActionIcon>
+              }
             >
-              <IconPlus className="mr-2 size-4" />
-              Add token
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+              {token.name}{" "}
+              <Text span size="xs" c="dimmed">
+                {previewToken(token.token)}
+              </Text>
+            </Menu.Item>
+          ))}
+
+          {allTokens.length > 0 && <Menu.Divider />}
+
+          <Menu.Item
+            c="var(--mantine-primary-color-filled)"
+            leftSection={<IconPlus size={16} />}
+            onClick={() => setAddDialogOpen(true)}
+          >
+            Add token
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
 
       <AddTokenDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
     </>

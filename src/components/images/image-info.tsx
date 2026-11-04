@@ -1,3 +1,4 @@
+import { Stack } from "@mantine/core";
 import {
   Image,
   ImageClassification,
@@ -24,11 +25,11 @@ export default function ImageInfo({ data }: ImageInfoProps) {
         {
           label: "Image features",
           value: (
-            <div className="flex flex-col gap-1 ml-4">
+            <Stack gap={4} ml="md">
               {data.features.map((feature, index) => (
                 <div key={index}>{ImageFeature[feature]}</div>
               ))}
-            </div>
+            </Stack>
           ),
           fullWidth: true,
         },

@@ -2,7 +2,7 @@ import {
   Service,
   ServiceStatus,
 } from "@metal-stack/api/js/metalstack/api/v2/health_pb";
-import { Badge } from "@/components/ui/badge";
+import { Badge, Group, Text } from "@mantine/core";
 
 interface ServiceHealthItemProps {
   serviceName: Service;
@@ -10,31 +10,21 @@ interface ServiceHealthItemProps {
   message?: string;
 }
 
+const statusColor: Partial<Record<ServiceStatus, string>> = {
+  [ServiceStatus.HEALTHY]: "green",
+  [ServiceStatus.UNHEALTHY]: "red",
+  [ServiceStatus.DEGRADED]: "yellow",
+};
+
 export default function ServiceHealthItem({
   serviceName,
   status,
 }: ServiceHealthItemProps) {
-  let className = "";
-  switch (status) {
-    case ServiceStatus.HEALTHY:
-      className = "bg-green-100 text-green-800";
-      break;
-    case ServiceStatus.UNHEALTHY:
-      className = "bg-red-100 text-red-800";
-      break;
-    case ServiceStatus.DEGRADED:
-      className = "bg-yellow-100 text-yellow-800";
-      break;
-    default:
-      className = "bg-gray-100 text-gray-800";
-  }
+  const name = Service[serviceName].toLowerCase();
   return (
-    <div className="mb-2 flex flex-row gap-2">
-      <h4 className="font-semibold">
-        {Service[serviceName].toLowerCase().charAt(0).toUpperCase() +
-          Service[serviceName].toLowerCase().slice(1)}
-      </h4>
-      <Badge className={className + " ml-auto"}>{ServiceStatus[status]}</Badge>
-    </div>
+    <Group justify="space-between" mb="xs" wrap="nowrap">
+      <Text fw={600}>{name.charAt(0).toUpperCase() + name.slice(1)}</Text>
+      <Badge color={statusColor[status] ?? "gray"}>{ServiceStatus[status]}</Badge>
+    </Group>
   );
 }

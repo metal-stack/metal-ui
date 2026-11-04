@@ -1,18 +1,19 @@
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useTheme } from "@/providers/ThemeProvider";
+import {
+  ActionIcon,
+  AppShell,
+  Burger,
+  Button,
+  Group,
+  Popover,
+  Title,
+  useMantineColorScheme,
+} from "@mantine/core";
 import {
   IconArrowLeft,
   IconHeartRateMonitor,
   IconMoon,
   IconSun,
 } from "@tabler/icons-react";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
 import { useQuery } from "@connectrpc/connect-query";
 import { HealthService } from "@metal-stack/api/js/metalstack/api/v2/health_pb";
 import ServiceHealthItem from "@/components/health/service-health-item";
@@ -20,15 +21,25 @@ import { useLocation, useNavigate } from "react-router";
 
 interface SiteHeaderProps {
   title: string;
+  mobileOpened: boolean;
+  desktopOpened: boolean;
+  toggleMobile: () => void;
+  toggleDesktop: () => void;
 }
 
-export function SiteHeader({ title }: SiteHeaderProps) {
+export function SiteHeader({
+  title,
+  mobileOpened,
+  desktopOpened,
+  toggleMobile,
+  toggleDesktop,
+}: SiteHeaderProps) {
   const { data } = useQuery(HealthService.method.get);
   const navigate = useNavigate();
   const location = useLocation();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   let backPath = "/";
-
   if (location.pathname !== "/") {
     backPath = location.pathname.split("/").slice(0, -1).join("/");
     if (backPath === "/admin") {
@@ -36,42 +47,57 @@ export function SiteHeader({ title }: SiteHeaderProps) {
     }
   }
 
-  const { theme, setTheme } = useTheme();
   return (
-    <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
-      <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
-        <SidebarTrigger className="flex items-center justify-center" />
-        <Separator
-          orientation="vertical"
-          className="mx-2 data-[orientation=vertical]:h-4"
-        />
-        {location.pathname !== "/" && (
-          <IconArrowLeft onClick={() => navigate(backPath)} />
-        )}
-        <h1 className="text-base font-medium">{title}</h1>
-        <div className="ml-auto flex items-center gap-2">
-          <Button
-            variant="secondary"
-            asChild
+    <AppShell.Header>
+      <Group h="100%" px="md" justify="space-between" wrap="nowrap">
+        <Group wrap="nowrap">
+          <Burger
+            opened={mobileOpened}
+            onClick={toggleMobile}
+            hiddenFrom="sm"
             size="sm"
-            className="hidden sm:flex"
-          >
-            <a
-              href="https://metal-stack.io/docs/home/"
-              rel="noopener noreferrer"
-              target="_blank"
-              className="dark:text-foreground"
+            aria-label="Toggle navigation"
+          />
+          <Burger
+            opened={desktopOpened}
+            onClick={toggleDesktop}
+            visibleFrom="sm"
+            size="sm"
+            aria-label="Toggle navigation"
+          />
+          {location.pathname !== "/" && (
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              aria-label="Back"
+              onClick={() => navigate(backPath)}
             >
-              Docs
-            </a>
+              <IconArrowLeft size={18} />
+            </ActionIcon>
+          )}
+          <Title order={1} size="h4">
+            {title}
+          </Title>
+        </Group>
+        <Group gap="xs" wrap="nowrap">
+          <Button
+            component="a"
+            href="https://metal-stack.io/docs/home/"
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="light"
+            size="xs"
+            visibleFrom="sm"
+          >
+            Docs
           </Button>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline">
-                <IconHeartRateMonitor />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent>
+          <Popover position="bottom-end" withArrow>
+            <Popover.Target>
+              <ActionIcon variant="default" size="lg" aria-label="Service health">
+                <IconHeartRateMonitor size={18} />
+              </ActionIcon>
+            </Popover.Target>
+            <Popover.Dropdown>
               {data?.health?.services.map((service) => (
                 <ServiceHealthItem
                   key={service.name}
@@ -80,18 +106,22 @@ export function SiteHeader({ title }: SiteHeaderProps) {
                   message={service.message}
                 />
               ))}
-            </PopoverContent>
+            </Popover.Dropdown>
           </Popover>
-          <Button
-            variant="outline"
-            size="icon"
-            aria-label="Submit"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          <ActionIcon
+            variant="default"
+            size="lg"
+            aria-label="Toggle color scheme"
+            onClick={() => toggleColorScheme()}
           >
-            {theme === "dark" ? <IconMoon /> : <IconSun />}
-          </Button>
-        </div>
-      </div>
-    </header>
+            {colorScheme === "dark" ? (
+              <IconMoon size={18} />
+            ) : (
+              <IconSun size={18} />
+            )}
+          </ActionIcon>
+        </Group>
+      </Group>
+    </AppShell.Header>
   );
 }

@@ -1,3 +1,4 @@
+import { Stack } from "@mantine/core";
 import { Machine } from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
 import InfoCollapsible from "../info-collapsible/info-collapsible";
 import MachineAllocationInfo from "./machine-allocation-info";
@@ -13,7 +14,7 @@ interface MachineInfoProps {
 
 export default function MachineInfo({ data }: MachineInfoProps) {
   return (
-    <div className="flex flex-col gap-2">
+    <Stack gap="xs">
       <div>
         <strong>Partition:</strong> {data.partition?.id || "-"}
       </div>
@@ -40,6 +41,6 @@ export default function MachineInfo({ data }: MachineInfoProps) {
           <MachineEventsInfo data={data.recentProvisioningEvents} />
         )}
       </InfoCollapsible>
-    </div>
+    </Stack>
   );
 }

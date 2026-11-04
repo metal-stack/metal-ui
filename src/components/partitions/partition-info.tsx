@@ -1,3 +1,4 @@
+import { Stack } from "@mantine/core";
 import { Partition } from "@metal-stack/api/js/metalstack/api/v2/partition_pb";
 import { InfoGrid } from "../info-grid/info-grid";
 
@@ -15,11 +16,11 @@ export default function PartitionInfo({ data }: PartitionInfoProps) {
         {
           label: "DNS-Server",
           value: (
-            <div className="ml-4 flex flex-col gap-2">
+            <Stack gap="xs" ml="md">
               {data.dnsServer.map((dnsServer, index) => (
                 <div key={index}>IP: {dnsServer.ip}</div>
               ))}
-            </div>
+            </Stack>
           ),
           fullWidth: true,
         },
@@ -27,11 +28,11 @@ export default function PartitionInfo({ data }: PartitionInfoProps) {
         {
           label: "NTP-Server",
           value: (
-            <div className="ml-4 flex flex-col gap-2">
+            <Stack gap="xs" ml="md">
               {data.ntpServer.map((ntpServer, index) => (
                 <div key={index}>Address: {ntpServer.address}</div>
               ))}
-            </div>
+            </Stack>
           ),
           fullWidth: true,
         },
@@ -39,11 +40,11 @@ export default function PartitionInfo({ data }: PartitionInfoProps) {
         {
           label: "Mgmt-Services",
           value: (
-            <div className="ml-4 flex flex-col gap-2">
+            <Stack gap="xs" ml="md">
               {data.mgmtServiceAddresses.map((address, index) => (
                 <div key={index}>Address: {address}</div>
               ))}
-            </div>
+            </Stack>
           ),
           fullWidth: true,
         },

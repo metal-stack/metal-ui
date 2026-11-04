@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
 import { useAuth } from "./AuthProvider";
 import { createConnectTransport } from "@connectrpc/connect-web";
-import { toast } from "sonner";
+import { notifications } from "@mantine/notifications";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,10 +20,11 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
   const auth = useAuth();
 
   const onUnauthorized = useCallback(() => {
-    toast.error("Auth", {
+    notifications.show({
       id: "auth-load-config-failed",
-      richColors: true,
-      description: "Session expired. Please log in again.",
+      color: "red",
+      title: "Auth",
+      message: "Session expired. Please log in again.",
     });
 
     queryClient.clear();

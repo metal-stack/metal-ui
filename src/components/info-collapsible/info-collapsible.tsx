@@ -1,9 +1,6 @@
 import * as React from "react";
-import { Collapsible, CollapsibleTrigger } from "../ui/collapsible";
-import { Button } from "../ui/button";
-import { ChevronsUpDown } from "lucide-react";
-import { CollapsibleContent } from "@radix-ui/react-collapsible";
-import { Separator } from "../ui/separator";
+import { ActionIcon, Collapse, Divider, Group, Text } from "@mantine/core";
+import { IconSelector } from "@tabler/icons-react";
 
 type InfoCollapsibleProps = {
   title: string;
@@ -14,26 +11,34 @@ export default function InfoCollapsible({
   title,
   children,
 }: InfoCollapsibleProps) {
-  const [open, onOpenChange] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
   return (
-    <Collapsible open={open} onOpenChange={onOpenChange}>
-      <div className="flex items-center justify-between gap-4">
-        <h4 className="text-md font-semibold text-primary">{title}: </h4>
-
+    <div>
+      <Group justify="space-between">
+        <Text fw={600} c="var(--mantine-primary-color-filled)">
+          {title}:
+        </Text>
         {children ? (
-          <CollapsibleTrigger asChild>
-            <Button variant="ghost" size="icon" className="size-4">
-              <ChevronsUpDown />
-            </Button>
-          </CollapsibleTrigger>
+          <ActionIcon
+            variant="subtle"
+            color="gray"
+            size="sm"
+            aria-label="Toggle"
+            onClick={() => setOpen((o) => !o)}
+          >
+            <IconSelector size={16} />
+          </ActionIcon>
         ) : (
-          <span className="text-sm text-muted-foreground">No data</span>
+          <Text size="sm" c="dimmed">
+            No data
+          </Text>
         )}
-      </div>
-
-      {open && <Separator className="my-2" />}
-      <CollapsibleContent>{children}</CollapsibleContent>
-      {open && <Separator className="my-2" />}
-    </Collapsible>
+      </Group>
+      <Collapse expanded={open}>
+        <Divider my="xs" />
+        {children}
+        <Divider my="xs" />
+      </Collapse>
+    </div>
   );
 }

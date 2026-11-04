@@ -1,6 +1,6 @@
 import { useQuery } from "@connectrpc/connect-query";
 import { useParams } from "react-router";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@mantine/core";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { NetworkService } from "@metal-stack/api/js/metalstack/admin/v2/network_pb";
 import NetworkInfo from "@/components/networks/network-info";
@@ -13,7 +13,7 @@ export default function AdminNetworkDetailPage() {
   });
 
   if (isLoading) {
-    return <Skeleton className="h-12" />;
+    return <Skeleton h={48} />;
   }
 
   if (error) {

@@ -1,0 +1,24 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--mantine-spacing-xs);
+
+  @media (min-width: $mantine-breakpoint-sm) {
+    grid-template-columns: auto 1fr;
+    column-gap: var(--mantine-spacing-md);
+  }
+}
+
+.label {
+  font-weight: 600;
+}
+
+.value {
+  overflow-wrap: anywhere;
+}
+
+.full {
+  @media (min-width: $mantine-breakpoint-sm) {
+    grid-column: span 2;
+  }
+}

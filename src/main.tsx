@@ -1,14 +1,18 @@
+import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
+import "./global.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { MantineProvider } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 import App from "./App";
-import { Toaster } from "./components/ui/sonner";
-import { ThemeProvider } from "./providers/ThemeProvider";
+import { theme } from "./theme";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Toaster />
+    <MantineProvider theme={theme} defaultColorScheme="dark">
+      <Notifications />
       <App />
-    </ThemeProvider>
+    </MantineProvider>
   </React.StrictMode>
 );

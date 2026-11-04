@@ -1,12 +1,4 @@
-"use client";
-
-import {
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
+import { NavLink, Text } from "@mantine/core";
 import { Link, useLocation } from "react-router";
 import { useMethods } from "@/providers/MethodsProvider";
 import { useMemo } from "react";
@@ -36,23 +28,20 @@ export function NavSection({
   if (visibleItems.length === 0) return null;
 
   return (
-    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>{title}</SidebarGroupLabel>
-      <SidebarMenu>
-        {visibleItems.map((item) => (
-          <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton
-              asChild
-              isActive={location.pathname === item.url}
-            >
-              <Link to={item.url}>
-                <item.icon />
-                <span>{item.title}</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        ))}
-      </SidebarMenu>
-    </SidebarGroup>
+    <>
+      <Text size="xs" c="dimmed" fw={500} mt="sm" mb={4}>
+        {title}
+      </Text>
+      {visibleItems.map((item) => (
+        <NavLink
+          key={item.title}
+          component={Link}
+          to={item.url}
+          label={item.title}
+          leftSection={<item.icon size={18} />}
+          active={location.pathname === item.url}
+        />
+      ))}
+    </>
   );
 }

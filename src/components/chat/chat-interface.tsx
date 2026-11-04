@@ -1,11 +1,22 @@
 import { useState, useRef, useEffect } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import { IconSend, IconLoader2, IconSparkles2 } from "@tabler/icons-react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { cn } from "@/lib/utils";
+import { IconSend, IconSparkles2 } from "@tabler/icons-react";
+import {
+  ActionIcon,
+  Avatar,
+  Box,
+  Center,
+  Group,
+  Loader,
+  Paper,
+  ScrollArea,
+  Stack,
+  Text,
+  Textarea,
+  ThemeIcon,
+  Title,
+} from "@mantine/core";
 
 export function ChatInterface() {
   const [input, setInput] = useState("");
@@ -69,113 +80,114 @@ export function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-1 flex-col h-[calc(100vh-var(--header-height))]">
-      <div className="flex-1 overflow-y-auto px-4 py-6 lg:px-6">
+    <Stack
+      gap={0}
+      h="calc(100dvh - var(--app-shell-header-height) - 2 * var(--app-shell-padding))"
+    >
+      <ScrollArea flex={1} px="md" py="lg">
         {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center">
-            <div className="rounded-full bg-muted p-4 mb-4">
-              <IconSparkles2 className="size-8 text-muted-foreground" />
-            </div>
-            <h2 className="text-xl font-semibold mb-2">
-              How can I help you today?
-            </h2>
-            <p className="text-muted-foreground max-w-md">
-              Ask me anything about your metal-stack infrastructure.
-            </p>
-          </div>
+          <Center h="100%" mih={300}>
+            <Stack align="center" gap="xs">
+              <ThemeIcon size={64} radius="xl" variant="light" color="gray">
+                <IconSparkles2 size={32} />
+              </ThemeIcon>
+              <Title order={2} size="h3">
+                How can I help you today?
+              </Title>
+              <Text c="dimmed" maw={420} ta="center">
+                Ask me anything about your metal-stack infrastructure.
+              </Text>
+            </Stack>
+          </Center>
         ) : (
-          <div className="max-w-3xl mx-auto space-y-6">
+          <Stack maw={768} mx="auto" gap="lg">
             {messages.map((message) => (
-              <div
+              <Group
                 key={message.id}
-                className={cn(
-                  "flex gap-3",
-                  message.role === "user" ? "justify-end" : "justify-start",
-                )}
+                align="flex-start"
+                wrap="nowrap"
+                justify={message.role === "user" ? "flex-end" : "flex-start"}
               >
                 {message.role === "assistant" && (
-                  <Avatar className="size-8 shrink-0">
-                    <AvatarFallback className="bg-primary text-primary-foreground text-xs">
-                      AI
-                    </AvatarFallback>
+                  <Avatar size="md" color="metal" variant="filled">
+                    AI
                   </Avatar>
                 )}
-                <div
-                  className={cn(
-                    "rounded-lg px-4 py-2.5 max-w-[80%]",
+                <Paper
+                  px="md"
+                  py="xs"
+                  maw="80%"
+                  bg={
                     message.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted",
-                  )}
+                      ? "var(--mantine-primary-color-filled)"
+                      : "var(--mantine-color-default-hover)"
+                  }
+                  c={message.role === "user" ? "black" : undefined}
                 >
-                  <div className="whitespace-pre-wrap text-sm leading-relaxed">
-                    {message.parts.map((part, index) => {
-                      if (part.type === "text") {
-                        return <span key={index}>{part.text}</span>;
-                      }
-                      return null;
-                    })}
-                  </div>
-                </div>
+                  <Text size="sm" style={{ whiteSpace: "pre-wrap" }}>
+                    {message.parts.map((part, index) =>
+                      part.type === "text" ? (
+                        <span key={index}>{part.text}</span>
+                      ) : null,
+                    )}
+                  </Text>
+                </Paper>
                 {message.role === "user" && (
-                  <Avatar className="size-8 shrink-0">
-                    <AvatarFallback className="bg-secondary text-secondary-foreground text-xs">
-                      MA
-                    </AvatarFallback>
+                  <Avatar size="md" color="gray">
+                    MA
                   </Avatar>
                 )}
-              </div>
+              </Group>
             ))}
             {isLoading && messages[messages.length - 1]?.role === "user" && (
-              <div className="flex gap-3 justify-start">
-                <Avatar className="size-8 shrink-0">
-                  <AvatarFallback className="bg-primary text-primary-foreground text-xs">
-                    AI
-                  </AvatarFallback>
+              <Group align="flex-start" wrap="nowrap">
+                <Avatar size="md" color="metal" variant="filled">
+                  AI
                 </Avatar>
-                <div className="rounded-lg px-4 py-2.5 bg-muted">
-                  <IconLoader2 className="size-4 animate-spin text-muted-foreground" />
-                </div>
-              </div>
+                <Paper px="md" py="xs" bg="var(--mantine-color-default-hover)">
+                  <Loader size="xs" type="dots" />
+                </Paper>
+              </Group>
             )}
             <div ref={messagesEndRef} />
-          </div>
+          </Stack>
         )}
-      </div>
+      </ScrollArea>
 
-      {/* Input area */}
-      <div className="border-t bg-background p-4 lg:px-6">
-        <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
-          <div className="relative flex items-end gap-2">
+      <Box
+        p="md"
+        style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
+      >
+        <form onSubmit={handleSubmit}>
+          <Stack maw={768} mx="auto" gap="xs">
             <Textarea
               ref={textareaRef}
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => setInput(e.currentTarget.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type your message..."
               disabled={isLoading}
-              className="min-h-13 max-h-50 resize-none pr-12"
-              rows={1}
+              autosize
+              minRows={1}
+              maxRows={6}
+              rightSectionPointerEvents="all"
+              rightSection={
+                <ActionIcon
+                  type="submit"
+                  loading={isLoading}
+                  disabled={!input.trim()}
+                  aria-label="Send message"
+                >
+                  <IconSend size={16} />
+                </ActionIcon>
+              }
             />
-            <Button
-              type="submit"
-              size="icon"
-              disabled={!input.trim() || isLoading}
-              className="absolute right-2 bottom-2 size-8"
-            >
-              {isLoading ? (
-                <IconLoader2 className="size-4 animate-spin" />
-              ) : (
-                <IconSend className="size-4" />
-              )}
-              <span className="sr-only">Send message</span>
-            </Button>
-          </div>
-          <p className="text-xs text-muted-foreground mt-2 text-center">
-            Press Enter to send, Shift+Enter for new line
-          </p>
+            <Text size="xs" c="dimmed" ta="center">
+              Press Enter to send, Shift+Enter for new line
+            </Text>
+          </Stack>
         </form>
-      </div>
-    </div>
+      </Box>
+    </Stack>
   );
 }

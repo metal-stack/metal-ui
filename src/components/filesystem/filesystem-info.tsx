@@ -38,6 +38,7 @@ const columns: ColumnDef<Filesystem>[] = [
 export default function FilesystemsInfo({ data }: FilesystemsInfoProps) {
   return (
     <DataTable
+      bare
       initialData={data}
       columns={columns}
       getRowId={(_, index) => index.toString()}

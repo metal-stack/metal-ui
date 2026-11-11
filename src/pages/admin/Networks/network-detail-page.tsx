@@ -1,3 +1,4 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
 import { useParams } from "react-router";
 import { Skeleton } from "@mantine/core";
@@ -26,5 +27,9 @@ export default function AdminNetworkDetailPage() {
     return <AlertHint title="Error loading Network" description={"No data"} />;
   }
 
-  return <NetworkInfo data={data.network} />;
+  return (
+    <SectionGrid>
+      <NetworkInfo data={data.network} />
+    </SectionGrid>
+  );
 }

@@ -1,3 +1,4 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
 import { useParams } from "react-router";
 import { Skeleton } from "@mantine/core";
@@ -26,5 +27,9 @@ export default function AdminSwitchDetailPage() {
     return <AlertHint title="Error loading Switch" description={"No data"} />;
   }
 
-  return <SwitchInfo data={data.switch} />;
+  return (
+    <SectionGrid>
+      <SwitchInfo data={data.switch} />
+    </SectionGrid>
+  );
 }

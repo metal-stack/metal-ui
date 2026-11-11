@@ -1,3 +1,4 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
 import { Skeleton } from "@mantine/core";
 import AlertHint from "@/components/ui/alert/AlertHint";
@@ -26,5 +27,9 @@ export default function AdminProjectDetailPage() {
     return <AlertHint title="Error loading project" description={"No data"} />;
   }
 
-  return <ProjectInfo data={data.project} />;
+  return (
+    <SectionGrid>
+      <ProjectInfo data={data.project} />
+    </SectionGrid>
+  );
 }

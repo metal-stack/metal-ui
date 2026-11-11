@@ -1,3 +1,4 @@
+import { Section } from "@/components/ui/section/section";
 import {
   Size,
   SizeConstraint,
@@ -10,6 +11,7 @@ import { InfoGrid } from "../info-grid/info-grid";
 
 interface SizeInfoProps {
   data: Size;
+  title?: string;
 }
 
 const columns: ColumnDef<SizeConstraint>[] = [
@@ -50,25 +52,26 @@ const columns: ColumnDef<SizeConstraint>[] = [
   },
 ];
 
-export default function SizeInfo({ data }: SizeInfoProps) {
+export default function SizeInfo({ data, title = "Details" }: SizeInfoProps) {
   return (
-    <InfoGrid
-      rows={[
-        { label: "ID:", value: data.id },
-        { label: "Name:", value: data.name },
-        { label: "Description:", value: data.description },
-        {
-          label: "Constraints",
-          value: (
-            <DataTable
-              initialData={data.constraints}
-              columns={columns}
-              getRowId={(row) => row.type.toString()}
-            />
-          ),
-          fullWidth: true,
-        },
-      ]}
-    />
+    <>
+      <Section title={title}>
+        <InfoGrid
+          rows={[
+            { label: "ID:", value: data.id },
+            { label: "Name:", value: data.name },
+            { label: "Description:", value: data.description },
+          ]}
+        />
+      </Section>
+      <Section title="Constraints" flush fullWidth>
+        <DataTable
+          bare
+          initialData={data.constraints}
+          columns={columns}
+          getRowId={(row) => row.type.toString()}
+        />
+      </Section>
+    </>
   );
 }

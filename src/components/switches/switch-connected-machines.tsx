@@ -60,6 +60,7 @@ export default function SwitchConnectedMachinesInfo({
 }: SwitchConnectedMachinesInfoProps) {
   return (
     <DataTable
+      bare
       initialData={connectedMachines}
       columns={columns}
       getRowId={(row) => row.machineId}

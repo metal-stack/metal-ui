@@ -1,3 +1,4 @@
+import { Section } from "@/components/ui/section/section";
 import {
   Token,
   TokenType,
@@ -14,49 +15,58 @@ interface TokenInfoProps {
 
 export default function TokenInfo({ data }: TokenInfoProps) {
   return (
-    <InfoGrid
-      rows={[
-        { label: "ID:", value: data.uuid },
-        { label: "Description:", value: data.description },
-        {
-          label: "Expires:",
-          value: (
-            <Badge variant="outline" leftSection={<IconCalendar size={12} />}>
-              {data.expires ? timestampDate(data.expires).toISOString() : null}
-            </Badge>
-          ),
-        },
-        {
-          label: "Issued at:",
-          value: (
-            <Badge variant="outline" leftSection={<IconCalendar size={12} />}>
-              {data.issuedAt
-                ? timestampDate(data.issuedAt).toISOString()
-                : null}
-            </Badge>
-          ),
-        },
-        {
-          label: "Token type:",
-          value: TokenType[data.tokenType],
-        },
-        {
-          label: "Token scope",
-          value: (
-            <CodeBlock
-              title="Token scope"
-              data={{
-                ...data.permissions,
-                ...data.projectRoles,
-                ...data.tenantRoles,
-                adminRole: data.adminRole,
-                infraRole: data.infraRole,
-              }}
-            />
-          ),
-          fullWidth: true,
-        },
-      ]}
-    />
+    <>
+      <Section title="Details">
+        <InfoGrid
+          rows={[
+            { label: "ID:", value: data.uuid },
+            { label: "Description:", value: data.description },
+            {
+              label: "Expires:",
+              value: (
+                <Badge
+                  variant="outline"
+                  leftSection={<IconCalendar size={12} />}
+                >
+                  {data.expires
+                    ? timestampDate(data.expires).toISOString()
+                    : null}
+                </Badge>
+              ),
+            },
+            {
+              label: "Issued at:",
+              value: (
+                <Badge
+                  variant="outline"
+                  leftSection={<IconCalendar size={12} />}
+                >
+                  {data.issuedAt
+                    ? timestampDate(data.issuedAt).toISOString()
+                    : null}
+                </Badge>
+              ),
+            },
+            {
+              label: "Token type:",
+              value: TokenType[data.tokenType],
+            },
+          ]}
+        />
+      </Section>
+      <Section title="Token scope" fullWidth flush>
+        <CodeBlock
+          bare
+          title="Token scope"
+          data={{
+            ...data.permissions,
+            ...data.projectRoles,
+            ...data.tenantRoles,
+            adminRole: data.adminRole,
+            infraRole: data.infraRole,
+          }}
+        />
+      </Section>
+    </>
   );
 }

@@ -1,13 +1,12 @@
+import { pageBg } from "@/theme";
 import { AppShell } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { AppSidebar } from "@/components/ui/app-shell/app-sidebar";
 import { SiteHeader } from "@/components/ui/app-shell/site-header";
 
 export default function AppLayout({
-  title,
   children,
 }: {
-  title: string;
   children: React.ReactNode;
 }) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
@@ -25,7 +24,6 @@ export default function AppLayout({
       padding="md"
     >
       <SiteHeader
-        title={title}
         mobileOpened={mobileOpened}
         desktopOpened={desktopOpened}
         toggleMobile={toggleMobile}
@@ -34,7 +32,7 @@ export default function AppLayout({
       <AppShell.Navbar>
         <AppSidebar />
       </AppShell.Navbar>
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main bg={pageBg}>{children}</AppShell.Main>
     </AppShell>
   );
 }

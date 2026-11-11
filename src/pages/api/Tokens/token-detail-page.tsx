@@ -1,3 +1,4 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
 import { Skeleton } from "@mantine/core";
 import AlertHint from "@/components/ui/alert/AlertHint";
@@ -26,5 +27,9 @@ export default function TokenDrawer() {
     return <AlertHint title="Error loading token" description={"No data"} />;
   }
 
-  return <TokenInfo data={data.token} />;
+  return (
+    <SectionGrid>
+      <TokenInfo data={data.token} />
+    </SectionGrid>
+  );
 }

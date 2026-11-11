@@ -1,9 +1,11 @@
+import { Section } from "@/components/ui/section/section";
 import { IP, IPType } from "@metal-stack/api/js/metalstack/api/v2/ip_pb";
 import { InfoGrid } from "../info-grid/info-grid";
 import { Badge } from "@mantine/core";
 
 interface IPInfoProps {
   data: IP;
+  title?: string;
 }
 
 export function IPTypeBadge({
@@ -33,24 +35,26 @@ export function IPTypeBadge({
   );
 }
 
-export default function IPInfo({ data }: IPInfoProps) {
+export default function IPInfo({ data, title = "Details" }: IPInfoProps) {
   return (
-    <InfoGrid
-      rows={[
-        { label: "IP:", value: data.ip },
-        { label: "Name:", value: data.name },
-        {
-          label: "Description:",
-          value: data.description || "—",
-        },
-        { label: "Project:", value: data.project },
-        { label: "Network:", value: data.network },
-        {
-          label: "Type:",
-          value: <IPTypeBadge type={data.type} withLabel={true} />,
-        },
-        { label: "Namespace:", value: data.namespace },
-      ]}
-    />
+    <Section title={title}>
+      <InfoGrid
+        rows={[
+          { label: "IP:", value: data.ip },
+          { label: "Name:", value: data.name },
+          {
+            label: "Description:",
+            value: data.description || "—",
+          },
+          { label: "Project:", value: data.project },
+          { label: "Network:", value: data.network },
+          {
+            label: "Type:",
+            value: <IPTypeBadge type={data.type} withLabel={true} />,
+          },
+          { label: "Namespace:", value: data.namespace },
+        ]}
+      />
+    </Section>
   );
 }

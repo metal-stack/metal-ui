@@ -5,9 +5,11 @@ import classes from "./code-block.module.css";
 interface CodeBlockProps {
   data: any;
   title: string;
+  /** Drop border and radius, for use inside a flush Section */
+  bare?: boolean;
 }
 
-export default function CodeBlock({ data, title }: CodeBlockProps) {
+export default function CodeBlock({ data, title, bare }: CodeBlockProps) {
   let jsonString: string;
   try {
     jsonString = JSON.stringify(data, null, 2);
@@ -20,13 +22,11 @@ export default function CodeBlock({ data, title }: CodeBlockProps) {
   };
 
   return (
-    <div className={classes.root}>
-      <Group
-        justify="space-between"
-        px="md"
-        py="xs"
-        className={classes.header}
-      >
+    <div
+      className={classes.root}
+      style={bare ? { border: 0, borderRadius: 0 } : undefined}
+    >
+      <Group justify="space-between" px="md" py="xs" className={classes.header}>
         <Text size="sm" fw={600}>
           {title}
         </Text>

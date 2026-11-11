@@ -1,3 +1,4 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
 import { Skeleton } from "@mantine/core";
 import AlertHint from "@/components/ui/alert/AlertHint";
@@ -23,5 +24,9 @@ export default function ImageDetailPage() {
   if (!data?.image) {
     return <AlertHint title="Error loading image" description={"No data"} />;
   }
-  return <ImageInfo data={data.image} />;
+  return (
+    <SectionGrid>
+      <ImageInfo data={data.image} />
+    </SectionGrid>
+  );
 }

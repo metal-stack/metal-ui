@@ -1,83 +1,114 @@
 import {
   ActionIcon,
+  Anchor,
   AppShell,
-  Burger,
+  Breadcrumbs,
   Button,
   Group,
   Popover,
-  Title,
+  Text,
   useMantineColorScheme,
 } from "@mantine/core";
 import {
-  IconArrowLeft,
   IconHeartRateMonitor,
+  IconLayoutSidebar,
   IconMoon,
   IconSun,
 } from "@tabler/icons-react";
 import { useQuery } from "@connectrpc/connect-query";
 import { HealthService } from "@metal-stack/api/js/metalstack/api/v2/health_pb";
 import ServiceHealthItem from "@/components/health/service-health-item";
-import { useLocation, useNavigate } from "react-router";
+import { Link, useLocation } from "react-router";
 
 interface SiteHeaderProps {
-  title: string;
   mobileOpened: boolean;
   desktopOpened: boolean;
   toggleMobile: () => void;
   toggleDesktop: () => void;
 }
 
+const labels: Record<string, string> = {
+  ips: "IPs",
+  admin: "Admin",
+};
+
+function labelFor(segment: string) {
+  const decoded = decodeURIComponent(segment);
+  return labels[decoded] ?? decoded.charAt(0).toUpperCase() + decoded.slice(1);
+}
+
+function PageBreadcrumbs() {
+  const { pathname } = useLocation();
+  const segments = pathname.split("/").filter(Boolean);
+
+  const crumbs = [{ label: "Dashboard", to: "/" }].concat(
+    segments.map((segment, i) => ({
+      label: labelFor(segment),
+      to: "/" + segments.slice(0, i + 1).join("/"),
+    })),
+  );
+  // "/admin" itself has no page, so it is shown as plain text
+  return (
+    <Breadcrumbs separator="›" separatorMargin="xs">
+      {crumbs.map((crumb, i) =>
+        i === crumbs.length - 1 ? (
+          <Text key={crumb.to} size="sm" fw={500}>
+            {crumb.label}
+          </Text>
+        ) : crumb.to === "/admin" ? (
+          <Text key={crumb.to} size="sm" c="dimmed">
+            {crumb.label}
+          </Text>
+        ) : (
+          <Anchor
+            key={crumb.to}
+            component={Link}
+            to={crumb.to}
+            size="sm"
+            c="dimmed"
+          >
+            {crumb.label}
+          </Anchor>
+        ),
+      )}
+    </Breadcrumbs>
+  );
+}
+
 export function SiteHeader({
-  title,
   mobileOpened,
   desktopOpened,
   toggleMobile,
   toggleDesktop,
 }: SiteHeaderProps) {
   const { data } = useQuery(HealthService.method.get);
-  const navigate = useNavigate();
-  const location = useLocation();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-
-  let backPath = "/";
-  if (location.pathname !== "/") {
-    backPath = location.pathname.split("/").slice(0, -1).join("/");
-    if (backPath === "/admin") {
-      backPath = "/";
-    }
-  }
 
   return (
     <AppShell.Header>
       <Group h="100%" px="md" justify="space-between" wrap="nowrap">
-        <Group wrap="nowrap">
-          <Burger
-            opened={mobileOpened}
-            onClick={toggleMobile}
+        <Group wrap="nowrap" gap="sm">
+          <ActionIcon
+            variant="subtle"
+            color="gray"
             hiddenFrom="sm"
-            size="sm"
             aria-label="Toggle navigation"
-          />
-          <Burger
-            opened={desktopOpened}
-            onClick={toggleDesktop}
+            aria-expanded={mobileOpened}
+            onClick={toggleMobile}
+          >
+            <IconLayoutSidebar size={20} />
+          </ActionIcon>
+          <ActionIcon
+            variant="subtle"
+            color="gray"
             visibleFrom="sm"
-            size="sm"
             aria-label="Toggle navigation"
-          />
-          {location.pathname !== "/" && (
-            <ActionIcon
-              variant="subtle"
-              color="gray"
-              aria-label="Back"
-              onClick={() => navigate(backPath)}
-            >
-              <IconArrowLeft size={18} />
-            </ActionIcon>
-          )}
-          <Title order={1} size="h4">
-            {title}
-          </Title>
+            aria-expanded={desktopOpened}
+            onClick={toggleDesktop}
+          >
+            <IconLayoutSidebar size={20} />
+          </ActionIcon>
+          <PageBreadcrumbs />
         </Group>
         <Group gap="xs" wrap="nowrap">
           <Button
@@ -85,15 +116,19 @@ export function SiteHeader({
             href="https://metal-stack.io/docs/home/"
             target="_blank"
             rel="noopener noreferrer"
-            variant="light"
-            size="xs"
+            variant="default"
+            h={34}
             visibleFrom="sm"
           >
             Docs
           </Button>
           <Popover position="bottom-end" withArrow>
             <Popover.Target>
-              <ActionIcon variant="default" size="lg" aria-label="Service health">
+              <ActionIcon
+                variant="default"
+                size="lg"
+                aria-label="Service health"
+              >
                 <IconHeartRateMonitor size={18} />
               </ActionIcon>
             </Popover.Target>

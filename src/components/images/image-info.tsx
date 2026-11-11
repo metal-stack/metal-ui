@@ -1,4 +1,5 @@
-import { Stack } from "@mantine/core";
+import { Section } from "@/components/ui/section/section";
+import { Badge, Group } from "@mantine/core";
 import {
   Image,
   ImageClassification,
@@ -8,32 +9,36 @@ import { InfoGrid } from "../info-grid/info-grid";
 
 interface ImageInfoProps {
   data: Image;
+  title?: string;
 }
 
-export default function ImageInfo({ data }: ImageInfoProps) {
+export default function ImageInfo({ data, title = "Details" }: ImageInfoProps) {
   return (
-    <InfoGrid
-      rows={[
-        { label: "ID:", value: data.id },
-        { label: "Name:", value: data.name },
-        { label: "Description:", value: data.description },
-        { label: "URL:", value: data.url },
-        {
-          label: "Image classification:",
-          value: ImageClassification[data.classification],
-        },
-        {
-          label: "Image features",
-          value: (
-            <Stack gap={4} ml="md">
-              {data.features.map((feature, index) => (
-                <div key={index}>{ImageFeature[feature]}</div>
-              ))}
-            </Stack>
-          ),
-          fullWidth: true,
-        },
-      ]}
-    />
+    <Section title={title}>
+      <InfoGrid
+        rows={[
+          { label: "ID:", value: data.id },
+          { label: "Name:", value: data.name },
+          { label: "Description:", value: data.description },
+          { label: "URL:", value: data.url },
+          {
+            label: "Classification:",
+            value: ImageClassification[data.classification],
+          },
+          {
+            label: "Features:",
+            value: data.features.length ? (
+              <Group gap="xs">
+                {data.features.map((feature) => (
+                  <Badge key={feature} variant="light">
+                    {ImageFeature[feature]}
+                  </Badge>
+                ))}
+              </Group>
+            ) : undefined,
+          },
+        ]}
+      />
+    </Section>
   );
 }

@@ -1,3 +1,4 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
 import { useParams } from "react-router";
 import { useProject } from "@/providers/ProjectProvider";
@@ -27,5 +28,9 @@ export default function IPDetailPage() {
     return <AlertHint title="Error loading IP" description={"No data"} />;
   }
 
-  return <IPInfo data={data.ip} />;
+  return (
+    <SectionGrid>
+      <IPInfo data={data.ip} />
+    </SectionGrid>
+  );
 }

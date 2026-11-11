@@ -1,3 +1,4 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
 import { useParams } from "react-router";
 import { useProject } from "@/providers/ProjectProvider";
@@ -29,5 +30,9 @@ export default function NetworkDetailPage() {
     return <AlertHint title="Error loading Network" description={"No data"} />;
   }
 
-  return <NetworkInfo data={data.network} />;
+  return (
+    <SectionGrid>
+      <NetworkInfo data={data.network} />
+    </SectionGrid>
+  );
 }

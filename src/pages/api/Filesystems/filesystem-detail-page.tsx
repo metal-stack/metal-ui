@@ -1,3 +1,4 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
 import { Skeleton } from "@mantine/core";
 import AlertHint from "@/components/ui/alert/AlertHint";
@@ -30,5 +31,9 @@ export default function FilesystemDetailPage() {
     );
   }
 
-  return <FilesystemLayoutInfo data={data.filesystemLayout} />;
+  return (
+    <SectionGrid>
+      <FilesystemLayoutInfo data={data.filesystemLayout} />
+    </SectionGrid>
+  );
 }

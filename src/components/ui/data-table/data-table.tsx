@@ -13,6 +13,7 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
+import { tileBg } from "@/theme";
 import { Paper, Table, Text } from "@mantine/core";
 import { useState } from "react";
 import { DataTablePagination } from "../pagination/table-pagination";
@@ -20,6 +21,8 @@ import { DataTablePagination } from "../pagination/table-pagination";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   initialData: TData[];
+  /** Render without own border/rounding, for use inside a flush Section */
+  bare?: boolean;
   getRowId?:
     | ((
         originalRow: TData,
@@ -32,6 +35,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   initialData,
+  bare,
   getRowId,
 }: DataTableProps<TData, TValue>) {
   const [data] = useState(() => initialData);
@@ -71,7 +75,15 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <Paper withBorder style={{ overflow: "hidden" }}>
+      <Paper
+        withBorder
+        bg={tileBg}
+        radius={bare ? 0 : "lg"}
+        style={{
+          overflow: "hidden",
+          ...(bare && { borderWidth: "1px 0 0 0" }),
+        }}
+      >
         <Table highlightOnHover>
           <Table.Thead>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -113,7 +125,13 @@ export function DataTable<TData, TValue>({
           </Table.Tbody>
         </Table>
       </Paper>
-      {table.getPageCount() > 1 && <DataTablePagination table={table} />}
+      {table.getPageCount() > 1 && (
+        <div
+          style={bare ? { padding: "0 var(--mantine-spacing-md)" } : undefined}
+        >
+          <DataTablePagination table={table} />
+        </div>
+      )}
     </div>
   );
 }

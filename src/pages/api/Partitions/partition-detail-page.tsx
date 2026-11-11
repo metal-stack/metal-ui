@@ -1,3 +1,4 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
 import { Skeleton } from "@mantine/core";
 import AlertHint from "@/components/ui/alert/AlertHint";
@@ -27,5 +28,9 @@ export default function PartitionDetailPage() {
     );
   }
 
-  return <PartitionInfo data={data.partition} />;
+  return (
+    <SectionGrid>
+      <PartitionInfo data={data.partition} />
+    </SectionGrid>
+  );
 }

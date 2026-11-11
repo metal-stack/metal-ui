@@ -1,3 +1,4 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
 import { Skeleton } from "@mantine/core";
 import AlertHint from "@/components/ui/alert/AlertHint";
@@ -22,5 +23,9 @@ export default function SizeDetailPage() {
     return <AlertHint title="Error loading size" description={"No data"} />;
   }
 
-  return <SizeInfo data={data.size} />;
+  return (
+    <SectionGrid>
+      <SizeInfo data={data.size} />
+    </SectionGrid>
+  );
 }

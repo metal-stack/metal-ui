@@ -1,3 +1,4 @@
+import { Section } from "@/components/ui/section/section";
 import {
   MachineChassisIdentifyLEDState,
   MachineCondition,
@@ -10,6 +11,7 @@ import { InfoGrid } from "../info-grid/info-grid";
 
 interface MachineStatusInfoProps {
   data: MachineStatus;
+  title?: string;
 }
 
 function MachineConditionBadge({
@@ -127,27 +129,32 @@ function MachineLivelinessBadge({
   );
 }
 
-export default function MachineStatusInfo({ data }: MachineStatusInfoProps) {
+export default function MachineStatusInfo({
+  data,
+  title = "Details",
+}: MachineStatusInfoProps) {
   return (
-    <InfoGrid
-      rows={[
-        {
-          label: "metal-hammer Version:",
-          value: data.metalHammerVersion,
-        },
-        {
-          label: "Liveliness:",
-          value: <MachineLivelinessBadge liveliness={data.liveliness} />,
-        },
-        {
-          label: "Condition:",
-          value: <MachineConditionBadge condition={data.condition} />,
-        },
-        {
-          label: "LED:",
-          value: <MachineLEDBadge led={data.ledState} />,
-        },
-      ]}
-    />
+    <Section title={title}>
+      <InfoGrid
+        rows={[
+          {
+            label: "metal-hammer Version:",
+            value: data.metalHammerVersion,
+          },
+          {
+            label: "Liveliness:",
+            value: <MachineLivelinessBadge liveliness={data.liveliness} />,
+          },
+          {
+            label: "Condition:",
+            value: <MachineConditionBadge condition={data.condition} />,
+          },
+          {
+            label: "LED:",
+            value: <MachineLEDBadge led={data.ledState} />,
+          },
+        ]}
+      />
+    </Section>
   );
 }

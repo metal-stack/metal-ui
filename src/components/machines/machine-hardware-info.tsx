@@ -1,3 +1,4 @@
+import { Section } from "@/components/ui/section/section";
 import {
   MachineBlockDevice,
   MachineHardware,
@@ -75,33 +76,24 @@ export default function MachineHardwareInfo({
   data,
 }: MachineHardwareInfoProps) {
   return (
-    <InfoGrid
-      rows={[
-        { label: "Memory:", value: formatBytesBigInt(data.memory) },
-
-        {
-          label: "CPUs:",
-          value: <DataTable initialData={data.cpus} columns={cpuColumns} />,
-          fullWidth: true,
-        },
-        {
-          label: "Block Devices:",
-          value: (
-            <DataTable initialData={data.disks} columns={blockDeviceColumns} />
-          ),
-          fullWidth: true,
-        },
-        {
-          label: "GPUs:",
-          value: <DataTable initialData={data.gpus} columns={gpuColumns} />,
-          fullWidth: true,
-        },
-        {
-          label: "NICs:",
-          value: <DataTable initialData={data.nics} columns={nicColumns} />,
-          fullWidth: true,
-        },
-      ]}
-    />
+    <>
+      <Section title="Hardware">
+        <InfoGrid
+          rows={[{ label: "Memory:", value: formatBytesBigInt(data.memory) }]}
+        />
+      </Section>
+      <Section title="CPUs" flush fullWidth>
+        <DataTable bare initialData={data.cpus} columns={cpuColumns} />
+      </Section>
+      <Section title="Block devices" flush fullWidth>
+        <DataTable bare initialData={data.disks} columns={blockDeviceColumns} />
+      </Section>
+      <Section title="GPUs" flush fullWidth>
+        <DataTable bare initialData={data.gpus} columns={gpuColumns} />
+      </Section>
+      <Section title="NICs" flush fullWidth>
+        <DataTable bare initialData={data.nics} columns={nicColumns} />
+      </Section>
+    </>
   );
 }

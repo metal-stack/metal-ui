@@ -1,3 +1,4 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { TenantService } from "@metal-stack/api/js/metalstack/api/v2/tenant_pb";
 import { useQuery } from "@connectrpc/connect-query";
 import { Skeleton } from "@mantine/core";
@@ -26,5 +27,9 @@ export default function AdminTenantDetailPage() {
     return <AlertHint title="Error loading tenant" description={"No data"} />;
   }
 
-  return <TenantInfo data={data.tenant} />;
+  return (
+    <SectionGrid>
+      <TenantInfo data={data.tenant} />
+    </SectionGrid>
+  );
 }

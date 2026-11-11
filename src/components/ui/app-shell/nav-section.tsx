@@ -22,14 +22,23 @@ export function NavSection({
           any: item.requires.any ?? true,
         });
       }),
-    [items, isAllowed]
+    [items, isAllowed],
   );
 
   if (visibleItems.length === 0) return null;
 
   return (
     <>
-      <Text size="xs" c="dimmed" fw={500} mt="sm" mb={4}>
+      <Text
+        size="xs"
+        c="dimmed"
+        fw={600}
+        tt="uppercase"
+        mt="lg"
+        mb="xs"
+        px="sm"
+        style={{ letterSpacing: "0.05em" }}
+      >
         {title}
       </Text>
       {visibleItems.map((item) => (
@@ -38,8 +47,12 @@ export function NavSection({
           component={Link}
           to={item.url}
           label={item.title}
-          leftSection={<item.icon size={18} />}
+          leftSection={<item.icon size={18} stroke={1.75} />}
           active={location.pathname === item.url}
+          variant="light"
+          px="sm"
+          py={8}
+          style={{ borderRadius: "var(--mantine-radius-md)" }}
         />
       ))}
     </>

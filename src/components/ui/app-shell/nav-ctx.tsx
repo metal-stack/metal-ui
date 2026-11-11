@@ -7,7 +7,7 @@ export function NavCtx() {
   const projectCtx = useProject();
   const tenantCtx = useTenant();
   return (
-    <Stack gap="xs">
+    <Stack gap="sm">
       <TokenSelector />
       <Select
         label="Tenant"

@@ -18,10 +18,12 @@ import {
 import { NavSection } from "@/components/ui/app-shell/nav-section";
 import { NavSecondary } from "@/components/ui/app-shell/nav-secondary";
 import { NavUser } from "@/components/ui/app-shell/nav-user";
-import { AppShell, Divider, Group, ScrollArea, Text } from "@mantine/core";
-import logo from "@/assets/metal-stack.png";
+import { AppShell, Box, Divider, Flex, Image, ScrollArea } from "@mantine/core";
+import logoLight from "@/assets/metal-stack-black.svg";
+import logoDark from "@/assets/metal-stack-white.svg";
 import { NavCtx } from "./nav-ctx";
 import { permissions } from "@/lib/permissions-util";
+import { HEADER_HEIGHT } from "@/layouts/AppLayout";
 
 export interface NavItem {
   title: string;
@@ -211,19 +213,32 @@ const data: {
 export function AppSidebar() {
   return (
     <>
-      <AppShell.Section p="md">
-        <Group gap="xs">
-          <img src={logo} alt="metal-stack" width={20} height={20} />
-          <Text fw={600}>metal-stack.io</Text>
-        </Group>
+      <AppShell.Section>
+        <Flex
+          h={HEADER_HEIGHT}
+          px="md"
+          align="center"
+          style={{ borderBottom: "1px solid var(--app-shell-border-color)" }}
+        >
+          <Image
+            src={logoLight}
+            alt="metal-stack"
+            h={30}
+            w="auto"
+            lightHidden
+          />
+          <Image src={logoDark} alt="metal-stack" h={30} w="auto" darkHidden />
+        </Flex>
       </AppShell.Section>
-      <AppShell.Section grow component={ScrollArea} px="md">
-        <NavCtx />
-        <Divider my="sm" />
-        <NavSection items={data.navMain} title="General" />
-        <NavSection items={data.admin} title="Admin" />
-        <NavSection items={data.api} title="API" />
-        <NavSecondary items={data.navSecondary} />
+      <AppShell.Section grow component={ScrollArea}>
+        <Box p="md">
+          <NavCtx />
+          <Divider my="md" />
+          <NavSection items={data.navMain} title="General" />
+          <NavSection items={data.admin} title="Admin" />
+          <NavSection items={data.api} title="API" />
+          <NavSecondary items={data.navSecondary} />
+        </Box>
       </AppShell.Section>
       <AppShell.Section p="md">
         <NavUser />

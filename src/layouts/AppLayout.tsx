@@ -4,18 +4,16 @@ import { useDisclosure } from "@mantine/hooks";
 import { AppSidebar } from "@/components/ui/app-shell/app-sidebar";
 import { SiteHeader } from "@/components/ui/app-shell/site-header";
 
-export default function AppLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export const HEADER_HEIGHT = 60;
+
+export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
   return (
     <AppShell
       layout="alt"
-      header={{ height: 56 }}
+      header={{ height: HEADER_HEIGHT }}
       navbar={{
         width: 288,
         breakpoint: "sm",

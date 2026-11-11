@@ -1,16 +1,26 @@
 import { useAuth } from "@/providers/AuthProvider";
-import { ActionIcon, Button, Menu, Text } from "@mantine/core";
+import { ActionIcon, Group, Text, UnstyledButton } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import {
-  IconChevronDown,
-  IconKey,
-  IconTrash,
-  IconPlus,
-} from "@tabler/icons-react";
+import { IconCheck, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
 import { AddTokenDialog } from "./add-token-dialog";
 
-export function TokenSelector() {
+const previewToken = (token: string): string =>
+  token.length <= 8 ? token : token.slice(0, 8) + "...";
+
+// Derive active token ID by matching apiToken in allTokens
+export function useMultiToken() {
+  const { allTokens, switchToken, removeToken, status, apiToken } = useAuth();
+
+  const activeTokenId =
+    status === "authenticated"
+      ? (allTokens.find((t) => t.token === apiToken)?.id ?? null)
+      : null;
+
+  return { allTokens, activeTokenId, switchToken, removeToken };
+}
+
+export function TokenList({ onSwitch }: { onSwitch?: () => void }) {
   const { allTokens, activeTokenId, switchToken, removeToken } =
     useMultiToken();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -24,91 +34,63 @@ export function TokenSelector() {
     });
   };
 
-  const previewToken = (token: string): string => {
-    if (token.length <= 8) return token;
-    return token.slice(0, 8) + "...";
-  };
-
   return (
     <>
-      <Menu width={260} position="bottom-start">
-        <Menu.Target>
-          <Button
-            variant="default"
-            size="xs"
-            fullWidth
-            justify="space-between"
-            leftSection={<IconKey size={16} />}
-            rightSection={<IconChevronDown size={12} />}
-          >
-            {activeTokenId
-              ? (allTokens.find((t) => t.id === activeTokenId)?.name ??
-                "No token")
-              : "No token"}
-          </Button>
-        </Menu.Target>
-        <Menu.Dropdown>
-          {allTokens.map((token) => (
-            <Menu.Item
-              key={token.id}
-              bg={
-                token.id === activeTokenId
-                  ? "var(--mantine-color-default-hover)"
-                  : undefined
-              }
-              onClick={() => switchToken(token.id)}
-              rightSection={
-                <ActionIcon
-                  variant="subtle"
-                  color="red"
-                  size="sm"
-                  aria-label={`Remove ${token.name}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleRemove(token.id, token.name);
-                  }}
-                >
-                  <IconTrash size={14} />
-                </ActionIcon>
-              }
-            >
-              {token.name}{" "}
-              <Text span size="xs" c="dimmed">
-                {previewToken(token.token)}
+      {allTokens.map((token) => (
+        <UnstyledButton
+          key={token.id}
+          px="xs"
+          py={6}
+          w="100%"
+          bg={
+            token.id === activeTokenId
+              ? "var(--mantine-color-default-hover)"
+              : undefined
+          }
+          style={{ borderRadius: "var(--mantine-radius-sm)" }}
+          onClick={() => {
+            switchToken(token.id);
+            onSwitch?.();
+          }}
+        >
+          <Group justify="space-between" wrap="nowrap">
+            <Group gap={6} wrap="nowrap" miw={0}>
+              {token.id === activeTokenId && <IconCheck size={14} />}
+              <Text size="sm" truncate>
+                {token.name}{" "}
+                <Text span size="xs" c="dimmed">
+                  {previewToken(token.token)}
+                </Text>
               </Text>
-            </Menu.Item>
-          ))}
-
-          {allTokens.length > 0 && <Menu.Divider />}
-
-          <Menu.Item
-            c="var(--mantine-primary-color-filled)"
-            leftSection={<IconPlus size={16} />}
-            onClick={() => setAddDialogOpen(true)}
-          >
-            Add token
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
-
+            </Group>
+            <ActionIcon
+              variant="subtle"
+              color="red"
+              size="sm"
+              aria-label={`Remove ${token.name}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRemove(token.id, token.name);
+              }}
+            >
+              <IconTrash size={14} />
+            </ActionIcon>
+          </Group>
+        </UnstyledButton>
+      ))}
+      <UnstyledButton
+        px="xs"
+        py={6}
+        w="100%"
+        c="var(--mantine-primary-color-filled)"
+        onClick={() => setAddDialogOpen(true)}
+      >
+        <Group gap={6}>
+          <IconPlus size={16} />
+          <Text size="sm">Add token</Text>
+        </Group>
+      </UnstyledButton>
       <AddTokenDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
     </>
   );
-}
-
-// Derive active token ID by matching apiToken in allTokens
-function useMultiToken() {
-  const { allTokens, switchToken, removeToken, status, apiToken } = useAuth();
-
-  const activeTokenId =
-    status === "authenticated"
-      ? (allTokens.find((t) => t.token === apiToken)?.id ?? null)
-      : null;
-
-  return {
-    allTokens,
-    activeTokenId,
-    switchToken,
-    removeToken,
-  };
 }

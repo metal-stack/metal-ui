@@ -21,7 +21,7 @@ import { NavUser } from "@/components/ui/app-shell/nav-user";
 import { AppShell, Box, Divider, Flex, Image, ScrollArea } from "@mantine/core";
 import logoLight from "@/assets/metal-stack-black.svg";
 import logoDark from "@/assets/metal-stack-white.svg";
-import { NavCtx } from "./nav-ctx";
+import { ContextSwitcher } from "./context-switcher";
 import { permissions } from "@/lib/permissions-util";
 import { HEADER_HEIGHT } from "@/layouts/AppLayout";
 
@@ -232,7 +232,7 @@ export function AppSidebar() {
       </AppShell.Section>
       <AppShell.Section grow component={ScrollArea}>
         <Box p="md">
-          <NavCtx />
+          <ContextSwitcher />
           <Divider my="md" />
           <NavSection items={data.navMain} title="General" />
           <NavSection items={data.admin} title="Admin" />

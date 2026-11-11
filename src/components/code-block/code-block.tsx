@@ -5,7 +5,7 @@ import classes from "./code-block.module.css";
 interface CodeBlockProps {
   data: any;
   title: string;
-  /** Drop border and radius, for use inside a flush Section */
+  /** Show only the code with a floating copy button, for use inside a flush Section that has its own title */
   bare?: boolean;
 }
 
@@ -21,22 +21,35 @@ export default function CodeBlock({ data, title, bare }: CodeBlockProps) {
     await navigator.clipboard.writeText(jsonString);
   };
 
-  return (
-    <div
-      className={classes.root}
-      style={bare ? { border: 0, borderRadius: 0 } : undefined}
+  const copyButton = (
+    <ActionIcon
+      variant="default"
+      aria-label="Copy to clipboard"
+      onClick={copyToClipboard}
     >
+      <IconCopy size={16} />
+    </ActionIcon>
+  );
+
+  if (bare) {
+    // The surrounding Section already provides the title, so only the code is shown.
+    return (
+      <div style={{ position: "relative" }}>
+        <pre className={classes.pre}>{jsonString}</pre>
+        <div style={{ position: "absolute", top: 8, right: 8 }}>
+          {copyButton}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={classes.root}>
       <Group justify="space-between" px="md" py="xs" className={classes.header}>
         <Text size="sm" fw={600}>
           {title}
         </Text>
-        <ActionIcon
-          variant="default"
-          aria-label="Copy to clipboard"
-          onClick={copyToClipboard}
-        >
-          <IconCopy size={16} />
-        </ActionIcon>
+        {copyButton}
       </Group>
       <pre className={classes.pre}>{jsonString}</pre>
     </div>

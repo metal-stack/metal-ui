@@ -3,7 +3,9 @@ import { DataTable } from "../ui/data-table/data-table";
 import { Switch } from "@metal-stack/api/js/metalstack/api/v2/switch_pb";
 import SwitchOSBadge from "./switch-os-badge";
 import SwitchLastSync from "./switch-last-sync";
-import { Link } from "react-router";
+import { TableLink } from "../ui/data-table/table-link";
+
+const href = (sw: Switch) => "/admin/switches/" + sw.id;
 
 const columns: ColumnDef<Switch>[] = [
   {
@@ -11,7 +13,7 @@ const columns: ColumnDef<Switch>[] = [
     header: "ID",
     enableHiding: false,
     cell: ({ row }) => (
-      <Link to={"/admin/switches/" + row.original.id}>{row.original.id}</Link>
+      <TableLink to={href(row.original)}>{row.original.id}</TableLink>
     ),
   },
   {
@@ -40,6 +42,7 @@ export function SwitchesTable({ data }: { data: Switch[] }) {
       initialData={data}
       columns={columns}
       getRowId={(row) => row.id.toString()}
+      getRowHref={href}
     />
   );
 }

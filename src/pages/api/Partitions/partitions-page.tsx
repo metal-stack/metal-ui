@@ -11,7 +11,7 @@ export default function PartitionsPage() {
   if (isLoading) return <LoadingScreen />;
   if (error)
     return (
-      <AlertHint title="Error loading machines" description={error.message} />
+      <AlertHint title="Error loading partitions" description={error.message} />
     );
 
   if (!data?.partitions.length) return <NoElementFound />;

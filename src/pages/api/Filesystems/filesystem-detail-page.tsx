@@ -1,5 +1,6 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@mantine/core";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { FilesystemService } from "@metal-stack/api/js/metalstack/api/v2/filesystem_pb";
 import FilesystemLayoutInfo from "@/components/filesystem/filesystem-layout-info";
@@ -12,23 +13,24 @@ export default function FilesystemDetailPage() {
   });
 
   if (isLoading) {
-    return <Skeleton className="h-12" />;
+    return <Skeleton h={48} />;
   }
 
   if (error) {
     return (
-      <AlertHint
-        title="Error loading filesystems"
-        description={error.message}
-      />
+      <AlertHint title="Error loading filesystem" description={error.message} />
     );
   }
 
   if (!data?.filesystemLayout) {
     return (
-      <AlertHint title="Error loading filesystems" description={"No data"} />
+      <AlertHint title="Error loading filesystem" description={"No data"} />
     );
   }
 
-  return <FilesystemLayoutInfo data={data.filesystemLayout} />;
+  return (
+    <SectionGrid>
+      <FilesystemLayoutInfo data={data.filesystemLayout} />
+    </SectionGrid>
+  );
 }

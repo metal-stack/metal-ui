@@ -19,7 +19,6 @@ export default function NetworksPage() {
       enabled: !!currentProject?.uuid,
     },
   );
-  console.log(currentProject);
 
   if (!currentProject?.uuid) return <NoProjectSelected />;
   if (isLoading) return <LoadingScreen />;

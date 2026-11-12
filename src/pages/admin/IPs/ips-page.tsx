@@ -10,9 +10,7 @@ export default function AdminIPsPage() {
 
   if (isLoading) return <LoadingScreen />;
   if (error)
-    return (
-      <AlertHint title="Error loading images" description={error.message} />
-    );
+    return <AlertHint title="Error loading IPs" description={error.message} />;
 
   if (!data?.ips.length) return <NoElementFound />;
 

@@ -1,5 +1,5 @@
-import { AlertCircleIcon } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert } from "@mantine/core";
+import { IconAlertCircle } from "@tabler/icons-react";
 
 interface AlertHintProps {
   title: string;
@@ -8,10 +8,13 @@ interface AlertHintProps {
 
 export default function AlertHint({ title, description }: AlertHintProps) {
   return (
-    <Alert variant="destructive">
-      <AlertCircleIcon />
-      <AlertTitle>{title}</AlertTitle>
-      {description && <AlertDescription>{description}</AlertDescription>}
+    <Alert
+      color="red"
+      variant="light"
+      title={title}
+      icon={<IconAlertCircle size={18} />}
+    >
+      {description}
     </Alert>
   );
 }

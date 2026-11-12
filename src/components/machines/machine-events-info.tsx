@@ -1,3 +1,5 @@
+import { Section } from "@/components/ui/section/section";
+import { Alert } from "@mantine/core";
 import {
   MachineProvisioningEvent,
   MachineProvisioningEventState,
@@ -35,43 +37,46 @@ const eventsColumn: ColumnDef<MachineProvisioningEvent>[] = [
 
 export default function MachineEventsInfo({ data }: MachineEventsInfoProps) {
   return (
-    <InfoGrid
-      rows={[
-        {
-          label: "Last Event:",
-          value: data.lastEventTime
-            ? timestampDate(data.lastEventTime).toLocaleString()
-            : undefined,
-        },
-        {
-          label: "Provisioning state:",
-          value: data.state
-            ? MachineProvisioningEventState[data.state]
-            : undefined,
-        },
-        {
-          label: "Last error event:",
-          value: data.lastErrorEvent ? (
-            <div className="mt-2 p-2 border border-red-500 rounded bg-red-50">
-              <div>
-                <strong>Time:</strong>{" "}
-                {data.lastErrorEvent.time
-                  ? timestampDate(data.lastErrorEvent.time).toLocaleString()
-                  : "—"}
-              </div>
-              <div>
-                <strong>Message:</strong> {data.lastErrorEvent.message || "—"}
-              </div>
-            </div>
-          ) : undefined,
-          fullWidth: data.lastErrorEvent !== undefined,
-        },
-        {
-          label: "Provisioning events:",
-          value: <DataTable initialData={data.events} columns={eventsColumn} />,
-          fullWidth: true,
-        },
-      ]}
-    />
+    <>
+      <Section title="Events">
+        <InfoGrid
+          rows={[
+            {
+              label: "Last event:",
+              value: data.lastEventTime
+                ? timestampDate(data.lastEventTime).toLocaleString()
+                : undefined,
+            },
+            {
+              label: "Provisioning state:",
+              value: data.state
+                ? MachineProvisioningEventState[data.state]
+                : undefined,
+            },
+            {
+              label: "Last error event:",
+              value: data.lastErrorEvent ? (
+                <Alert color="red" variant="light" p="xs">
+                  <div>
+                    <strong>Time:</strong>{" "}
+                    {data.lastErrorEvent.time
+                      ? timestampDate(data.lastErrorEvent.time).toLocaleString()
+                      : "—"}
+                  </div>
+                  <div>
+                    <strong>Message:</strong>{" "}
+                    {data.lastErrorEvent.message || "—"}
+                  </div>
+                </Alert>
+              ) : undefined,
+              fullWidth: data.lastErrorEvent !== undefined,
+            },
+          ]}
+        />
+      </Section>
+      <Section title="Provisioning events" flush fullWidth>
+        <DataTable bare initialData={data.events} columns={eventsColumn} />
+      </Section>
+    </>
   );
 }

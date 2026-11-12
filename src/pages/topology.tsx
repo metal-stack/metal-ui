@@ -15,8 +15,8 @@ import LeafNode from "@/components/topology/LeafNode";
 import { CustomeNode } from "@/components/topology/CustomeNode";
 import SpineNode from "@/components/topology/SpineNode";
 import ExitNode from "@/components/topology/ExitNode";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { TriangleAlertIcon } from "lucide-react";
+import { Alert, Box, useMantineColorScheme } from "@mantine/core";
+import { IconAlertTriangle } from "@tabler/icons-react";
 import MachineNode from "@/components/topology/MachineNode";
 
 const initialNodes: CustomeNode[] = [
@@ -189,20 +189,29 @@ const nodeTypes = {
 export default function TopologyPage() {
   const [nodes] = useNodesState(layoutedNodes);
   const [edges] = useEdgesState(layoutedEdges);
+  const { colorScheme } = useMantineColorScheme();
   return (
     <>
-      <Alert className="border border-border bg-muted text-foreground">
-        <TriangleAlertIcon className="h-4 w-4 !text-primary" />
-
-        <AlertTitle className="text-primary">Warning</AlertTitle>
-        <AlertDescription className="inline">
-          This topology view is mocked and doesn't reflect real data.
-        </AlertDescription>
+      <Alert
+        variant="light"
+        color="yellow"
+        title="Warning"
+        icon={<IconAlertTriangle size={18} />}
+      >
+        This topology view is mocked and doesn't reflect real data.
       </Alert>
-      <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView>
-        <Background />
-        <Controls />
-      </ReactFlow>
+      <Box h="calc(100dvh - var(--app-shell-header-height) - 140px)" mt="md">
+        <ReactFlow
+          colorMode={colorScheme === "dark" ? "dark" : "light"}
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeTypes}
+          fitView
+        >
+          <Background />
+          <Controls />
+        </ReactFlow>
+      </Box>
     </>
   );
 }

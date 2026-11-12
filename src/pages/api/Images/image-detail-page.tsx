@@ -1,5 +1,6 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@mantine/core";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { ImageService } from "@metal-stack/api/js/metalstack/api/v2/image_pb";
 import ImageInfo from "../../../components/images/image-info";
@@ -11,7 +12,7 @@ export default function ImageDetailPage() {
   const { data, isLoading, error } = useQuery(ImageService.method.get, { id });
 
   if (isLoading) {
-    return <Skeleton className="h-12" />;
+    return <Skeleton h={48} />;
   }
 
   if (error) {
@@ -23,5 +24,9 @@ export default function ImageDetailPage() {
   if (!data?.image) {
     return <AlertHint title="Error loading image" description={"No data"} />;
   }
-  return <ImageInfo data={data.image} />;
+  return (
+    <SectionGrid>
+      <ImageInfo data={data.image} />
+    </SectionGrid>
+  );
 }

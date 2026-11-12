@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation, useMatches } from "react-router";
 import { useEffect, useMemo } from "react";
-import { toast } from "sonner";
+import { notifications } from "@mantine/notifications";
 
 import { useMethods } from "@/providers/MethodsProvider";
 
@@ -29,10 +29,11 @@ export function PermissionLayout() {
 
   useEffect(() => {
     if (!allowed)
-      toast.warning("Permssions", {
+      notifications.show({
         id: "permission-denied",
-        richColors: true,
-        description:
+        color: "yellow",
+        title: "Permissions",
+        message:
           "You do not have the required permissions to access this page.",
       });
   }, [allowed]);

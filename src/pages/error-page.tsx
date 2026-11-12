@@ -1,19 +1,23 @@
-import { Button } from "@/components/ui/button";
+import { Button, Center, Group, Stack, Text, Title } from "@mantine/core";
 import { Link } from "react-router";
 
 export default function NotFoundPage() {
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center space-y-4">
-      <h1 className="text-4xl font-bold">404</h1>
-      <p className="text-lg">The page you are looking for does not exist.</p>
-      <div className="flex-col space-x-4 md:flex-row">
-        <Button asChild variant="outline">
-          <Link to="/login">Zurück zum Login</Link>
-        </Button>
-        <Button asChild variant="default">
-          <Link to="/">Zurück zum Dashboard</Link>
-        </Button>
-      </div>
-    </div>
+    <Center h="100%" mih="100vh">
+      <Stack align="center">
+        <Title order={1} size={48}>
+          404
+        </Title>
+        <Text size="lg">The page you are looking for does not exist.</Text>
+        <Group>
+          <Button component={Link} to="/login" variant="default">
+            Zurück zum Login
+          </Button>
+          <Button component={Link} to="/">
+            Zurück zum Dashboard
+          </Button>
+        </Group>
+      </Stack>
+    </Center>
   );
 }

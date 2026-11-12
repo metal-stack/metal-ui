@@ -15,7 +15,7 @@ import {
   getAllTokens,
   clearTokenStore,
 } from "@/lib/token-store";
-import { toast } from "sonner";
+import { notifications } from "@mantine/notifications";
 
 type AuthState =
   | { status: "loading"; apiToken: null; apiUrl: null; allTokens: TokenEntry[] }
@@ -150,10 +150,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       apiUrl: null,
       allTokens: [],
     });
-    toast.success("Auth", {
+    notifications.show({
       id: "logged-out",
-      richColors: true,
-      description: "Logged out successfully.",
+      color: "green",
+      title: "Auth",
+      message: "Logged out successfully.",
     });
   }, []);
 

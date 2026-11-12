@@ -1,5 +1,6 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@mantine/core";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { ProjectService } from "@metal-stack/api/js/metalstack/api/v2/project_pb";
 import { useParams } from "react-router";
@@ -13,7 +14,7 @@ export default function AdminProjectDetailPage() {
   });
 
   if (isLoading) {
-    return <Skeleton className="h-12" />;
+    return <Skeleton h={48} />;
   }
 
   if (error) {
@@ -26,5 +27,9 @@ export default function AdminProjectDetailPage() {
     return <AlertHint title="Error loading project" description={"No data"} />;
   }
 
-  return <ProjectInfo data={data.project} />;
+  return (
+    <SectionGrid>
+      <ProjectInfo data={data.project} />
+    </SectionGrid>
+  );
 }

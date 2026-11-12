@@ -4,20 +4,20 @@ The metal-ui is the read-only web dashboard for [metal-stack](https://github.com
 
 ## Tech Stack
 
-| Category | Technology |
-|---|---|
-| Framework | React 19 + TypeScript (strict mode) |
-| Build | Vite 7 |
-| Styling | Tailwind CSS v4 (configurationless, CSS-based config) |
-| UI Components | shadcn/ui (New York style) + Radix UI primitives |
-| Routing | React Router v7 |
-| Data Fetching | TanStack React Query + Connect RPC (`@connectrpc/connect-query`) |
-| API Protocol | Connect/protobuf via `@metal-stack/api` (gRPC over HTTP/JSON) |
-| Package Manager | bun (`bun.lock`) |
-| Validation | Zod v4 + React Hook Form v5 (via `@hookform/resolvers`) |
-| Icons | Tabler Icons + Lucide |
-| Theme | `next-themes` (dark/light/system with `oklch` color space) |
-| Toasts | Sonner |
+| Category        | Technology                                                       |
+| --------------- | ---------------------------------------------------------------- |
+| Framework       | React 19 + TypeScript (strict mode)                              |
+| Build           | Vite 7                                                           |
+| UI Components   | Mantine 9 (`@mantine/core`, `hooks`, `form`, `notifications`)    |
+| Styling         | Mantine style props + CSS Modules (`postcss-preset-mantine`)     |
+| Routing         | React Router v7                                                  |
+| Data Fetching   | TanStack React Query + Connect RPC (`@connectrpc/connect-query`) |
+| API Protocol    | Connect/protobuf via `@metal-stack/api` (gRPC over HTTP/JSON)    |
+| Package Manager | bun (`bun.lock`)                                                 |
+| Validation      | Zod v4 + `@mantine/form` (via `mantine-form-zod-resolver`)       |
+| Icons           | Tabler Icons                                                     |
+| Theme           | Mantine color scheme (`src/theme.ts`, dark by default)           |
+| Toasts          | `@mantine/notifications`                                         |
 
 ## Package Scripts
 
@@ -39,8 +39,7 @@ src/
 ├── assets/                         # Static assets (logo, etc.)
 │
 ├── components/                     # Domain-specific + shared components
-│   ├── ui/                         # shadcn/ui primitives
-│   │   ├── button, card, dialog, table, sidebar, dropdown-menu, ...
+│   ├── ui/                         # Shared building blocks on top of Mantine
 │   │   ├── app-shell/              # App shell: sidebar, header, token selector, nav
 │   │   ├── data-table/             # TanStack table wrapper with pagination/filters
 │   │   ├── loading-screen/         # Loading overlay
@@ -54,15 +53,14 @@ src/
 ├── layouts/                        # Layout components + route guards
 │   ├── AuthLayout.tsx              # Wraps with AuthProvider
 │   ├── QueryLayout.tsx             # Nesting: QueryProvider > MethodsProvider > UserProvider > TenantProvider > ProjectProvider
-│   ├── AppLayout.tsx               # SidebarProvider + SidebarInset (app shell)
-│   ├── PageLayout.tsx              # SiteHeader + scrollable content wrapper
+│   ├── AppLayout.tsx               # Mantine AppShell (layout="alt"): header + navbar
+│   ├── PageLayout.tsx              # Resolves title from route handle, renders AppLayout + Outlet
 │   ├── PermissionLayout.tsx        # Checks handle.permission via MethodsProvider.isAllowed()
 │   └── routes/
 │       ├── public-route.tsx        # Redirects to / if authenticated
 │       └── private-route.tsx       # Redirects to /login if unauthenticated
 │
 ├── lib/
-│   ├── utils.ts                    # cn() -- clsx + tailwind-merge merge utility
 │   ├── token-store.ts              # localStorage token persistence: add/remove/switch/clear
 │   ├── permissions-util.ts         # Permission constants for API and ADMIN routes
 │   └── permissions-checker.ts      # Permission checking logic
@@ -111,26 +109,19 @@ Every API resource route declares `handle: { title, permission }` for sidebar vi
 
 ## UI Styling
 
-### Core Convention: Tailwind CSS v4 (Configurationless)
+### Core Convention: Mantine
 
-- **No `tailwind.config.js/ts`** -- all configuration lives in `src/App.css` via `@theme inline` block and custom CSS variables
-- All styling uses **pure Tailwind utility classes** in JSX -- zero CSS modules, zero styled-components
-- Use the `cn()` utility from `src/lib/utils.ts` (clsx + tailwind-merge) for className merging and conditional classes
-- Dark mode via HTML class toggling (`dark`) managed by `next-themes`
-- Colors defined in `oklch()` color space for perceptual uniformity
-
-### shadcn/ui Components
-
-All shadcn/ui primitives live under `src/components/ui/`. Key patterns:
-- Use `cn()` for composable variants
-- Components with variants (Button, Badge, Alert, SidebarMenuButton) use `class-variance-authority` (`cva`)
-- Form components (FormField, FormItem, FormLabel, FormControl, FormMessage) integrate with React Hook Form + Zod
-- All interactive primitives are built on Radix UI (Dialog, DropdownMenu, Select, Sheet, Tooltip, Collapsible, etc.)
+- Theme (primary color, radius, fonts) lives in `src/theme.ts`; `MantineProvider` is set up in `src/main.tsx`
+- Prefer Mantine components and style props (`p`, `gap`, `c`, `bg`, ...) for layout and spacing
+- For custom styling use **CSS Modules** (`*.module.css`) with Mantine CSS variables (`var(--mantine-color-...)`) and `light-dark()`; never hard-code colors that break dark mode
+- `src/global.css` only contains global resets; keep component styles in modules
+- Dark/light mode via `useMantineColorScheme()`
+- App shell uses `AppShell` with `layout="alt"` (navbar spans full height, header sits beside it)
+- Link-like Mantine components use `component={Link}` + `to` (react-router)
 
 ### Icon Libraries
 
-- **Tabler Icons** (`@tabler/icons-react`) -- primary icon set used throughout
-- **Lucide** (`lucide-react`) -- secondary, primarily used by shadcn/ui internal components
+- **Tabler Icons** (`@tabler/icons-react`) -- the only icon set
 
 ## Login Flow & Auth
 
@@ -162,7 +153,7 @@ Users can add, switch, and remove tokens with different permissions via the side
 
 - **Storage**: `localStorage` key `"metal-ui.tokens"`, structure: `{ tokens: TokenEntry[], activeId: string | null }`
 - **TokenSelector** (`src/components/ui/app-shell/token-selector.tsx`): dropdown in sidebar showing each token name + 8-char preview, with switch and delete actions
-- **AddTokenDialog** (`src/components/ui/app-shell/add-token-dialog.tsx`): form with name (1-64 chars, auto-postfixed on duplicates) and token (password input, min 10 chars), validates with Zod, uses React Hook Form
+- **AddTokenDialog** (`src/components/ui/app-shell/add-token-dialog.tsx`): form with name (1-64 chars, auto-postfixed on duplicates) and token (password input, min 10 chars), validates with Zod, uses `@mantine/form`
 - **Adding a token**: stored in localStorage, **auto-activated** as the active token. `QueryProvider key` changes → entire provider tree remounts → fresh gRPC transport.
 - **Switching tokens**: changes `activeId` in store → AuthProvider updates → same remount behavior.
 - **Removing a token**: deletes from store, first remaining token becomes active.
@@ -204,10 +195,9 @@ Use the shared `data-table` component from `src/components/ui/data-table/data-ta
 - **Use bun** as the package manager (`bun install`, `bun run ...`)
 - **TypeScript strict mode** is on; `noUnusedLocals`, `noUnusedParameters`, and `noFallthroughCasesInSwitch` are enabled
 - **Path alias**: `@/` resolves to `src/` (use `@/components/...`, `@/lib/...`, etc.)
-- **No new CSS files** -- all styling via Tailwind utility classes. Never modify `src/App.css`.
-- **shadcn/ui components**: add new primitives via `npx shadcn@latest add <component>`; they are source files, not a dependency
-- **Forms**: use React Hook Form + Zod via shadcn form components; never plain HTML inputs for forms
+- **Styling**: Mantine components/style props first; CSS Modules for anything custom. No Tailwind, no inline hard-coded colors.
+- **Forms**: use `@mantine/form` + `zod4Resolver` with Mantine inputs
 - **State**: prefer React Query for server state, React Context for app-level state (auth, theme, selections)
-- **Toasts**: use Sonner via the `@/components/ui/sonner.tsx` wrapper (has built-in Lucide icons)
+- **Toasts**: use `notifications.show({...})` from `@mantine/notifications`
 - **Read-only API pages** live in `src/pages/api/`; admin CRUD pages in `src/pages/admin/`
 - Never store secrets in the repo; use `.env` (`VITE_API_URL`) which is `.gitignore`d

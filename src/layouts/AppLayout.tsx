@@ -1,19 +1,36 @@
+import { pageBg } from "@/theme";
+import { AppShell } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { AppSidebar } from "@/components/ui/app-shell/app-sidebar";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { SiteHeader } from "@/components/ui/app-shell/site-header";
+
+export const HEADER_HEIGHT = 60;
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
+  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
+
   return (
-    <SidebarProvider
-      className="max-h-screen flex overflow-hidden"
-      style={
-        {
-          "--sidebar-width": "calc(var(--spacing) * 72)",
-          "--header-height": "calc(var(--spacing) * 12)",
-        } as React.CSSProperties
-      }
+    <AppShell
+      layout="alt"
+      header={{ height: HEADER_HEIGHT }}
+      navbar={{
+        width: 288,
+        breakpoint: "sm",
+        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+      }}
+      padding="md"
     >
-      <AppSidebar variant="inset" />
-      <SidebarInset>{children}</SidebarInset>
-    </SidebarProvider>
+      <SiteHeader
+        mobileOpened={mobileOpened}
+        desktopOpened={desktopOpened}
+        toggleMobile={toggleMobile}
+        toggleDesktop={toggleDesktop}
+      />
+      <AppShell.Navbar>
+        <AppSidebar />
+      </AppShell.Navbar>
+      <AppShell.Main bg={pageBg}>{children}</AppShell.Main>
+    </AppShell>
   );
 }

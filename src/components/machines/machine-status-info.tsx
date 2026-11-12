@@ -1,3 +1,4 @@
+import { Section } from "@/components/ui/section/section";
 import {
   MachineChassisIdentifyLEDState,
   MachineCondition,
@@ -5,12 +6,12 @@ import {
   MachineState,
   MachineStatus,
 } from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { Badge } from "../ui/badge";
+import { Badge, Tooltip } from "@mantine/core";
 import { InfoGrid } from "../info-grid/info-grid";
 
 interface MachineStatusInfoProps {
   data: MachineStatus;
+  title?: string;
 }
 
 function MachineConditionBadge({
@@ -44,26 +45,24 @@ function MachineConditionBadge({
   }
 
   return (
-    <Tooltip>
-      <TooltipTrigger>
-        <Badge
-          className={`text-${color}-600 border-${color}-600`}
-          variant="outline"
-        >
-          {icon}
-          {MachineState[condition.state]}
-        </Badge>
-      </TooltipTrigger>
-      <TooltipContent>
-        <div>
-          <strong>Description: </strong>
-          {condition.description}
-        </div>
-        <div>
-          <strong>Issuer: </strong>
-          {condition.issuer}
-        </div>
-      </TooltipContent>
+    <Tooltip
+      label={
+        <>
+          <div>
+            <strong>Description: </strong>
+            {condition.description}
+          </div>
+          <div>
+            <strong>Issuer: </strong>
+            {condition.issuer}
+          </div>
+        </>
+      }
+    >
+      <Badge color={color} variant="outline">
+        {icon}
+        {MachineState[condition.state]}
+      </Badge>
     </Tooltip>
   );
 }
@@ -73,26 +72,27 @@ function MachineLEDBadge({ led }: { led?: MachineChassisIdentifyLEDState }) {
     return "-";
   }
 
-  let icon = led.value ? "💡" : "❌";
+  const icon = led.value ? "💡" : "❌";
 
   return (
-    <Tooltip>
-      <TooltipTrigger>
-        <Badge variant="outline">
-          {icon}
-          {led.value ? "ON" : "OFF"}
-        </Badge>
-      </TooltipTrigger>
-      <TooltipContent>
-        <div>
-          <strong>LED State: </strong>
-          {led.value}
-        </div>
-        <div>
-          <strong>Description: </strong>
-          {led.description}
-        </div>
-      </TooltipContent>
+    <Tooltip
+      label={
+        <>
+          <div>
+            <strong>LED State: </strong>
+            {String(led.value)}
+          </div>
+          <div>
+            <strong>Description: </strong>
+            {led.description}
+          </div>
+        </>
+      }
+    >
+      <Badge color="gray" variant="outline">
+        {icon}
+        {led.value ? "ON" : "OFF"}
+      </Badge>
     </Tooltip>
   );
 }
@@ -122,37 +122,39 @@ function MachineLivelinessBadge({
       break;
   }
   return (
-    <Badge
-      variant="outline"
-      className={`text-${color}-600 border-${color}-600`}
-    >
+    <Badge variant="outline" color={color}>
       {icon}
       {MachineLiveliness[liveliness]}
     </Badge>
   );
 }
 
-export default function MachineStatusInfo({ data }: MachineStatusInfoProps) {
+export default function MachineStatusInfo({
+  data,
+  title = "Details",
+}: MachineStatusInfoProps) {
   return (
-    <InfoGrid
-      rows={[
-        {
-          label: "metal-hammer Version:",
-          value: data.metalHammerVersion,
-        },
-        {
-          label: "Liveliness:",
-          value: <MachineLivelinessBadge liveliness={data.liveliness} />,
-        },
-        {
-          label: "Condition:",
-          value: <MachineConditionBadge condition={data.condition} />,
-        },
-        {
-          label: "LED:",
-          value: <MachineLEDBadge led={data.ledState} />,
-        },
-      ]}
-    />
+    <Section title={title}>
+      <InfoGrid
+        rows={[
+          {
+            label: "metal-hammer Version:",
+            value: data.metalHammerVersion,
+          },
+          {
+            label: "Liveliness:",
+            value: <MachineLivelinessBadge liveliness={data.liveliness} />,
+          },
+          {
+            label: "Condition:",
+            value: <MachineConditionBadge condition={data.condition} />,
+          },
+          {
+            label: "LED:",
+            value: <MachineLEDBadge led={data.ledState} />,
+          },
+        ]}
+      />
+    </Section>
   );
 }

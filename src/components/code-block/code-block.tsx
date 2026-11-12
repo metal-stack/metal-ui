@@ -1,16 +1,19 @@
 import { IconCopy } from "@tabler/icons-react";
-import { Button } from "../ui/button";
+import { ActionIcon, Group, Text } from "@mantine/core";
+import classes from "./code-block.module.css";
 
 interface CodeBlockProps {
   data: any;
   title: string;
+  /** Show only the code with a floating copy button, for use inside a flush Section that has its own title */
+  bare?: boolean;
 }
 
-export default function CodeBlock({ data, title }: CodeBlockProps) {
+export default function CodeBlock({ data, title, bare }: CodeBlockProps) {
   let jsonString: string;
   try {
     jsonString = JSON.stringify(data, null, 2);
-  } catch (error) {
+  } catch {
     jsonString = String(data);
   }
 
@@ -18,19 +21,37 @@ export default function CodeBlock({ data, title }: CodeBlockProps) {
     await navigator.clipboard.writeText(jsonString);
   };
 
-  return (
-    <div className="rounded-lg border border-slate-200 bg-slate-200 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-      <div className="flex items-center justify-between border-b border-slate-300 px-4 py-2 dark:border-slate-800">
-        <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100">
-          {title}
-        </h3>
-        <Button size="sm" variant="outline" onClick={copyToClipboard}>
-          <IconCopy />
-        </Button>
+  const copyButton = (
+    <ActionIcon
+      variant="default"
+      aria-label="Copy to clipboard"
+      onClick={copyToClipboard}
+    >
+      <IconCopy size={16} />
+    </ActionIcon>
+  );
+
+  if (bare) {
+    // The surrounding Section already provides the title, so only the code is shown.
+    return (
+      <div style={{ position: "relative" }}>
+        <pre className={classes.pre}>{jsonString}</pre>
+        <div style={{ position: "absolute", top: 8, right: 8 }}>
+          {copyButton}
+        </div>
       </div>
-      <pre className="overflow-x-auto bg-slate-950 px-4 py-3 text-xs font-mono leading-relaxed text-slate-100 rounded-b-lg">
-        {jsonString}
-      </pre>
+    );
+  }
+
+  return (
+    <div className={classes.root}>
+      <Group justify="space-between" px="md" py="xs" className={classes.header}>
+        <Text size="sm" fw={600}>
+          {title}
+        </Text>
+        {copyButton}
+      </Group>
+      <pre className={classes.pre}>{jsonString}</pre>
     </div>
   );
 }

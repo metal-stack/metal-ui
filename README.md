@@ -20,7 +20,7 @@ GUI for metal-stack.
 ## Technologies Used
 
 - [Vite](https://vitejs.dev/) - Next generation frontend tooling.
-- [Shadcn/ui](https://shadcn-ui.com/) - Beautifully designed components built with Radix UI and Tailwind CSS.
+- [Mantine](https://mantine.dev/) - React components library (AppShell, forms, notifications).
 
 ## Recommended IDE Setup
 

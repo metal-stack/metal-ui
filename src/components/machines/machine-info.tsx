@@ -1,5 +1,6 @@
 import { Machine } from "@metal-stack/api/js/metalstack/api/v2/machine_pb";
-import InfoCollapsible from "../info-collapsible/info-collapsible";
+import { Section, SectionGrid } from "../ui/section/section";
+import { InfoGrid } from "../info-grid/info-grid";
 import MachineAllocationInfo from "./machine-allocation-info";
 import SizeInfo from "../sizes/size-info";
 import MachineHardwareInfo from "./machine-hardware-info";
@@ -13,33 +14,23 @@ interface MachineInfoProps {
 
 export default function MachineInfo({ data }: MachineInfoProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <div>
-        <strong>Partition:</strong> {data.partition?.id || "-"}
-      </div>
-      <div>
-        <strong>Rack:</strong> {data.rack}
-      </div>
-      <InfoCollapsible title="Size">
-        {data.size && <SizeInfo data={data.size} />}
-      </InfoCollapsible>
-      <InfoCollapsible title="Allocation">
-        {data.allocation && <MachineAllocationInfo data={data.allocation} />}
-      </InfoCollapsible>
-      <InfoCollapsible title="Hardware">
-        {data.hardware && <MachineHardwareInfo data={data.hardware} />}
-      </InfoCollapsible>
-      <InfoCollapsible title="Bios">
-        {data.bios && <MachineBiosInfo data={data.bios} />}
-      </InfoCollapsible>
-      <InfoCollapsible title="Status">
-        {data.status && <MachineStatusInfo data={data.status} />}
-      </InfoCollapsible>
-      <InfoCollapsible title="Events">
-        {data.recentProvisioningEvents && (
-          <MachineEventsInfo data={data.recentProvisioningEvents} />
-        )}
-      </InfoCollapsible>
-    </div>
+    <SectionGrid>
+      <Section title="Overview">
+        <InfoGrid
+          rows={[
+            { label: "Partition:", value: data.partition?.id },
+            { label: "Rack:", value: data.rack },
+          ]}
+        />
+      </Section>
+      {data.status && <MachineStatusInfo data={data.status} title="Status" />}
+      {data.bios && <MachineBiosInfo data={data.bios} title="Bios" />}
+      {data.size && <SizeInfo data={data.size} title="Size" />}
+      {data.hardware && <MachineHardwareInfo data={data.hardware} />}
+      {data.allocation && <MachineAllocationInfo data={data.allocation} />}
+      {data.recentProvisioningEvents && (
+        <MachineEventsInfo data={data.recentProvisioningEvents} />
+      )}
+    </SectionGrid>
   );
 }

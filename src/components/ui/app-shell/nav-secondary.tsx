@@ -1,43 +1,27 @@
-"use client";
-
-import * as React from "react";
 import { type Icon } from "@tabler/icons-react";
-
-import {
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
+import { NavLink } from "@mantine/core";
 import { Link } from "react-router";
 
 export function NavSecondary({
   items,
-  ...props
 }: {
   items: {
     title: string;
     url: string;
     icon: Icon;
   }[];
-} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+}) {
   return (
-    <SidebarGroup {...props}>
-      <SidebarGroupContent>
-        <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
-                <Link to={item.url}>
-                  <item.icon />
-                  <span>{item.title}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
+    <>
+      {items.map((item) => (
+        <NavLink
+          key={item.title}
+          component={Link}
+          to={item.url}
+          label={item.title}
+          leftSection={<item.icon size={18} />}
+        />
+      ))}
+    </>
   );
 }

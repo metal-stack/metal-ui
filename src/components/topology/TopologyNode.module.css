@@ -1,0 +1,21 @@
+.node {
+  width: 160px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid light-dark(var(--node-3), var(--node-8));
+  background: linear-gradient(
+    to bottom,
+    light-dark(var(--node-1), var(--node-9)),
+    light-dark(var(--node-2), var(--node-8))
+  );
+  color: light-dark(var(--node-9), var(--node-1));
+  box-shadow: var(--mantine-shadow-xs);
+}
+
+.handle {
+  background: var(--node-4) !important;
+}

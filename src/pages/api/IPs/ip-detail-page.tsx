@@ -1,7 +1,8 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
 import { useParams } from "react-router";
 import { useProject } from "@/providers/ProjectProvider";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@mantine/core";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { IPService } from "@metal-stack/api/js/metalstack/api/v2/ip_pb";
 import IPInfo from "@/components/ips/ip-info";
@@ -16,7 +17,7 @@ export default function IPDetailPage() {
   });
 
   if (isLoading) {
-    return <Skeleton className="h-12" />;
+    return <Skeleton h={48} />;
   }
 
   if (error) {
@@ -27,5 +28,9 @@ export default function IPDetailPage() {
     return <AlertHint title="Error loading IP" description={"No data"} />;
   }
 
-  return <IPInfo data={data.ip} />;
+  return (
+    <SectionGrid>
+      <IPInfo data={data.ip} />
+    </SectionGrid>
+  );
 }

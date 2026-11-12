@@ -1,5 +1,6 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@mantine/core";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { SizeService } from "@metal-stack/api/js/metalstack/api/v2/size_pb";
 import { useParams } from "react-router";
@@ -11,7 +12,7 @@ export default function SizeDetailPage() {
   const { data, isLoading, error } = useQuery(SizeService.method.get, { id });
 
   if (isLoading) {
-    return <Skeleton className="h-12" />;
+    return <Skeleton h={48} />;
   }
 
   if (error) {
@@ -22,5 +23,9 @@ export default function SizeDetailPage() {
     return <AlertHint title="Error loading size" description={"No data"} />;
   }
 
-  return <SizeInfo data={data.size} />;
+  return (
+    <SectionGrid>
+      <SizeInfo data={data.size} />
+    </SectionGrid>
+  );
 }

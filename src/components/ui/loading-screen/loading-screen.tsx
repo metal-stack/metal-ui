@@ -1,9 +1,9 @@
-import { IconLoader3 } from "@tabler/icons-react";
+import { Center, Loader } from "@mantine/core";
 
 export default function LoadingScreen() {
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-      <IconLoader3 className="animate-spin h-14 w-14 text-primary" />
-    </div>
+    <Center h="100%" w="100%" mih={200}>
+      <Loader size="lg" />
+    </Center>
   );
 }

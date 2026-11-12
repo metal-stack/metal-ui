@@ -1,5 +1,6 @@
+import { SectionGrid } from "@/components/ui/section/section";
 import { useQuery } from "@connectrpc/connect-query";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@mantine/core";
 import AlertHint from "@/components/ui/alert/AlertHint";
 import { TokenService } from "@metal-stack/api/js/metalstack/api/v2/token_pb";
 import { useParams } from "react-router";
@@ -13,7 +14,7 @@ export default function TokenDrawer() {
   });
 
   if (isLoading) {
-    return <Skeleton className="h-12" />;
+    return <Skeleton h={48} />;
   }
 
   if (error) {
@@ -26,5 +27,9 @@ export default function TokenDrawer() {
     return <AlertHint title="Error loading token" description={"No data"} />;
   }
 
-  return <TokenInfo data={data.token} />;
+  return (
+    <SectionGrid>
+      <TokenInfo data={data.token} />
+    </SectionGrid>
+  );
 }

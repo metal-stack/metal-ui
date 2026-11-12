@@ -14,7 +14,7 @@ type ProjectContextValue = {
 };
 
 const ProjectContext = createContext<ProjectContextValue | undefined>(
-  undefined
+  undefined,
 );
 
 export function ProjectProvider({ children }: { children: React.ReactNode }) {
@@ -22,7 +22,7 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
 
   const projects = data?.projects ?? [];
   const [currentProject, setCurrentProject] = useState<Project | undefined>(
-    undefined
+    undefined,
   );
 
   useEffect(() => {

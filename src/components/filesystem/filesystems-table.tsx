@@ -3,7 +3,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { FilesystemLayout } from "@metal-stack/api/js/metalstack/api/v2/filesystem_pb";
 import { DataTable } from "../ui/data-table/data-table";
-import { Link } from "react-router";
+import { TableLink } from "../ui/data-table/table-link";
+
+const href = (fs: FilesystemLayout) => "/filesystems/" + fs.id;
 
 const columns: ColumnDef<FilesystemLayout>[] = [
   {
@@ -11,7 +13,7 @@ const columns: ColumnDef<FilesystemLayout>[] = [
     header: "ID",
     enableHiding: false,
     cell: ({ row }) => (
-      <Link to={"/filesystems/" + row.original.id}>{row.original.id}</Link>
+      <TableLink to={href(row.original)}>{row.original.id}</TableLink>
     ),
   },
   {
@@ -26,6 +28,7 @@ export function FilesystemsTable({ data }: { data: FilesystemLayout[] }) {
       initialData={data}
       columns={columns}
       getRowId={(row) => row.id.toString()}
+      getRowHref={href}
     />
   );
 }

@@ -3,7 +3,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Image } from "@metal-stack/api/js/metalstack/api/v2/image_pb";
 import { DataTable } from "../ui/data-table/data-table";
-import { Link } from "react-router";
+import { TableLink } from "../ui/data-table/table-link";
+
+const href = (image: Image) => "/images/" + image.id;
 
 const columns: ColumnDef<Image>[] = [
   {
@@ -11,7 +13,7 @@ const columns: ColumnDef<Image>[] = [
     header: "ID",
     enableHiding: false,
     cell: ({ row }) => (
-      <Link to={"/images/" + row.original.id}>{row.original.id}</Link>
+      <TableLink to={href(row.original)}>{row.original.id}</TableLink>
     ),
   },
   {
@@ -26,6 +28,7 @@ export function ImagesTable({ data }: { data: Image[] }) {
       initialData={data}
       columns={columns}
       getRowId={(row) => row.id.toString()}
+      getRowHref={href}
     />
   );
 }

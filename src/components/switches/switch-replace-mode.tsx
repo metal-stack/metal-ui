@@ -1,5 +1,5 @@
 import { SwitchReplaceMode } from "@metal-stack/api/js/metalstack/api/v2/switch_pb";
-import { Badge } from "../ui/badge";
+import { Badge } from "@mantine/core";
 
 interface SwitchReplaceModeProps {
   mode: SwitchReplaceMode;

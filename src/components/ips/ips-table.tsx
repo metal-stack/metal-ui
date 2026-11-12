@@ -1,29 +1,22 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { IP } from "@metal-stack/api/js/metalstack/api/v2/ip_pb";
 import { DataTable } from "../ui/data-table/data-table";
-import { Link, useLocation } from "react-router";
+import { TableLink } from "../ui/data-table/table-link";
+import { useLocation } from "react-router";
 import { IPTypeBadge } from "./ip-info";
 
 export function IpsTable({ data }: { data: IP[] }) {
   const location = useLocation();
   const prefix = location.pathname.startsWith("/admin") ? "/admin" : "";
+  const href = (ip: IP) => prefix + "/ips/" + ip.ip + "?project=" + ip.project;
+
   const columns: ColumnDef<IP>[] = [
     {
       accessorKey: "uuid",
       header: "UUID",
       enableHiding: false,
       cell: ({ row }) => (
-        <Link
-          to={
-            prefix +
-            "/ips/" +
-            row.original.ip +
-            "?project=" +
-            row.original.project
-          }
-        >
-          {row.original.uuid}
-        </Link>
+        <TableLink to={href(row.original)}>{row.original.uuid}</TableLink>
       ),
     },
     {
@@ -49,6 +42,7 @@ export function IpsTable({ data }: { data: IP[] }) {
       initialData={data}
       columns={columns}
       getRowId={(row) => row.uuid.toString()}
+      getRowHref={href}
     />
   );
 }

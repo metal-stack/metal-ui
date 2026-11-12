@@ -1,7 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Network } from "@metal-stack/api/js/metalstack/api/v2/network_pb";
 import { DataTable } from "../ui/data-table/data-table";
-import { Link, useLocation } from "react-router";
+import { TableLink } from "../ui/data-table/table-link";
+import { useLocation } from "react-router";
 
 interface NetworksTableProps {
   data: Network[];
@@ -11,15 +12,15 @@ export function NetworksTable({ data }: NetworksTableProps) {
   const location = useLocation();
   const prefix = location.pathname.startsWith("/admin") ? "/admin" : "";
 
+  const href = (network: Network) => prefix + "/networks/" + network.id;
+
   const columns: ColumnDef<Network>[] = [
     {
       accessorKey: "id",
       header: "ID",
       enableHiding: false,
       cell: ({ row }) => (
-        <Link to={prefix + "/networks/" + row.original.id}>
-          {row.original.id}
-        </Link>
+        <TableLink to={href(row.original)}>{row.original.id}</TableLink>
       ),
     },
     {
@@ -37,6 +38,7 @@ export function NetworksTable({ data }: NetworksTableProps) {
       initialData={data}
       columns={columns}
       getRowId={(row) => row.id.toString()}
+      getRowHref={href}
     />
   );
 }

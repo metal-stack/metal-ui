@@ -1,7 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Partition } from "@metal-stack/api/js/metalstack/api/v2/partition_pb";
 import { DataTable } from "../ui/data-table/data-table";
-import { Link } from "react-router";
+import { TableLink } from "../ui/data-table/table-link";
+
+const href = (partition: Partition) => "/partitions/" + partition.id;
 
 const columns: ColumnDef<Partition>[] = [
   {
@@ -9,7 +11,7 @@ const columns: ColumnDef<Partition>[] = [
     header: "ID",
     enableHiding: false,
     cell: ({ row }) => (
-      <Link to={"/partitions/" + row.original.id}>{row.original.id}</Link>
+      <TableLink to={href(row.original)}>{row.original.id}</TableLink>
     ),
   },
   {
@@ -24,6 +26,7 @@ export function PartitionsTable({ data }: { data: Partition[] }) {
       initialData={data}
       columns={columns}
       getRowId={(row) => row.id.toString()}
+      getRowHref={href}
     />
   );
 }

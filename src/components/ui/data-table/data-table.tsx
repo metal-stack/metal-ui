@@ -16,6 +16,7 @@ import {
 import { tileBg } from "@/theme";
 import { Paper, Table, Text } from "@mantine/core";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { DataTablePagination } from "../pagination/table-pagination";
 
 interface DataTableProps<TData, TValue> {
@@ -30,6 +31,8 @@ interface DataTableProps<TData, TValue> {
         parent?: Row<TData> | undefined,
       ) => string)
     | undefined;
+  /** When set, rows are clickable and navigate to the returned detail page */
+  getRowHref?: (originalRow: TData) => string;
 }
 
 export function DataTable<TData, TValue>({
@@ -37,7 +40,9 @@ export function DataTable<TData, TValue>({
   initialData,
   bare,
   getRowId,
+  getRowHref,
 }: DataTableProps<TData, TValue>) {
+  const navigate = useNavigate();
   const [data] = useState(() => initialData);
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -104,7 +109,33 @@ export function DataTable<TData, TValue>({
           <Table.Tbody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <Table.Tr key={row.id}>
+                <Table.Tr
+                  key={row.id}
+                  style={getRowHref ? { cursor: "pointer" } : undefined}
+                  onClick={
+                    getRowHref
+                      ? (e) => {
+                          // let modifier/non-primary clicks and inner links/buttons
+                          // behave natively, and don't navigate on text selection
+                          if (
+                            e.defaultPrevented ||
+                            e.button !== 0 ||
+                            e.metaKey ||
+                            e.ctrlKey ||
+                            e.shiftKey ||
+                            e.altKey ||
+                            (e.target as HTMLElement).closest(
+                              "a, button, input",
+                            ) ||
+                            window.getSelection()?.toString()
+                          ) {
+                            return;
+                          }
+                          navigate(getRowHref(row.original));
+                        }
+                      : undefined
+                  }
+                >
                   {row.getVisibleCells().map((cell) => (
                     <Table.Td key={cell.id}>
                       {flexRender(

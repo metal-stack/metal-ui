@@ -29,14 +29,14 @@ export default function SwitchOSBadge({ os }: SwitchOSBadgeProps) {
     <Tooltip
       label={
         <>
-        <div>
-          <strong>OS version: </strong>
-          {os.version}
-        </div>
-        <div>
-          <strong>Metal Core version: </strong>
-          {os.metalCoreVersion}
-        </div>
+          <div>
+            <strong>OS version: </strong>
+            {os.version}
+          </div>
+          <div>
+            <strong>Metal Core version: </strong>
+            {os.metalCoreVersion}
+          </div>
         </>
       }
     >

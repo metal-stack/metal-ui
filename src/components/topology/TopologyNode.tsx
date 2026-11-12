@@ -26,7 +26,12 @@ function TopologyNode({ id, data, color, target, source }: TopologyNodeProps) {
       </Text>
       <Popover withArrow position="bottom" width={360}>
         <Popover.Target>
-          <ActionIcon variant="subtle" color={color} aria-label="Info" opacity={0.6}>
+          <ActionIcon
+            variant="subtle"
+            color={color}
+            aria-label="Info"
+            opacity={0.6}
+          >
             <IconInfoCircle size={16} />
           </ActionIcon>
         </Popover.Target>
@@ -35,10 +40,18 @@ function TopologyNode({ id, data, color, target, source }: TopologyNodeProps) {
         </Popover.Dropdown>
       </Popover>
       {target && (
-        <Handle type="target" position={Position.Top} className={classes.handle} />
+        <Handle
+          type="target"
+          position={Position.Top}
+          className={classes.handle}
+        />
       )}
       {source && (
-        <Handle type="source" position={Position.Bottom} className={classes.handle} />
+        <Handle
+          type="source"
+          position={Position.Bottom}
+          className={classes.handle}
+        />
       )}
     </div>
   );

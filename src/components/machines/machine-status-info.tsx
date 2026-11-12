@@ -72,7 +72,7 @@ function MachineLEDBadge({ led }: { led?: MachineChassisIdentifyLEDState }) {
     return "-";
   }
 
-  let icon = led.value ? "💡" : "❌";
+  const icon = led.value ? "💡" : "❌";
 
   return (
     <Tooltip

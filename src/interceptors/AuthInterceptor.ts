@@ -1,9 +1,5 @@
 // interceptors/AuthInterceptor.ts
-import {
-  Code,
-  ConnectError,
-  Interceptor,
-} from "@connectrpc/connect";
+import { Code, ConnectError, Interceptor } from "@connectrpc/connect";
 
 type OnUnauthenticated = () => void;
 

@@ -4,20 +4,20 @@ The metal-ui is the read-only web dashboard for [metal-stack](https://github.com
 
 ## Tech Stack
 
-| Category | Technology |
-|---|---|
-| Framework | React 19 + TypeScript (strict mode) |
-| Build | Vite 7 |
-| UI Components | Mantine 9 (`@mantine/core`, `hooks`, `form`, `notifications`) |
-| Styling | Mantine style props + CSS Modules (`postcss-preset-mantine`) |
-| Routing | React Router v7 |
-| Data Fetching | TanStack React Query + Connect RPC (`@connectrpc/connect-query`) |
-| API Protocol | Connect/protobuf via `@metal-stack/api` (gRPC over HTTP/JSON) |
-| Package Manager | bun (`bun.lock`) |
-| Validation | Zod v4 + `@mantine/form` (via `mantine-form-zod-resolver`) |
-| Icons | Tabler Icons |
-| Theme | Mantine color scheme (`src/theme.ts`, dark by default) |
-| Toasts | `@mantine/notifications` |
+| Category        | Technology                                                       |
+| --------------- | ---------------------------------------------------------------- |
+| Framework       | React 19 + TypeScript (strict mode)                              |
+| Build           | Vite 7                                                           |
+| UI Components   | Mantine 9 (`@mantine/core`, `hooks`, `form`, `notifications`)    |
+| Styling         | Mantine style props + CSS Modules (`postcss-preset-mantine`)     |
+| Routing         | React Router v7                                                  |
+| Data Fetching   | TanStack React Query + Connect RPC (`@connectrpc/connect-query`) |
+| API Protocol    | Connect/protobuf via `@metal-stack/api` (gRPC over HTTP/JSON)    |
+| Package Manager | bun (`bun.lock`)                                                 |
+| Validation      | Zod v4 + `@mantine/form` (via `mantine-form-zod-resolver`)       |
+| Icons           | Tabler Icons                                                     |
+| Theme           | Mantine color scheme (`src/theme.ts`, dark by default)           |
+| Toasts          | `@mantine/notifications`                                         |
 
 ## Package Scripts
 

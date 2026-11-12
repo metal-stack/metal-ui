@@ -20,9 +20,7 @@ export default function IPsPage() {
   if (!currentProject?.uuid) return <NoProjectSelected />;
   if (isLoading) return <LoadingScreen />;
   if (error)
-    return (
-      <AlertHint title="Error loading IPs" description={error.message} />
-    );
+    return <AlertHint title="Error loading IPs" description={error.message} />;
 
   if (!data?.ips.length) return <NoElementFound />;
 

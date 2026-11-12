@@ -15,7 +15,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
   const user = useUser();
 
   const [currentTenant, setCurrentTenant] = useState<Tenant | undefined>(
-    user.defaultTenant
+    user.defaultTenant,
   );
 
   useEffect(() => {

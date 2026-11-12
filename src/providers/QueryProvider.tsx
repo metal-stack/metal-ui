@@ -34,10 +34,8 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
   const transport = useMemo(() => {
     if (auth.status !== "authenticated") return null;
 
-    const interceptor = new AuthInterceptor(
-      auth.apiToken,
-      onUnauthorized,
-    ).interceptor;
+    const interceptor = new AuthInterceptor(auth.apiToken, onUnauthorized)
+      .interceptor;
 
     return createConnectTransport({
       baseUrl: auth.apiUrl,

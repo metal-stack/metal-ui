@@ -24,7 +24,9 @@ export default function ServiceHealthItem({
   return (
     <Group justify="space-between" mb="xs" wrap="nowrap">
       <Text fw={600}>{name.charAt(0).toUpperCase() + name.slice(1)}</Text>
-      <Badge color={statusColor[status] ?? "gray"}>{ServiceStatus[status]}</Badge>
+      <Badge color={statusColor[status] ?? "gray"}>
+        {ServiceStatus[status]}
+      </Badge>
     </Group>
   );
 }

@@ -201,10 +201,16 @@ export default function TopologyPage() {
         This topology view is mocked and doesn't reflect real data.
       </Alert>
       <Box h="calc(100dvh - var(--app-shell-header-height) - 140px)" mt="md">
-      <ReactFlow colorMode={colorScheme === "dark" ? "dark" : "light"} nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView>
-        <Background />
-        <Controls />
-      </ReactFlow>
+        <ReactFlow
+          colorMode={colorScheme === "dark" ? "dark" : "light"}
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeTypes}
+          fitView
+        >
+          <Background />
+          <Controls />
+        </ReactFlow>
       </Box>
     </>
   );

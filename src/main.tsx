@@ -14,5 +14,5 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <Notifications />
       <App />
     </MantineProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

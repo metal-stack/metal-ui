@@ -13,7 +13,7 @@ export default function CodeBlock({ data, title, bare }: CodeBlockProps) {
   let jsonString: string;
   try {
     jsonString = JSON.stringify(data, null, 2);
-  } catch (error) {
+  } catch {
     jsonString = String(data);
   }
 

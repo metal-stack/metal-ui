@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { SwitchPortStatus } from "@metal-stack/api/js/metalstack/api/v2/switch_pb";
 
 function SwitchPortState(state?: SwitchPortStatus) {
-  let stateString = "";
+  let stateString: string;
   switch (state) {
     case SwitchPortStatus.DOWN:
       stateString = "🔴 Down";

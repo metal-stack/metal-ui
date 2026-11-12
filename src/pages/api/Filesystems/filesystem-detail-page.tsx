@@ -19,7 +19,7 @@ export default function FilesystemDetailPage() {
   if (error) {
     return (
       <AlertHint
-        title="Error loading filesystems"
+        title="Error loading filesystem"
         description={error.message}
       />
     );
@@ -27,7 +27,7 @@ export default function FilesystemDetailPage() {
 
   if (!data?.filesystemLayout) {
     return (
-      <AlertHint title="Error loading filesystems" description={"No data"} />
+      <AlertHint title="Error loading filesystem" description={"No data"} />
     );
   }
 

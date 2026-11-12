@@ -7,12 +7,12 @@ export type TokenEntry = {
   apiUrl: string;
 };
 
-export type TokenStore = {
+type TokenStore = {
   tokens: TokenEntry[];
   activeId: string | null;
 };
 
-export function getTokenStore(): TokenStore {
+function getTokenStore(): TokenStore {
   const raw = localStorage.getItem(TOKENS_KEY);
   if (!raw) return { tokens: [], activeId: null };
   try {
@@ -22,7 +22,7 @@ export function getTokenStore(): TokenStore {
   }
 }
 
-export function saveTokenStore(store: TokenStore): void {
+function saveTokenStore(store: TokenStore): void {
   localStorage.setItem(TOKENS_KEY, JSON.stringify(store));
 }
 

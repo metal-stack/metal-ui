@@ -27,6 +27,7 @@ export function PageHeader({
 }
 
 /** Renders its children into the right side of the page header. */
+/** @lintignore Slot for future header actions (write operations). */
 export function PageActions({ children }: { children: ReactNode }) {
   const el = useContext(PageActionsContext);
   return el ? createPortal(children, el) : null;

@@ -43,7 +43,6 @@ export function DataTable<TData, TValue>({
   getRowHref,
 }: DataTableProps<TData, TValue>) {
   const navigate = useNavigate();
-  const [data] = useState(() => initialData);
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -54,7 +53,7 @@ export function DataTable<TData, TValue>({
   });
 
   const table = useReactTable({
-    data,
+    data: initialData,
     columns,
     state: {
       sorting,

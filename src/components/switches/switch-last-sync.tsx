@@ -6,7 +6,6 @@ interface SwitchLastSyncProps {
 }
 
 export default function SwitchLastSync({ lastSync }: SwitchLastSyncProps) {
-  console.log("lastSync", lastSync);
   if (!lastSync || !lastSync.time) {
     return "-";
   }

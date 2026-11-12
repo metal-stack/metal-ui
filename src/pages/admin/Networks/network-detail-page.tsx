@@ -19,12 +19,12 @@ export default function AdminNetworkDetailPage() {
 
   if (error) {
     return (
-      <AlertHint title="Error loading Network" description={error.message} />
+      <AlertHint title="Error loading network" description={error.message} />
     );
   }
 
   if (!data?.network) {
-    return <AlertHint title="Error loading Network" description={"No data"} />;
+    return <AlertHint title="Error loading network" description={"No data"} />;
   }
 
   return (

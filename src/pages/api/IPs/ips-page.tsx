@@ -21,7 +21,7 @@ export default function IPsPage() {
   if (isLoading) return <LoadingScreen />;
   if (error)
     return (
-      <AlertHint title="Error loading images" description={error.message} />
+      <AlertHint title="Error loading IPs" description={error.message} />
     );
 
   if (!data?.ips.length) return <NoElementFound />;

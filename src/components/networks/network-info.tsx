@@ -15,7 +15,7 @@ export default function NetworkInfo({
     <Section title={title}>
       <InfoGrid
         rows={[
-          { label: "Network:", value: data.name },
+          { label: "Network:", value: data.id },
           { label: "Name:", value: data.name },
           { label: "Description:", value: data.description },
           { label: "Project:", value: data.project },
